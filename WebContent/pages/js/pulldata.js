@@ -3,7 +3,7 @@ $(document).ready(function() {
 	$(document).ready(function() {
 	    $('#pull-datatable').DataTable( {
 	        "ajax": "/pulldata",
-	        "order": [[ 6, 'desc' ]],
+	        "order": [[ 0, 'desc' ]],
 	        columnDefs: [
 	            { width: '20%', targets: 0 }
 	        ],
