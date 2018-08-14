@@ -1,7 +1,6 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutures;
@@ -10,6 +9,8 @@ import com.google.cloud.pubsub.v1.Publisher;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.PubsubMessage;
+
+import app.model.PublisherMessage;
 
 public class MessagePublisher {
 
@@ -23,45 +24,35 @@ public class MessagePublisher {
 	 * @return
 	 * @throws Exception
 	 */
-/*	
-	public static void main(String[] args) throws Exception {
-		MessagePublisher publisher = new MessagePublisher();
-		
-		List<String> messageIds = new ArrayList<>();
-		
-		for (int i = 0; i < 10; i++) {
-			StringBuilder messageId = new StringBuilder("");
-			String message = "This is message "+(i+1);
-			publisher.publishMessage(message, "NSE",messageId );
-			messageIds.add(messageId.toString());
-		}
-		
-		System.out.println(messageIds.size() + " messages published");
 
-	}*/
-	
-	
-	public void publishMessage(String message, String topicName, StringBuilder messageId) throws Exception {
+	public void publishMessage(String topicName, PublisherMessage publisherMessage, StringBuilder messageId) throws Exception {
 		ProjectTopicName projectTopicName = ProjectTopicName.of(PROJECT_ID, topicName);
+
 		Publisher publisher = null;
+		String message = publisherMessage.getMessage();
 
 		boolean isEmptyTopic = topicName == null || topicName.isEmpty();
 		boolean isEmptyMessage = message == null || message.isEmpty();
 		if (isEmptyTopic || isEmptyMessage)
-				return;
+			return;
 
 		try {
 			// Create a publisher instance with default settings bound to the
 			// topic
 			publisher = Publisher.newBuilder(projectTopicName).build();
-
+			String gbTxnId = "gbtxn" + new Date().getTime();
 			ByteString data = ByteString.copyFromUtf8(message);
-			PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data).build();
+			PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
+					.putAttributes("globalTransactionId", gbTxnId).build();
+			publisherMessage.setGlobalTransactionId(gbTxnId);
+			// pubsubMessage.getAttributesMap().put("globalTransactionId",
+			// gbTxnId);
 
 			// Once published, returns a server-assigned message id (unique
 			// within the topic)
 			ApiFuture<String> future = publisher.publish(pubsubMessage);
 
+			
 			// Add an asynchronous callback to handle success / failure
 			DefaultApiFutureCallback callback = new DefaultApiFutureCallback(message, messageId);
 			ApiFutures.addCallback(future, callback);

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import app.MessagePublisher;
 import app.dao.PublisherDao;
-import app.model.Publisher;
+import app.model.PublisherMessage;
 
 @WebServlet(name = "publish", urlPatterns = { "/publish" })
 
@@ -36,8 +36,12 @@ public class PublishServlet extends HttpServlet {
 		StringBuilder messageId = new StringBuilder("");
 		Date date = new Date();
 		long start = date.getTime();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
+		PublisherMessage publisher = new PublisherMessage(messageId.toString(), message, topicName);
+		
 		try {
-			new MessagePublisher().publishMessage(message, topicName, messageId);
+			new MessagePublisher().publishMessage(topicName, publisher, messageId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,20 +51,15 @@ public class PublishServlet extends HttpServlet {
 			Date currDate = new Date();
 			now = currDate.getTime();
 		}
-
+		String publishTime = formatter.format(new Date(now));
+		publisher.setPublishTime(publishTime);
 		boolean isMessageIdGenerated = messageId.toString() != null && messageId.toString().length() > 0;
 
 		if (isMessageIdGenerated) {
+			publisher.setMessageId(messageId.toString());
 			try {
-
-				SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
-				String formattedDate = formatter.format(new Date(now));
-
-				persistInDB(messageId.toString(), message, topicName, formattedDate);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				persistInDB(publisher);
+			} catch (SQLException | ParseException e) {
 				e.printStackTrace();
 			}
 			req.setAttribute("messageId", messageId.toString());
@@ -72,9 +71,9 @@ public class PublishServlet extends HttpServlet {
 
 	}
 
-	private void persistInDB(String messageId, String message, String topicName, String publishTime)
+	private void persistInDB(PublisherMessage publisher)
 			throws SQLException, ParseException {
-		Publisher publisher = new Publisher(messageId, message, topicName, publishTime);
+		
 		PublisherDao publisherDao = new PublisherDao();
 		publisherDao.insertPubliser(publisher);
 	}

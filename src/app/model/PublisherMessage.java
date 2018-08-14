@@ -1,17 +1,29 @@
 package app.model;
 
-public class Publisher {
+public class PublisherMessage {
 
 	private String messageId;
 	private String message;
 	private String topicName;
 	private String publishTime;
+	private String globalTransactionId;
 
-	public Publisher(String messageId, String message, String topicName, String publishTime) {
+	/**
+	 * @param messageId
+	 * @param message
+	 * @param topicName
+	 * @param publishTime
+	 * @param globalTxnId
+	 */
+	public PublisherMessage(String messageId, String message, String topicName, String publishTime) {
+		this(messageId, message, topicName);
+		this.publishTime = publishTime;
+	}
+	
+	public PublisherMessage(String messageId, String message, String topicName) {
 		this.messageId = messageId;
 		this.message = message;
 		this.topicName = topicName;
-		this.publishTime = publishTime;
 	}
 
 	public String getMessageId() {
@@ -44,6 +56,14 @@ public class Publisher {
 
 	public void setPublishTime(String publishTime) {
 		this.publishTime = publishTime;
+	}
+
+	public String getGlobalTransactionId() {
+		return globalTransactionId;
+	}
+
+	public void setGlobalTransactionId(String globalTransactionId) {
+		this.globalTransactionId = globalTransactionId;
 	}
 
 }

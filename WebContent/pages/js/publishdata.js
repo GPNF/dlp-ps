@@ -8,7 +8,8 @@ $(document).ready(function() {
 	            { "data": "messageId" },
 	            { "data": "message" },
 	            { "data": "topicName" },
-	            { "data": "publishTime" }
+	            { "data": "publishTime" },
+	            { "data": "globalTransactionId" }
 	        ]
 	    } );
 	} );
