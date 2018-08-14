@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.dao.PublisherDao;
 import app.model.DataTableWrapper;
-import app.model.Publisher;
+import app.model.PublisherMessage;
 
 @WebServlet(name = "publishdata", urlPatterns = { "/publishdata", "/publishData", "/PublishData", "/getPublishData" })
 public class PublishDataServlet extends HttpServlet {
@@ -27,7 +27,7 @@ public class PublishDataServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		List<Publisher> publishers = getPublisherMessageList();
+		List<PublisherMessage> publishers = getPublisherMessageList();
 
 		if (publishers == null || publishers.isEmpty()) {
 			prepareNoContentResponse(response);
@@ -43,7 +43,7 @@ public class PublishDataServlet extends HttpServlet {
 	 * @throws JsonProcessingException
 	 * @throws IOException
 	 */
-	private void prepareJsonResponse(HttpServletResponse response, List<Publisher> publishers)
+	private void prepareJsonResponse(HttpServletResponse response, List<PublisherMessage> publishers)
 			throws JsonProcessingException, IOException {
 		DataTableWrapper wrapper = new DataTableWrapper(publishers);
 
@@ -60,8 +60,8 @@ public class PublishDataServlet extends HttpServlet {
 	/**
 	 * @return List
 	 */
-	private List<Publisher> getPublisherMessageList() {
-		List<Publisher> publishers = null;
+	private List<PublisherMessage> getPublisherMessageList() {
+		List<PublisherMessage> publishers = null;
 		try {
 			PublisherDao publisherDao = new PublisherDao();
 			publishers = publisherDao.getAllPublishers();

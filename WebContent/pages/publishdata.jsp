@@ -31,6 +31,7 @@ table tr th{
 					<th>Message</th>
 					<th>Topic</th>
 					<th>Publish Time</th>
+                    <th>Global Txn Id</th>
 				</tr>
 			</thead>
 		</table>

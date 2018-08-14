@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import app.model.Publisher;
+import app.model.PublisherMessage;
 
 public class PublisherDao {
 
@@ -23,16 +23,16 @@ public class PublisherDao {
 		this.connection = connProvider.getConnection();
 	}
 
-	public int insertPubliser(Publisher publisher) throws SQLException, ParseException {
+	public int insertPubliser(PublisherMessage publisher) throws SQLException, ParseException {
 
-		String sql = "INSERT INTO publisher " + "(message_id, topic_name, message, published_timestamp) "
-				+ "VALUES (?,?,?,?)";
+		String sql = "INSERT INTO publisher " + "(message_id, topic_name, message, published_timestamp, global_txn_id) "
+				+ "VALUES (?,?,?,?,?)";
 
 		PreparedStatement ps = connection.prepareStatement(sql);
-		
+
 		String formattedDate = publisher.getPublishTime();
 		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
-		Date date =  formatter.parse(formattedDate);
+		Date date = formatter.parse(formattedDate);
 
 		Timestamp publishTime = new Timestamp(date.getTime());
 
@@ -40,14 +40,15 @@ public class PublisherDao {
 		ps.setString(2, publisher.getTopicName());
 		ps.setString(3, publisher.getMessage());
 		ps.setTimestamp(4, publishTime);
+		ps.setString(5, publisher.getGlobalTransactionId());
 
 		int rowsAffected = ps.executeUpdate();
 		return rowsAffected;
 
 	}
 
-	public List<Publisher> getAllPublishers() throws SQLException {
-		List<Publisher> publishers = new ArrayList<>();
+	public List<PublisherMessage> getAllPublishers() throws SQLException {
+		List<PublisherMessage> publishers = new ArrayList<>();
 
 		String sql = "SELECT * FROM publisher";
 		PreparedStatement ps = connection.prepareStatement(sql);
@@ -58,13 +59,16 @@ public class PublisherDao {
 			String messageId = rs.getString("message_id");
 			String topicName = rs.getString("topic_name");
 			String message = rs.getString("message");
+			String globalTxnId = rs.getString("global_txn_id");
 			Timestamp time = rs.getTimestamp("published_timestamp");
 			Date publishTime = new Date(time.getTime());
-			
+
 			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
 			String formattedDate = formatter.format(publishTime);
 
-			Publisher publisher = new Publisher(messageId, message, topicName, formattedDate);
+			PublisherMessage publisher = new PublisherMessage(messageId, message, topicName, formattedDate);
+			publisher.setGlobalTransactionId(globalTxnId);
+			
 			publishers.add(publisher);
 		}
 
