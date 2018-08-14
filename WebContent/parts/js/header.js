@@ -8,8 +8,8 @@ $(document).ready(function() {
 	if(pathname==='/' || pathname==='/index.jsp'){
 		$('#publish').addClass('active');
 	}
-	if(pathname==='/pullmessage'){
-		$('#pull-data').addClass('active');
+	if(pathname==='/pullmessage' || pathname==='/pulldata.jsp'){
+		$('#pull').addClass('active');
 	}
 
 		
