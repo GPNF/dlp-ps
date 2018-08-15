@@ -66,4 +66,12 @@ public class PublisherMessage {
 		this.globalTransactionId = globalTransactionId;
 	}
 
+	@Override
+	public String toString() {
+		return "PublisherMessage [messageId=" + messageId + ", message=" + message + ", topicName=" + topicName
+				+ ", publishTime=" + publishTime + ", globalTransactionId=" + globalTransactionId + "]";
+	}
+	
+	
+
 }
