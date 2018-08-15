@@ -29,8 +29,8 @@ import com.google.privacy.dlp.v2.Likelihood;
 import com.google.privacy.dlp.v2.ProjectName;
 import com.google.protobuf.ByteString;
 
-import app.model.InspectModel;
-import app.service.DeIdentification;
+import app.model.InspectMessage;
+import app.service.DeIdentificationService;
 
 @WebServlet(name = "Scan Data", urlPatterns = { "/inspect" })
 public class InspectServlet extends HttpServlet {
@@ -57,7 +57,7 @@ public class InspectServlet extends HttpServlet {
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
-		InspectModel model = mapper.readValue(inputData.toString(), InspectModel.class);
+		InspectMessage model = mapper.readValue(inputData.toString(), InspectMessage.class);
 		String inputMessage = model.getMessage();
 
 		List<String> sensitiveList = new ArrayList<String>();
@@ -101,7 +101,7 @@ public class InspectServlet extends HttpServlet {
 				System.out.println("Sensitive List: " + sensitiveList);
 				// req.setAttribute("sensitiveList", sensitiveList);
 				// req.getRequestDispatcher("/deidentify").forward(req, resp);
-				String deidentifiedRes = DeIdentification.deIdentifyWithMask(inputMessage, dlpServiceClient, infoTypes,
+				String deidentifiedRes = DeIdentificationService.deIdentifyWithMask(inputMessage, dlpServiceClient, infoTypes,
 						projectId);
 				PrintWriter out = resp.getWriter();
 				out.println(deidentifiedRes);

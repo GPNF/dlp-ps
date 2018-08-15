@@ -22,7 +22,7 @@
         <div class="form-group">
           <label for="inspect-message">Message:</label>
           <textarea id="inspect-message" class="form-control"
-            rows="9" cols="8"></textarea>
+            rows="12" cols="8"></textarea>
         </div>
         <button id="inspect-btn" class="btn btn-success">Inspect</button>
       </div>
@@ -40,7 +40,7 @@
           <div class="form-group">
             <label for="message" id="message-label">Message:</label>
             <textarea id="message" name="message" class="form-control"
-              rows="5" cols="8" required></textarea>
+              rows="8" cols="8" required></textarea>
           </div>
           <button type="submit" class="btn btn-success">Publish</button>
 
