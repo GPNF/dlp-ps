@@ -16,7 +16,7 @@ import app.model.PublisherMessage;
 public class PublisherDao {
 
 	private static final String YYYY_MM_DD_HH_MM_SS_A = "yyyy-MM-dd hh:mm:ss a";
-	Connection connection;
+	private Connection connection;
 
 	public PublisherDao() throws SQLException {
 		DBConnectionProvider connProvider = new DBConnectionProvider();
@@ -68,7 +68,7 @@ public class PublisherDao {
 
 			PublisherMessage publisher = new PublisherMessage(messageId, message, topicName, formattedDate);
 			publisher.setGlobalTransactionId(globalTxnId);
-			
+
 			publishers.add(publisher);
 		}
 

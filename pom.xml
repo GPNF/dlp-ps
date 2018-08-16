@@ -1,12 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>Publisher</groupId>
-	<artifactId>Publisher</artifactId>
+	<groupId>dlpps</groupId>
+	<artifactId>dlpps</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -27,16 +27,23 @@
 	</build>
 	<dependencies>
 
+		<!-- PUB/SUB -->
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-pubsub</artifactId>
 			<version>1.35.0</version>
 		</dependency>
+		<!-- - - - - -->
+
+		<!-- Servlet/JSP -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		<!-- - - - - -->
+
+		<!-- CLOUD SQL -->
 		<dependency>
 			<groupId>com.google.cloud.sql</groupId>
 			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
@@ -52,18 +59,23 @@
 			<artifactId>protobuf-java</artifactId>
 			<version>3.6.1</version>
 		</dependency>
+		<!-- - - - - -->
+
+		<!-- XML/JSON Parser -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.6.3</version>
 		</dependency>
+		<!-- - - - - -->
+
+		<!-- DLP -->
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-dlp</artifactId>
 			<version>0.52.0-beta</version>
 		</dependency>
-
-
+		<!-- - - - - -->
 
 	</dependencies>
 </project>
