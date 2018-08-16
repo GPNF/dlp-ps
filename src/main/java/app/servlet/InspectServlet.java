@@ -48,7 +48,6 @@ public class InspectServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		BufferedReader d = req.getReader();
-
 		StringBuilder inputData = new StringBuilder();
 
 		String data = "";
@@ -101,17 +100,15 @@ public class InspectServlet extends HttpServlet {
 				System.out.println("Sensitive List: " + sensitiveList);
 				// req.setAttribute("sensitiveList", sensitiveList);
 				// req.getRequestDispatcher("/deidentify").forward(req, resp);
-				String deidentifiedRes = DeIdentificationService.deIdentifyWithMask(inputMessage, dlpServiceClient, infoTypes,
-						projectId);
+				String deidentifiedRes = DeIdentificationService.deIdentifyWithMask(inputMessage, dlpServiceClient,
+						infoTypes, projectId);
 				PrintWriter out = resp.getWriter();
 				out.println(deidentifiedRes);
-				System.out.println("Returned de-identified string "+deidentifiedRes);
 			}
 
 			else {
 				PrintWriter out = resp.getWriter();
 				out.println(inputMessage);
-				System.out.println("Returned raw string "+inputMessage);
 			}
 		}
 
