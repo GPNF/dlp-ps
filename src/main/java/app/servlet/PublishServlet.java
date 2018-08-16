@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import app.MessagePublisher;
 import app.dao.PublisherDao;
 import app.model.PublisherMessage;
+import app.service.MessagePublisherService;
 
 @WebServlet(name = "publish", urlPatterns = { "/publish" })
 
@@ -41,7 +41,7 @@ public class PublishServlet extends HttpServlet {
 		PublisherMessage publisher = new PublisherMessage(messageId.toString(), message, topicName);
 		
 		try {
-			new MessagePublisher().publishMessage(topicName, publisher, messageId);
+			new MessagePublisherService().publishMessage(topicName, publisher, messageId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

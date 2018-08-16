@@ -49,7 +49,6 @@ public class PublishDataServlet extends HttpServlet {
 
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(wrapper);
-
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

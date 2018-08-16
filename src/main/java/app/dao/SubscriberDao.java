@@ -34,7 +34,7 @@ public class SubscriberDao {
 
 	private int insertMessage(SubscriberMessage message) throws SQLException, ParseException {
 		String sql = "INSERT INTO subscriber (" + "message_id, message, subscriber_name, subscription_name,"
-				+ "pull_type, published_timestamp, pull_timestamp, ack_id) " + "VALUES (?,?,?,?,?,?,?,?)";
+				+ "pull_type, published_timestamp, pull_timestamp, ack_id, global_txn_id) " + "VALUES (?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = connection.prepareStatement(sql);
 
 		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
@@ -51,6 +51,7 @@ public class SubscriberDao {
 		ps.setTimestamp(6, publishTimestamp);
 		ps.setTimestamp(7, pullTimestamp);
 		ps.setString(8, message.getAckId());
+		ps.setString(9, message.getGlobalTransactionId());
 
 		return ps.executeUpdate();
 	}
@@ -82,8 +83,9 @@ public class SubscriberDao {
 		String publishTime = getFormattedTimestamp(rs, "published_timestamp");
 		String pullTime = getFormattedTimestamp(rs, "pull_timestamp");
 		String ackId = rs.getString("ack_id");
+		String globalTxnId = rs.getString("global_txn_id");
 
-		SubscriberMessage subscriberMessage = new SubscriberMessage(messageId, message, publishTime, ackId);
+		SubscriberMessage subscriberMessage = new SubscriberMessage(messageId, message, publishTime, ackId, globalTxnId);
 		subscriberMessage.setId(id);
 		subscriberMessage.setSubscriberName(subscriberName);
 		subscriberMessage.setSubscriptionId(subscriberId);

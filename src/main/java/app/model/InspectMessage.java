@@ -1,6 +1,6 @@
 package app.model;
 
-public class InspectModel {
+public class InspectMessage {
 
 	String message;
 

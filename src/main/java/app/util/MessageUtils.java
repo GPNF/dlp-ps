@@ -20,6 +20,7 @@ public class MessageUtils {
 		PubsubMessage pubsubMsg = msg.getMessage();
 		String msgId = pubsubMsg.getMessageId();
 		String data = pubsubMsg.getData().toStringUtf8();
+		String globaTxnId = pubsubMsg.getAttributesOrThrow("globalTransactionId");
 		Timestamp timestamp = pubsubMsg.getPublishTime();
 		long time = timestamp.getSeconds();
 
@@ -29,7 +30,7 @@ public class MessageUtils {
 		Date today = new Date();
 		String pullTime = formatter.format(today);
 		
-		SubscriberMessage subMsg = new SubscriberMessage(msgId, data, publishTime, ackId);
+		SubscriberMessage subMsg = new SubscriberMessage(msgId, data, publishTime, ackId, globaTxnId);
 		subMsg.setSubscriptionId(subscriptionId);
 		subMsg.setPullTime(pullTime);
 		subMsg.setPullType(pullType);

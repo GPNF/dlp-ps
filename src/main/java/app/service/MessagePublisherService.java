@@ -1,4 +1,4 @@
-package app;
+package app.service;
 
 import java.util.Date;
 
@@ -10,9 +10,10 @@ import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.PubsubMessage;
 
+import app.DefaultApiFutureCallback;
 import app.model.PublisherMessage;
 
-public class MessagePublisher {
+public class MessagePublisherService {
 
 	private static final String PROJECT_ID = ServiceOptions.getDefaultProjectId();
 
