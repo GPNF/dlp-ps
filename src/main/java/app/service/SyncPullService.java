@@ -24,7 +24,6 @@ public class SyncPullService {
 		SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder().build();
 		SubscriberStub subscriber = GrpcSubscriberStub.create(subscriberStubSettings);
 		String subscriptionName = ProjectSubscriptionName.format(projectId, subscriptionId);
-		System.out.println("Provided maxMessage: " + numOfMessages + " & Return Immediately: " + returnImmediately);
 		PullRequest pullRequest = PullRequest.newBuilder().setMaxMessages(numOfMessages)
 				.setReturnImmediately(returnImmediately).setSubscription(subscriptionName).build();
 

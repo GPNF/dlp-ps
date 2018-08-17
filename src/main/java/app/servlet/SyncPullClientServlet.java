@@ -70,8 +70,7 @@ public class SyncPullClientServlet extends HttpServlet {
 
 		SyncPullService syncPullSvc = new SyncPullService();
 		List<ReceivedMessage> receivedMessages = syncPullSvc.getReceivedMessages(maxMessage, returnImmediately);
-		List<SubscriberMessage> messageList = MessageUtils.getSubscriberMessages(receivedMessages, "sub1",
-				"SyncPullClient", "sync");
+		List<SubscriberMessage> messageList = MessageUtils.getSubscriberMessages(receivedMessages);
 		return messageList;
 	}
 

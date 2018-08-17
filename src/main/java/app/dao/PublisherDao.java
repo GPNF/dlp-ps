@@ -10,15 +10,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import app.model.PublisherMessage;
 
 public class PublisherDao {
 
-	private static final String YYYY_MM_DD_HH_MM_SS_A = "yyyy-MM-dd hh:mm:ss a";
+	private static final String YYYY_MM_DD_HH_MM_SS_A_Z = "yyyy-MM-dd hh:mm:ss a z";
 	private Connection connection;
+	Logger logger = LoggerFactory.getLogger(PublisherDao.class);
 
 	public PublisherDao() throws SQLException {
+
 		DBConnectionProvider connProvider = new DBConnectionProvider();
 		this.connection = connProvider.getConnection();
 	}
@@ -31,8 +37,14 @@ public class PublisherDao {
 		PreparedStatement ps = connection.prepareStatement(sql);
 
 		String formattedDate = publisher.getPublishTime();
-		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
-		Date date = formatter.parse(formattedDate);
+		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
+		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+		Date date = new Date();
+		try {
+			date = formatter.parse(formattedDate);
+		} catch (ParseException e) {
+			logger.info(e.getMessage());
+		}
 
 		Timestamp publishTime = new Timestamp(date.getTime());
 
@@ -63,7 +75,8 @@ public class PublisherDao {
 			Timestamp time = rs.getTimestamp("published_timestamp");
 			Date publishTime = new Date(time.getTime());
 
-			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
+			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
+			formatter.setTimeZone(TimeZone.getTimeZone("EST"));
 			String formattedDate = formatter.format(publishTime);
 
 			PublisherMessage publisher = new PublisherMessage(messageId, message, topicName, formattedDate);
@@ -73,7 +86,6 @@ public class PublisherDao {
 		}
 
 		return publishers;
-
 	}
 
 }

@@ -19,7 +19,6 @@ $(document).ready(function() {
 	            	} 
 	            },
 	            { "data": "subscriptionId" },
-	            { "data": "subscriberName" },
 	            { "data": "globalTransactionId" },
 	            { "data": "ackId"}	            
 	        ],

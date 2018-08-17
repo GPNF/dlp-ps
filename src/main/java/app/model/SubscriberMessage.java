@@ -5,9 +5,7 @@ public class SubscriberMessage {
 	private String id;
 	private String messageId;
 	private String message;
-	private String subscriberName;
 	private String subscriptionId;
-	private String pullType;
 	private String publishTime;
 	private String pullTime;
 	private String globalTransactionId;
@@ -62,13 +60,6 @@ public class SubscriberMessage {
 		this.ackId = ackId;
 	}
 
-	public String getSubscriberName() {
-		return subscriberName;
-	}
-
-	public void setSubscriberName(String subscriberName) {
-		this.subscriberName = subscriberName;
-	}
 
 	public String getSubscriptionId() {
 		return subscriptionId;
@@ -76,14 +67,6 @@ public class SubscriberMessage {
 
 	public void setSubscriptionId(String subscriptionId) {
 		this.subscriptionId = subscriptionId;
-	}
-
-	public String getPullType() {
-		return pullType;
-	}
-
-	public void setPullType(String pullType) {
-		this.pullType = pullType;
 	}
 
 	public String getPullTime() {
@@ -104,10 +87,10 @@ public class SubscriberMessage {
 
 	@Override
 	public String toString() {
-		return "SubscriberMessage [id=" + id + ", messageId=" + messageId + ", message=" + message + ", subscriberName="
-				+ subscriberName + ", subscriptionId=" + subscriptionId + ", pullType=" + pullType + ", publishTime="
-				+ publishTime + ", pullTime=" + pullTime + ", globalTransactionId=" + globalTransactionId + ", ackId="
-				+ ackId + "]";
+		return "SubscriberMessage [id=" + id + ", messageId=" + messageId + ", message=" + message + ", subscriptionId="
+				+ subscriptionId + ", publishTime=" + publishTime + ", pullTime=" + pullTime + ", globalTransactionId="
+				+ globalTransactionId + ", ackId=" + ackId + "]";
 	}
+
 
 }
