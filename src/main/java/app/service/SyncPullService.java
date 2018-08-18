@@ -13,12 +13,12 @@ import com.google.pubsub.v1.PullRequest;
 import com.google.pubsub.v1.PullResponse;
 import com.google.pubsub.v1.ReceivedMessage;
 
-import app.util.ExternalProperties;
+import app.constants.Constants;
 
 public class SyncPullService {
 
-	private final String projectId = ExternalProperties.getAppConfig("app.gc.project.id");
-	private final String subscriptionId = ExternalProperties.getAppConfig("app.gc.pubsub.subscription");
+	private final String projectId = Constants.PROJECT_ID;
+	private final String subscriptionId = Constants.SUBSCRIPTION_ID;
 
 	public List<ReceivedMessage> getReceivedMessages(int numOfMessages, boolean returnImmediately) throws IOException {
 		SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder().build();

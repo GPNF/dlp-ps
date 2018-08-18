@@ -2,60 +2,72 @@ package app.util;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 
-import app.DBHelper;
+import app.dao.UserDetailsDao;
 import app.model.UserDetailsSO;
 import app.service.SendMailSendgrid;
 import app.service.SmsSender;
 
+/**
+ * @author AmolPol
+ *
+ */
 public class NotifyUtility {
-	Properties prop;
+	private static final String YES = "Yes";
 
-	public void checkAllUserPreference(String message) throws ServletException, SQLException {
-		
-		DBHelper dbHelper = new DBHelper();
+	/**
+	 * @param message
+	 * @throws ServletException
+	 * @throws SQLException
+	 */
+	public void checkAllUserPreference(String message) throws SQLException {
 
-	
-		List<UserDetailsSO> allUsers = dbHelper.getAllUserDetails();
-	
+		UserDetailsDao userDetailsDao = new UserDetailsDao();
+
+		List<UserDetailsSO> allUsers = userDetailsDao.getAllUserDetails();
+
 		if (null != allUsers) {
-			for (UserDetailsSO userDet : allUsers) {
-				if (userDet.getEmailFlag().equalsIgnoreCase("Yes")) {
-					
-					notifyUsersByEmail(userDet, message);
+			for (UserDetailsSO userDetails : allUsers) {
+				if (userDetails.getEmailFlag().equalsIgnoreCase(YES)) {
+
+					notifyUsersByEmail(userDetails, message);
 				}
-				if (userDet.getSmsFlag().equalsIgnoreCase("Yes")) {
-					
-					notifyUsersBySMS(userDet, message);
+				if (userDetails.getSmsFlag().equalsIgnoreCase(YES)) {
+
+					notifyUsersBySMS(userDetails, message);
 				}
 			}
 		}
 
 	}
 
-	
+	/**
+	 * @param userDetails
+	 * @param message
+	 */
+	public void notifyUsersBySMS(UserDetailsSO userDetails, String message) {
 
-	public void notifyUsersBySMS(UserDetailsSO userDet, String message) {
-
-		if (null != userDet.getSmsFlag() && userDet.getSmsFlag().equalsIgnoreCase("Yes")) {
+		boolean isSmsEnabled = null != userDetails.getSmsFlag() && userDetails.getSmsFlag().equalsIgnoreCase(YES);
+		if (isSmsEnabled) {
 			SmsSender sms = new SmsSender();
-			sms.sendSms(userDet, message);
+			sms.sendSms(userDetails, message);
 
 		}
-		// return "Message sent successfully to user " + userDet.getUserId();
 	}
 
-	public void notifyUsersByEmail(UserDetailsSO userDet, String message) {
+	/**
+	 * @param userDetails
+	 * @param message
+	 */
+	public void notifyUsersByEmail(UserDetailsSO userDetails, String message) {
 
-		if (null != userDet.getEmailFlag() && userDet.getEmailFlag().equalsIgnoreCase("Yes")) {
+		boolean isEmailEnabled = null != userDetails.getEmailFlag() && userDetails.getEmailFlag().equalsIgnoreCase(YES);
+		if (isEmailEnabled) {
 			SendMailSendgrid mail = new SendMailSendgrid();
-			mail.sendEmail(userDet, message);
-
+			mail.sendEmail(userDetails, message);
 		}
-		// return "Message sent successfully to user " + userDet.getUserId();
 	}
 
 }

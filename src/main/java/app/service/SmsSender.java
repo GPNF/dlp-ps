@@ -7,9 +7,18 @@ import com.twilio.type.PhoneNumber;
 import app.model.UserDetailsSO;
 import app.util.ExternalProperties;
 
+/**
+ * @author AmolPol
+ *
+ */
 public class SmsSender {
 
-	public String sendSms(UserDetailsSO userSO, String msg) {
+	/**
+	 * @param userDetailsSO
+	 * @param message
+	 * @return String
+	 */
+	public String sendSms(UserDetailsSO userDetailsSO, String message) {
 
 		String sid = ExternalProperties.getAppConfig("sms.auth.sid");
 		String token = ExternalProperties.getAppConfig("sms.auth.token");
@@ -22,14 +31,14 @@ public class SmsSender {
 		 * TwilioRestClient twilioRestClient = clientCreator.getClient();
 		 * Twilio.setRestClient(twilioRestClient);
 		 */
-		System.out.println("MobNo. " + userSO.getMobileNumber());
-		Message message = Message.creator(new PhoneNumber(userSO.getMobileNumber()), // to
+		System.out.println("MobNo. " + userDetailsSO.getMobileNumber());
+		Message twilioMessage = Message.creator(new PhoneNumber(userDetailsSO.getMobileNumber()), // to
 				new PhoneNumber(ExternalProperties.getAppConfig("sms.sender.number")), // from
-				msg).create();
+				message).create();
 
-		System.out.println("SMS sent successfully... " + message.getSid());
+		System.out.println("SMS sent successfully... " + twilioMessage.getSid());
 
-		return message.getSid();
+		return twilioMessage.getSid();
 
 	}
 }

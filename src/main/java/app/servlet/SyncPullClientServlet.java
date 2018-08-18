@@ -20,7 +20,8 @@ import app.util.MessageUtils;
 import app.util.NotifyUtility;
 
 /**
- * Servlet implementation class SyncPullClientServlet
+ * @author AdarshSinghal
+ *
  */
 @WebServlet({ "/pullmessage" })
 public class SyncPullClientServlet extends HttpServlet {
@@ -32,7 +33,6 @@ public class SyncPullClientServlet extends HttpServlet {
 	 */
 	public SyncPullClientServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -90,7 +90,6 @@ public class SyncPullClientServlet extends HttpServlet {
 			try {
 				utility.checkAllUserPreference(subMessage.getMessage());
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

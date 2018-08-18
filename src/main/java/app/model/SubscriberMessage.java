@@ -1,5 +1,10 @@
 package app.model;
 
+
+/**
+ * @author AdarshSinghal
+ *
+ */
 public class SubscriberMessage {
 
 	private String id;

@@ -4,18 +4,18 @@ import java.util.Date;
 
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutures;
-import com.google.cloud.ServiceOptions;
 import com.google.cloud.pubsub.v1.Publisher;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.PubsubMessage;
 
 import app.DefaultApiFutureCallback;
+import app.constants.Constants;
 import app.model.PublisherMessage;
 
 public class MessagePublisherService {
 
-	private static final String PROJECT_ID = ServiceOptions.getDefaultProjectId();
+	private static final String PROJECT_ID = Constants.PROJECT_ID;
 
 	/**
 	 * Publish message on a topic & return messageId
@@ -26,7 +26,8 @@ public class MessagePublisherService {
 	 * @throws Exception
 	 */
 
-	public void publishMessage(String topicName, PublisherMessage publisherMessage, StringBuilder messageId) throws Exception {
+	public void publishMessage(String topicName, PublisherMessage publisherMessage, StringBuilder messageId)
+			throws Exception {
 		ProjectTopicName projectTopicName = ProjectTopicName.of(PROJECT_ID, topicName);
 
 		Publisher publisher = null;
@@ -53,7 +54,6 @@ public class MessagePublisherService {
 			// within the topic)
 			ApiFuture<String> future = publisher.publish(pubsubMessage);
 
-			
 			// Add an asynchronous callback to handle success / failure
 			DefaultApiFutureCallback callback = new DefaultApiFutureCallback(message, messageId);
 			ApiFutures.addCallback(future, callback);

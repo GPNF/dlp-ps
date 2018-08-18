@@ -1,5 +1,9 @@
 package app.model;
 
+/**
+ * @author AmolPol
+ *
+ */
 public class UserDetailsSO {
 	
 	private String userId;

@@ -17,6 +17,12 @@ import org.slf4j.LoggerFactory;
 
 import app.model.PublisherMessage;
 
+/**
+ * CRUD operation on publisher table
+ * 
+ * @author AdarshSinghal
+ *
+ */
 public class PublisherDao {
 
 	private static final String YYYY_MM_DD_HH_MM_SS_A_Z = "yyyy-MM-dd hh:mm:ss a z";

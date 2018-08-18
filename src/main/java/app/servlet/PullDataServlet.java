@@ -19,10 +19,9 @@ import app.model.DataTableWrapper;
 import app.model.SubscriberMessage;
 
 /**
- * @author adarshs1
+ * @author AdarshSinghal
  *
  */
-
 @WebServlet(name = "PullDataServlet", urlPatterns = { "/pulldata", "/pullData", "/pull-data", "/PullData",
 		"/getPullData" })
 public class PullDataServlet extends HttpServlet {
@@ -70,7 +69,6 @@ public class PullDataServlet extends HttpServlet {
 			SubscriberDao dao = new SubscriberDao();
 			subscriberMessages = dao.getAllSubscriberMessage();
 		} catch (ClassNotFoundException | SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return subscriberMessages;

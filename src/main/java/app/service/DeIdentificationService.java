@@ -15,6 +15,10 @@ import com.google.privacy.dlp.v2.InspectConfig;
 import com.google.privacy.dlp.v2.PrimitiveTransformation;
 import com.google.pubsub.v1.ProjectName;
 
+/**
+ * @author Bhagyashree
+ *
+ */
 public class DeIdentificationService {
 
 	public static String deIdentifyWithMask(String string, DlpServiceClient dlpServiceClient, List<InfoType> infoTypes,

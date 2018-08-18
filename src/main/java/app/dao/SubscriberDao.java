@@ -17,6 +17,12 @@ import org.slf4j.LoggerFactory;
 
 import app.model.SubscriberMessage;
 
+/**
+ * CRUD operation on subscriber table
+ * 
+ * @author AdarshSinghal
+ *
+ */
 public class SubscriberDao {
 	private static final String YYYY_MM_DD_HH_MM_SS_A_Z = "yyyy-MM-dd hh:mm:ss a z";
 	Logger logger = LoggerFactory.getLogger(SubscriberDao.class);
@@ -28,16 +34,28 @@ public class SubscriberDao {
 		this.connection = connProvider.getConnection();
 	}
 
-	public int insertMessages(List<SubscriberMessage> msgs) throws SQLException, ParseException {
+	/**
+	 * @param
+	 * @return number of rows changed
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
+	public int insertMessages(List<SubscriberMessage> subscriberMessageList) throws SQLException, ParseException {
 		int count = 0;
-		for (SubscriberMessage subscriberMessage : msgs) {
+		for (SubscriberMessage subscriberMessage : subscriberMessageList) {
 			int result = insertMessage(subscriberMessage);
 			count += result;
 		}
 		return count;
 	}
 
-	private int insertMessage(SubscriberMessage message) throws SQLException, ParseException {
+	/**
+	 * @param subscriberMessage
+	 * @return number of rows changed
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
+	private int insertMessage(SubscriberMessage subscriberMessage) throws SQLException, ParseException {
 		String sql = "INSERT INTO subscriber (" + "message_id, message, subscription_name,"
 				+ " published_timestamp, pull_timestamp, ack_id, global_txn_id) " + "VALUES (?,?,?,?,?,?,?)";
 		PreparedStatement ps = connection.prepareStatement(sql);
@@ -48,8 +66,8 @@ public class SubscriberDao {
 		Date pullDate = new Date();
 
 		try {
-			publishDate = formatter.parse(message.getPublishTime());
-			pullDate = formatter.parse(message.getPullTime());
+			publishDate = formatter.parse(subscriberMessage.getPublishTime());
+			pullDate = formatter.parse(subscriberMessage.getPullTime());
 		} catch (ParseException e) {
 			logger.error(e.getMessage());
 		}
@@ -57,17 +75,21 @@ public class SubscriberDao {
 		Timestamp publishTimestamp = new Timestamp(publishDate.getTime());
 		Timestamp pullTimestamp = new Timestamp(pullDate.getTime());
 
-		ps.setString(1, message.getMessageId());
-		ps.setString(2, message.getMessage());
-		ps.setString(3, message.getSubscriptionId());
+		ps.setString(1, subscriberMessage.getMessageId());
+		ps.setString(2, subscriberMessage.getMessage());
+		ps.setString(3, subscriberMessage.getSubscriptionId());
 		ps.setTimestamp(4, publishTimestamp);
 		ps.setTimestamp(5, pullTimestamp);
-		ps.setString(6, message.getAckId());
-		ps.setString(7, message.getGlobalTransactionId());
+		ps.setString(6, subscriberMessage.getAckId());
+		ps.setString(7, subscriberMessage.getGlobalTransactionId());
 
 		return ps.executeUpdate();
 	}
 
+	/**
+	 * @return List of SubscriberMessage
+	 * @throws SQLException
+	 */
 	public List<SubscriberMessage> getAllSubscriberMessage() throws SQLException {
 		List<SubscriberMessage> subscriberMessages = new ArrayList<>();
 
@@ -103,7 +125,7 @@ public class SubscriberDao {
 		return subscriberMessage;
 	}
 
-	public String getFormattedTimestamp(ResultSet rs, String columnName) throws SQLException {
+	private String getFormattedTimestamp(ResultSet rs, String columnName) throws SQLException {
 		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
 		Timestamp timestamp = rs.getTimestamp(columnName);
 		Date date = new Date(timestamp.getTime());
