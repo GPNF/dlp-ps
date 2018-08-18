@@ -1,5 +1,9 @@
 package app.model;
 
+/**
+ * @author AdarshSinghal
+ *
+ */
 public class PublisherMessage {
 
 	private String messageId;
@@ -19,7 +23,7 @@ public class PublisherMessage {
 		this(messageId, message, topicName);
 		this.publishTime = publishTime;
 	}
-	
+
 	public PublisherMessage(String messageId, String message, String topicName) {
 		this.messageId = messageId;
 		this.message = message;
@@ -71,7 +75,5 @@ public class PublisherMessage {
 		return "PublisherMessage [messageId=" + messageId + ", message=" + message + ", topicName=" + topicName
 				+ ", publishTime=" + publishTime + ", globalTransactionId=" + globalTransactionId + "]";
 	}
-	
-	
 
 }

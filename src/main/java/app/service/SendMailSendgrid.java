@@ -13,8 +13,17 @@ import com.sendgrid.SendGrid;
 import app.model.UserDetailsSO;
 import app.util.ExternalProperties;
 
+/**
+ * @author AmolPol
+ *
+ */
 public class SendMailSendgrid {
 
+	/**
+	 * @param userSO
+	 * @param message
+	 * @return String
+	 */
 	public String sendEmail(UserDetailsSO userSO, String message) {
 
 		// ExternalProperties.getDbConfig("email.sendgrid.apikey");

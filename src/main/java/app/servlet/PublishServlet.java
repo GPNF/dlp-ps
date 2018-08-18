@@ -16,6 +16,10 @@ import app.dao.PublisherDao;
 import app.model.PublisherMessage;
 import app.service.MessagePublisherService;
 
+/**
+ * @author AdarshSinghal
+ *
+ */
 @WebServlet(name = "publish", urlPatterns = { "/publish" })
 
 public class PublishServlet extends HttpServlet {
@@ -36,10 +40,10 @@ public class PublishServlet extends HttpServlet {
 		StringBuilder messageId = new StringBuilder("");
 		Date date = new Date();
 		long start = date.getTime();
-		
+
 		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
 		PublisherMessage publisher = new PublisherMessage(messageId.toString(), message, topicName);
-		
+
 		try {
 			new MessagePublisherService().publishMessage(topicName, publisher, messageId);
 		} catch (Exception e) {
@@ -71,9 +75,8 @@ public class PublishServlet extends HttpServlet {
 
 	}
 
-	private void persistInDB(PublisherMessage publisher)
-			throws SQLException, ParseException {
-		
+	private void persistInDB(PublisherMessage publisher) throws SQLException, ParseException {
+
 		PublisherDao publisherDao = new PublisherDao();
 		publisherDao.insertPubliser(publisher);
 	}

@@ -10,6 +10,7 @@ import com.google.protobuf.Timestamp;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.ReceivedMessage;
 
+import app.constants.Constants;
 import app.model.SubscriberMessage;
 
 public class MessageUtils {
@@ -33,7 +34,7 @@ public class MessageUtils {
 		String pullTime = formatter.format(today);
 
 		SubscriberMessage subMsg = new SubscriberMessage(msgId, data, publishTime, ackId, globaTxnId);
-		String subscriptionId = ExternalProperties.getAppConfig("app.gc.pubsub.subscription");
+		String subscriptionId = Constants.SUBSCRIPTION_ID;
 		subMsg.setSubscriptionId(subscriptionId);
 		subMsg.setPullTime(pullTime);
 		return subMsg;

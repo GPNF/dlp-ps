@@ -3,6 +3,12 @@ package app;
 import com.google.api.core.ApiFutureCallback;
 import com.google.api.gax.rpc.ApiException;
 
+/**
+ * A callback for accepting the results of an ApiFuture.
+ * 
+ * @author AdarshSinghal
+ *
+ */
 public class DefaultApiFutureCallback implements ApiFutureCallback<String> {
 
 	private String inputMessage;

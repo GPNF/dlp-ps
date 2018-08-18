@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpStatus;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.cloud.ServiceOptions;
 import com.google.cloud.dlp.v2.DlpServiceClient;
 import com.google.privacy.dlp.v2.ByteContentItem;
 import com.google.privacy.dlp.v2.ContentItem;
@@ -29,15 +28,13 @@ import com.google.privacy.dlp.v2.Likelihood;
 import com.google.privacy.dlp.v2.ProjectName;
 import com.google.protobuf.ByteString;
 
+import app.constants.Constants;
 import app.model.InspectMessage;
 import app.service.DeIdentificationService;
 
 @WebServlet(name = "Scan Data", urlPatterns = { "/inspect" })
 public class InspectServlet extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private static final String ALL_BASIC = "ALL_BASIC";
@@ -65,7 +62,7 @@ public class InspectServlet extends HttpServlet {
 		boolean includeQuote = true;
 		List<InfoType> infoTypes = new ArrayList<InfoType>();
 		infoTypes.add(InfoType.newBuilder().setName(ALL_BASIC).build());
-		String projectId = ServiceOptions.getDefaultProjectId();
+		String projectId = Constants.PROJECT_ID;
 		try (DlpServiceClient dlpServiceClient = DlpServiceClient.create()) {
 			FindingLimits findingLimits = FindingLimits.newBuilder().setMaxFindingsPerRequest(maxFindings).build();
 
