@@ -9,13 +9,20 @@ import app.util.ExternalProperties;
 /**
  * Provides JDBC connection
  * 
- * @author adarshsinghal
+ * @author AdarshSinghal
  *
  */
 public class DBConnectionProvider {
 
 	private Connection connection;
 
+	/**
+	 * Initialize JDBC connection. Use getConnection() method to obtain connection
+	 * object.
+	 * 
+	 * 
+	 * @throws SQLException
+	 */
 	public DBConnectionProvider() throws SQLException {
 		this.connectDb();
 	}
@@ -51,6 +58,9 @@ public class DBConnectionProvider {
 		return jdbcUrl;
 	}
 
+	/**
+	 * @return Connection
+	 */
 	public Connection getConnection() {
 		return connection;
 	}

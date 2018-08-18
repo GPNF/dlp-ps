@@ -1,5 +1,9 @@
 package app.model;
 
+/**
+ * @author AdarshSinghal
+ *
+ */
 public class InspectMessage {
 
 	String message;

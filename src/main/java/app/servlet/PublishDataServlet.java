@@ -18,6 +18,10 @@ import app.dao.PublisherDao;
 import app.model.DataTableWrapper;
 import app.model.PublisherMessage;
 
+/**
+ * @author AdarshSinghal
+ *
+ */
 @WebServlet(name = "publishdata", urlPatterns = { "/publishdata", "/publishData", "/PublishData", "/getPublishData" })
 public class PublishDataServlet extends HttpServlet {
 
