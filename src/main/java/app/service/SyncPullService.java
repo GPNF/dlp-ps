@@ -13,16 +13,17 @@ import com.google.pubsub.v1.PullRequest;
 import com.google.pubsub.v1.PullResponse;
 import com.google.pubsub.v1.ReceivedMessage;
 
+import app.util.ExternalProperties;
+
 public class SyncPullService {
 
-	private final String projectId = "possible-haven-212003";
-	private final String subscriptionId = "sub1";
+	private final String projectId = ExternalProperties.getAppConfig("app.gc.project.id");
+	private final String subscriptionId = ExternalProperties.getAppConfig("app.gc.pubsub.subscription");
 
 	public List<ReceivedMessage> getReceivedMessages(int numOfMessages, boolean returnImmediately) throws IOException {
 		SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder().build();
 		SubscriberStub subscriber = GrpcSubscriberStub.create(subscriberStubSettings);
 		String subscriptionName = ProjectSubscriptionName.format(projectId, subscriptionId);
-		System.out.println("Provided maxMessage: " + numOfMessages + " & Return Immediately: " + returnImmediately);
 		PullRequest pullRequest = PullRequest.newBuilder().setMaxMessages(numOfMessages)
 				.setReturnImmediately(returnImmediately).setSubscription(subscriptionName).build();
 

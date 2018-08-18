@@ -33,7 +33,6 @@ table tr th{
 					<th>Message Id</th>
                     <th>Message</th>
                     <th>Subscription</th>
-					<th>Subscriber</th>
 					<th>Global Txn Id</th>
                     <th>Ack Id</th>
 				</tr>

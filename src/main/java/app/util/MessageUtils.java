@@ -3,6 +3,7 @@ package app.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import com.google.protobuf.Timestamp;
@@ -13,9 +14,9 @@ import app.model.SubscriberMessage;
 
 public class MessageUtils {
 
-	private static final String YYYY_MM_DD_HH_MM_SS_A = "yyyy-MM-dd hh:mm:ss a";
+	private static final String YYYY_MM_DD_HH_MM_SS_A_Z = "yyyy-MM-dd hh:mm:ss a z";
 
-	private static SubscriberMessage getSubscriberMessage(ReceivedMessage msg, String subscriptionId, String subscriberName, String pullType) {
+	private static SubscriberMessage getSubscriberMessage(ReceivedMessage msg) {
 		String ackId = msg.getAckId();
 		PubsubMessage pubsubMsg = msg.getMessage();
 		String msgId = pubsubMsg.getMessageId();
@@ -24,24 +25,22 @@ public class MessageUtils {
 		Timestamp timestamp = pubsubMsg.getPublishTime();
 		long time = timestamp.getSeconds();
 
-		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
+		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
 		Date publishDate = new Date(time * 1000);
+		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
 		String publishTime = formatter.format(publishDate);
 		Date today = new Date();
 		String pullTime = formatter.format(today);
-		
+
 		SubscriberMessage subMsg = new SubscriberMessage(msgId, data, publishTime, ackId, globaTxnId);
+		String subscriptionId = ExternalProperties.getAppConfig("app.gc.pubsub.subscription");
 		subMsg.setSubscriptionId(subscriptionId);
 		subMsg.setPullTime(pullTime);
-		subMsg.setPullType(pullType);
-		subMsg.setSubscriberName(subscriberName);
 		return subMsg;
 	}
 
-	public static List<SubscriberMessage> getSubscriberMessages(List<ReceivedMessage> receivedMessages,
-			String subscriptionId, String subscriberName, String pullType) {
-		return receivedMessages.stream().map(msg -> getSubscriberMessage(msg, subscriptionId, subscriberName, pullType))
-				.collect(Collectors.toList());
+	public static List<SubscriberMessage> getSubscriberMessages(List<ReceivedMessage> receivedMessages) {
+		return receivedMessages.stream().map(msg -> getSubscriberMessage(msg)).collect(Collectors.toList());
 	}
 
 }
