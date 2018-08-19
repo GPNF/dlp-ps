@@ -14,8 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpStatus;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.dlp.v2.DlpServiceClient;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.privacy.dlp.v2.ByteContentItem;
 import com.google.privacy.dlp.v2.ContentItem;
 import com.google.privacy.dlp.v2.Finding;
@@ -29,7 +33,7 @@ import com.google.privacy.dlp.v2.ProjectName;
 import com.google.protobuf.ByteString;
 
 import app.constants.Constants;
-import app.model.InspectMessage;
+import app.model.InspectResult;
 import app.service.DeIdentifier;
 
 @WebServlet(name = "Scan Data", urlPatterns = { "/inspect" })
@@ -52,11 +56,11 @@ public class InspectServlet extends HttpServlet {
 			inputData.append(data);
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
-		InspectMessage model = mapper.readValue(inputData.toString(), InspectMessage.class);
-		String inputMessage = model.getMessage();
+		Gson gson =new GsonBuilder().create();
+		JsonPrimitive jsonPrimitive = (JsonPrimitive) gson.fromJson(inputData.toString(), JsonObject.class).get("message");
+		
+		String inputMessage = jsonPrimitive.getAsString();
 
-		List<String> sensitiveList = new ArrayList<String>();
 		Likelihood minLikelihood = Likelihood.valueOf(Likelihood.LIKELIHOOD_UNSPECIFIED.name());
 		int maxFindings = Integer.parseInt(ZERO);
 		boolean includeQuote = true;
@@ -82,25 +86,31 @@ public class InspectServlet extends HttpServlet {
 			List<Finding> findingList = response.getResult().getFindingsList();
 			resp.setContentType("application/json");
 			if (response.getResult().getFindingsCount() > 0) {
-
+				List<InspectResult> inspectResList = new ArrayList<>();
 				for (Finding finding : findingList) {
 					if (finding.getLikelihood().toString().equals(LIKELY)
 							|| finding.getLikelihood().toString().equals(VERY_LIKELY)) {
 						System.out.println("Quote: " + finding.getQuote());
 						System.out.println("Info type: " + finding.getInfoType().getName());
 						System.out.println("Likelihood: " + finding.getLikelihood());
-						sensitiveList.add(finding.getQuote().toString());
-
+						String quote = finding.getQuote();
+						String infoType = finding.getInfoType().getName();
+						String lkhood = finding.getLikelihood().toString();
+						InspectResult inspectRes = new InspectResult(quote, infoType, lkhood);
+						inspectResList.add(inspectRes);
 					}
 				}
+				JsonArray inspectResults = gson.toJsonTree(inspectResList).getAsJsonArray();
+				JsonObject responseJsonObj = new JsonObject();
+				
+				responseJsonObj.add("inspectResult", inspectResults);
+				
 
-				System.out.println("Sensitive List: " + sensitiveList);
-				// req.setAttribute("sensitiveList", sensitiveList);
-				// req.getRequestDispatcher("/deidentify").forward(req, resp);
 				String deidentifiedRes = DeIdentifier.deIdentifyWithMask(inputMessage, dlpServiceClient,
 						infoTypes, projectId);
 				PrintWriter out = resp.getWriter();
-				out.println(deidentifiedRes);
+				responseJsonObj.addProperty("message", deidentifiedRes);
+				out.println(responseJsonObj);
 			}
 
 			else {

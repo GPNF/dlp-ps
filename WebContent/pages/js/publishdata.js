@@ -10,7 +10,7 @@ $(document).ready(function() {
 	            { "data": "messageId" },
 	            { "data": function(d){
 	            	var psMsgData = JSON.stringify(d);
-	            	return JSON.parse(psMsgData).message;
+	            	return JSON.parse(psMsgData).message.replace(/\n/g,"<br>");
 	            	} 
 	            },
 	            { "data": "topicName" },
