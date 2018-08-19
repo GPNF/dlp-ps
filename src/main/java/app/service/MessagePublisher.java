@@ -13,7 +13,7 @@ import app.DefaultApiFutureCallback;
 import app.constants.Constants;
 import app.model.PublisherMessage;
 
-public class MessagePublisherService {
+public class MessagePublisher {
 
 	private static final String PROJECT_ID = Constants.PROJECT_ID;
 

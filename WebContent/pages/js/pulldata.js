@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	
+	$('#loading-div, #loading').addClass('visible').hide().delay(500).fadeIn(300);
 
 	$(document).ready(function() {
 		$('#pull-datatable').DataTable( {
@@ -22,6 +24,10 @@ $(document).ready(function() {
 	            { "data": "globalTransactionId" },
 	            { "data": "ackId"}	            
 	        ],
+	        "initComplete": function(settings, json) {
+	        	$('#loading').remove();
+	            $('#pull-data *').addClass('visible').hide().fadeIn(500);
+	          },
 	        mark: true
 	    } );
 	} );

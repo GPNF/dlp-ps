@@ -18,7 +18,7 @@ import com.google.pubsub.v1.Topic;
 
 import app.constants.Constants;
 
-public class TopicService {
+public class TopicListProvider {
 
 	public List<String> getTopicList() throws IOException {
 		List<String> topicList = new ArrayList<>();
@@ -29,7 +29,8 @@ public class TopicService {
 		ListTopicsRequest listTopicsRequest = ListTopicsRequest.newBuilder()
 				.setProject(ProjectName.format(Constants.PROJECT_ID)).build();
 		ListTopicsPagedResponse response = topicAdminClient.listTopics(listTopicsRequest);
-
+		
+		topicAdminClient.shutdown();
 		Spliterator<Topic> spliterator = response.iterateAll().spliterator();
 
 		StreamSupport.stream(spliterator, false).filter(topic -> isValidTopicString(topic.getName())).forEach(topic -> {
