@@ -2,14 +2,27 @@ $(document).ready(function(){
 	
 	var counter=0;
 	$('#inspect-message').click(function(){
-		counter++;
-		if(counter===3){
-			populateText();
-			couter=0;
-		}
-		setTimeout(() => {
-			counter=0;
-		}, 1000);
+		startCounting();
+	});
+	
+	
+	// Load topics into select list
+	(function getTopics(){
+		$.get('/topic/list', function(data){
+			$('#topic-loading').remove();
+			$(data.topics).each(function(index, element){
+				console.log(element);
+				var option = '<option value='+element+'>' +element+'</option>';
+				$('#topic-name-select').append(option);
+			});
+		});
+	})();
+	// -------------------------------
+	
+	$('#publish-form').submit(function(){
+		var loading = '<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>'
+			$('#publish-btn').html(loading);
+			$('#publish-btn').attr('disabled', 'disabled');
 	});
 	
 	var populateText = function(){
@@ -30,6 +43,23 @@ $(document).ready(function(){
 			$('#inspect-message').val(message);
 			
 		});
-	}
+	};
+	
+	var startCounting = function(){
+		counter++;
+		if(counter===3){
+			populateText();
+			couter=0;
+		}
+		setTimeout(() => {
+			counter=0;
+		}, 1000);
+	};
+	
+	function disableBtn(btn) {
+		var loading = '<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>'
+		$(btn).html(loading);
+		$(btn).attr('disabled', 'disabled');
+	};
 	
 });

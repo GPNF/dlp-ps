@@ -1,6 +1,7 @@
 package app.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,12 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import app.dao.PublisherDao;
 import app.model.PublisherMessage;
 import app.service.MessagePublisherService;
+import app.service.TopicService;
 
 /**
  * @author AdarshSinghal
  *
  */
-@WebServlet(name = "publish", urlPatterns = { "/publish" })
+@WebServlet(name = "publish", urlPatterns = { "/topic/publish", "/topic/list"})
 
 public class PublishServlet extends HttpServlet {
 
@@ -29,6 +31,24 @@ public class PublishServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String pathInfo = req.getServletPath(); // /{value}/test
+		System.out.println(pathInfo);
+		String[] pathParts = pathInfo.split("/");
+		String part2 = pathParts[2]; // test
+		
+		if(part2.equalsIgnoreCase("list")) {
+			
+			TopicService topicService = new TopicService();
+			String topicListJson = topicService.getTopicListJson();
+			
+			resp.setContentType("application/json");
+			PrintWriter pw = resp.getWriter();
+			pw.print(topicListJson);
+			return;
+		}
+
+
 		req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		super.doGet(req, resp);
 	}
