@@ -7,8 +7,8 @@ import javax.servlet.ServletException;
 
 import app.dao.UserDetailsDao;
 import app.model.UserDetailsSO;
-import app.service.SendMailSendgrid;
-import app.service.SmsSender;
+import app.service.EmailSenderService;
+import app.service.SmsSenderService;
 
 /**
  * @author AmolPol
@@ -51,7 +51,7 @@ public class NotifyUtility {
 
 		boolean isSmsEnabled = null != userDetails.getSmsFlag() && userDetails.getSmsFlag().equalsIgnoreCase(YES);
 		if (isSmsEnabled) {
-			SmsSender sms = new SmsSender();
+			SmsSenderService sms = new SmsSenderService();
 			sms.sendSms(userDetails, message);
 
 		}
@@ -65,7 +65,7 @@ public class NotifyUtility {
 
 		boolean isEmailEnabled = null != userDetails.getEmailFlag() && userDetails.getEmailFlag().equalsIgnoreCase(YES);
 		if (isEmailEnabled) {
-			SendMailSendgrid mail = new SendMailSendgrid();
+			EmailSenderService mail = new EmailSenderService();
 			mail.sendEmail(userDetails, message);
 		}
 	}

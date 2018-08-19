@@ -17,7 +17,7 @@ import app.util.ExternalProperties;
  * @author AmolPol
  *
  */
-public class SendMailSendgrid {
+public class EmailSenderService {
 
 	/**
 	 * @param userSO

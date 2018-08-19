@@ -11,7 +11,7 @@ import app.util.ExternalProperties;
  * @author AmolPol
  *
  */
-public class SmsSender {
+public class SmsSenderService {
 
 	/**
 	 * @param userDetailsSO
