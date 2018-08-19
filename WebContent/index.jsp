@@ -36,7 +36,7 @@
 
           <div class="form-group">
             <label for="topic-name">Topic Name:</label> 
-            <i id="topic-loading" class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+            <i id="topic-loading" class="fa fa-spinner fa-pulse fa-1x fa-fw" style="font-weight:bold"></i>
               
               <select id="topic-name-select" name="topic-name" class="form-control">
               </select>
@@ -48,7 +48,7 @@
             <textarea id="message" name="message" class="form-control"
               rows="8" cols="8" required></textarea>
           </div>
-          <button id="publish-btn" style="width:81px;" type="submit" class="btn btn-success">Publish</button>
+          <button id="publish-btn" style="width:81px;" class="btn btn-success">Publish</button>
 
         </form>
 

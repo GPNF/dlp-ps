@@ -129,7 +129,7 @@ public class SubscriberDao {
 		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
 		Timestamp timestamp = rs.getTimestamp(columnName);
 		Date date = new Date(timestamp.getTime());
-		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+		formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 		String formattedTime = formatter.format(date);
 		return formattedTime;
 	}

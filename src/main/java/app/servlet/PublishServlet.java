@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import app.dao.PublisherDao;
 import app.model.PublisherMessage;
-import app.service.MessagePublisherService;
-import app.service.TopicService;
+import app.service.MessagePublisher;
+import app.service.TopicListProvider;
 
 /**
  * @author AdarshSinghal
@@ -33,13 +33,12 @@ public class PublishServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String pathInfo = req.getServletPath(); // /{value}/test
-		System.out.println(pathInfo);
 		String[] pathParts = pathInfo.split("/");
 		String part2 = pathParts[2]; // test
 		
 		if(part2.equalsIgnoreCase("list")) {
 			
-			TopicService topicService = new TopicService();
+			TopicListProvider topicService = new TopicListProvider();
 			String topicListJson = topicService.getTopicListJson();
 			
 			resp.setContentType("application/json");
@@ -65,7 +64,7 @@ public class PublishServlet extends HttpServlet {
 		PublisherMessage publisher = new PublisherMessage(messageId.toString(), message, topicName);
 
 		try {
-			new MessagePublisherService().publishMessage(topicName, publisher, messageId);
+			new MessagePublisher().publishMessage(topicName, publisher, messageId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

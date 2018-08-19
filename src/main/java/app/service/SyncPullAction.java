@@ -15,7 +15,7 @@ import com.google.pubsub.v1.ReceivedMessage;
 
 import app.constants.Constants;
 
-public class SyncPullService {
+public class SyncPullAction {
 
 	private final String projectId = Constants.PROJECT_ID;
 	private final String subscriptionId = Constants.SUBSCRIPTION_ID;

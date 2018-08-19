@@ -28,7 +28,8 @@ public class MessageUtils {
 
 		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
 		Date publishDate = new Date(time * 1000);
-		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+		
+		formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 		String publishTime = formatter.format(publishDate);
 		Date today = new Date();
 		String pullTime = formatter.format(today);

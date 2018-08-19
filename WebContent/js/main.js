@@ -19,7 +19,8 @@ $(document).ready(function(){
 	})();
 	// -------------------------------
 	
-	$('#publish-form').submit(function(){
+	$('#publish-form').submit(function(e){
+		console.log("Submitting form");
 		var loading = '<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>'
 			$('#publish-btn').html(loading);
 			$('#publish-btn').attr('disabled', 'disabled');

@@ -44,7 +44,7 @@ public class PublisherDao {
 
 		String formattedDate = publisher.getPublishTime();
 		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
-		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+		formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 		Date date = new Date();
 		try {
 			date = formatter.parse(formattedDate);
@@ -82,7 +82,7 @@ public class PublisherDao {
 			Date publishTime = new Date(time.getTime());
 
 			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
-			formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+			formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 			String formattedDate = formatter.format(publishTime);
 
 			PublisherMessage publisher = new PublisherMessage(messageId, message, topicName, formattedDate);
