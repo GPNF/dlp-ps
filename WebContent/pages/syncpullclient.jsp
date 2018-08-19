@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
   pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,9 +47,10 @@
       <!-- End of mid col -->
       <div class="col-md-4">
         <c:forEach items="${messageList}" var="msg">
-          <div class="card" style="padding: 20px;margin-bottom:20px;background-color: #E1FFC5">
+          <div class="card" style="padding: 20px;margin-bottom:20px;background-color: #E1FFC5;">
             Message Id: ${msg.messageId}<hr>
-            Message: ${msg.message}<hr>
+            <% pageContext.setAttribute("newLineChar", "\n"); %>
+            Message: ${fn:replace(msg.message, newLineChar, '<br/>')}<hr>
             Publish Time: ${msg.publishTime}
           </div>
         </c:forEach>

@@ -1,49 +1,65 @@
 $(document).ready(function() {
 
-	$('#inspect-btn').click(function() {
-		var message = $('#inspect-message').val();
-		if (message.length < 1) {
-			return;
-		}
+  $('#inspect-btn').click(function() {
+    var message = $('#inspect-message').val();
+    if (message.length < 1) {
+      return;
+    }
 
-		disableBtn('#inspect-btn');
-		inspect(message);
-	});
+    disableBtn('#inspect-btn');
+    var json = {
+      "message" : message
+    };
+    inspect(json);
+  });
 
-	var inspect = function(message) {
+  var inspect = function(jsondata) {
 
-		var jsondata = {
-			"message" : message
-		};
+    $.ajax({
+      url : '/inspect',
+      data : JSON.stringify(jsondata),
+      type : 'post',
+      cache : false,
+      complete : function(data) {
+        if (status === 'error' || !data.responseText) {
+          console.log('Error');
+        } else {
+          console.log(data);
+          var responseJson = data.responseJSON;
+          $('#message').val(responseJson.message);
+          createTable(responseJson.inspectResult)
 
-		$.ajax({
-			url : '/inspect',
-			data : JSON.stringify(jsondata),
-			type : 'post',
-			cache : false,
-			complete : function(data) {
-				if (status === 'error' || !data.responseText) {
-					console.log(data);
-					resetDeIdentifyButton();
-				} else {
-					var message = data.responseText;
-					$('#message').val(message);
-					resetDeIdentifyButton();
-				}
-			}
-		});
-	};
+        }
+        resetDeIdentifyButton();
+        $('#dlp-inspection-result-div *').addClass('visible');
+      }
+    });
+  };
 
-	function disableBtn(btn) {
-		var loading = '<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>'
-		$(btn).html(loading);
-		$(btn).attr('disabled', 'disabled');
-	};
+  function disableBtn(btn) {
+    var loading = '<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>'
+    $(btn).html(loading);
+    $(btn).attr('disabled', 'disabled');
+  }
+  ;
 
-	function resetDeIdentifyButton(button) {
-		$('#inspect-btn').html('Inspect');
-		$('#inspect-btn').removeAttr('disabled');
-	}
-	;
+  function resetDeIdentifyButton(button) {
+    $('#inspect-btn').html('DeIdentify');
+    $('#inspect-btn').removeAttr('disabled');
+  };
+  
+  function createTable(response) {
+    $.each(response, function(i, item) {
+        var $tr = $('<tr>').append(
+            $('<td>').text(item.quote),
+            $('<td>').text(item.infoType),
+            $('<td>').text(item.likelihood)
+        ); //.appendTo('#records_table');
+        $('#inspect-table').append($tr);
+    });
+    
+    $('#inspection-div *').addClass('visible');
+    
+};
 
 });

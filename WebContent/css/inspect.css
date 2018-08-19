@@ -1,0 +1,20 @@
+#inspect-table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#inspect-table td, #inspect-table th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+#inspect-table tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+#inspect-row{
+	margin-top:150px;
+}
+
