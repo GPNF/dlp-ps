@@ -15,7 +15,7 @@ import com.google.pubsub.v1.ReceivedMessage;
 
 import app.dao.SubscriberDao;
 import app.model.SubscriberMessage;
-import app.service.SyncPullService;
+import app.service.SyncPullAction;
 import app.util.MessageUtils;
 import app.util.NotifyUtility;
 
@@ -68,7 +68,7 @@ public class SyncPullClientServlet extends HttpServlet {
 
 		boolean returnImmediately = Boolean.parseBoolean(returnImmediatelyStr);
 
-		SyncPullService syncPullSvc = new SyncPullService();
+		SyncPullAction syncPullSvc = new SyncPullAction();
 		List<ReceivedMessage> receivedMessages = syncPullSvc.getReceivedMessages(maxMessage, returnImmediately);
 		List<SubscriberMessage> messageList = MessageUtils.getSubscriberMessages(receivedMessages);
 		return messageList;

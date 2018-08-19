@@ -9,50 +9,54 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.min.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-
-table tr th{
-  background:#337ab7;
-  color:white;
-  text-align:left;
-  vertical-align:center;
+table tr th {
+	background: #337ab7;
+	color: white;
+	text-align: left;
+	vertical-align: center;
 }
 </style>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-    <jsp:include page="/parts/header.html" />
-	<div id="pull-data" class="mt-5">
+	<jsp:include page="/parts/header.html" />
+	<div id="pull-data" class="mt-5 invisible">
 		<table id="pull-datatable" class="display" style="">
 			<thead>
 				<tr>
-                    <th>Pull Time</th>
-                    <th>Published Time</th>
+					<th>Pull Time</th>
+					<th>Published Time</th>
 					<th>Message Id</th>
-                    <th>Message</th>
-                    <th>Subscription</th>
+					<th>Message</th>
+					<th>Subscription</th>
 					<th>Global Txn Id</th>
-                    <th>Ack Id</th>
+					<th>Ack Id</th>
 				</tr>
 			</thead>
 		</table>
 	</div>
 
-
-
-
+	<div id="loading-div"class="invisible">
+		<i id="loading" class="fa fa-refresh fa-spin"
+			style="margin-left: calc(50% - 75px); font-size: 150px"></i>
+	</div>
 
 
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<script
 		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
+	<script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
+	<script
+		src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
 
-	
-  <script src="js/pulldata.js"></script>
+
+	<script src="/pages/js/pulldata.js"></script>
 </body>
 </html>
