@@ -1,41 +1,44 @@
 package app.msgstatuscache.services;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.api.client.json.JsonParser;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.pubsub.model.PubsubMessage;
+import com.google.gson.Gson;
+
+import app.msgstatuscache.datacontainers.JsonDataContainer;
 import app.msgstatuscache.utils.ConfigParams;
 import app.msgstatuscache.utils.PropertyParserAndConfigAdapter;
 
-class DbOps {
+class DbQueryAndUpdateOps {
 
 	private ConfigParams params;
 	private PropertyParserAndConfigAdapter connAdapter;
 
-	public DbOps(String cfgPath) {
+	public DbQueryAndUpdateOps(String cfgPath) {
 		super();
 		this.connAdapter = new PropertyParserAndConfigAdapter(cfgPath);
 		this.params = this.connAdapter.readPropertiesAndSetParameters();
 	}
 
-	public void insertIntoTable(String message) throws IOException {
+	public void insertIntoTable(JsonDataContainer message) throws IOException {
 		try (Connection conn = this.params.getConn()) {
-			String query = "insert into " + this.params.getTableName().trim() + "(glo_tran_id, dlv_rprt) VALUES (?, ?)";
+			final String query = "update message_status_cache_db set dlv_rprt = ?  where glo_tran_id=?";
 			PreparedStatement statement = conn.prepareStatement(query);
 
 			try {
-				statement.setString(1, message);
-				statement.setString(2, "In-progress");
+				if (message.getDeliveryFlag().equalsIgnoreCase("true"))
+					statement.setString(1, "Delivered");
+				else
+					statement.setString(1, "In-progress");
+				statement.setString(2, message.getMessageId());
 				statement.execute();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -49,20 +52,19 @@ class DbOps {
 
 }
 
-@WebServlet(name = "NotifyToMessageStatusService", urlPatterns = { "/notifyServicetoStatDb", "/notifyService" })
-public class NotifyToMessageStatusService extends HttpServlet {
+@SuppressWarnings("serial")
+@WebServlet(name = "UpdateMessageCacheUponAcknowledgement", urlPatterns = { "/queryMessageStat" })
+public class UpdateMessageCacheUponAcknowledgement extends HttpServlet {
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public final void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
 		// ServletInputStream inputStream = req.getInputStream();
 
-		ServletInputStream inputStream = req.getInputStream();
-		JsonParser parser = JacksonFactory.getDefaultInstance().createJsonParser(inputStream);
-		parser.skipToKey("message");
-		PubsubMessage message = parser.parseAndClose(PubsubMessage.class);
-		new DbOps("WEB-INF/config_table.properties")
-				.insertIntoTable(message.getAttributes().get("globalTransactionId"));
+		Reader reader = req.getReader();
+		Gson gson = new Gson();
+		JsonDataContainer container = gson.fromJson(reader, JsonDataContainer.class);
+		new DbQueryAndUpdateOps("WEB-INF/config_table.properties").insertIntoTable(container);
 
 	}
 }
