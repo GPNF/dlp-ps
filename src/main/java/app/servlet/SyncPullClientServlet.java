@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.pubsub.v1.ReceivedMessage;
 
 import app.dao.SubscriberDao;
+import app.model.RequestMapper;
 import app.model.SubscriberMessage;
 import app.service.SyncPullAction;
 import app.util.MessageUtils;
-import app.util.NotifyUtility;
 
 /**
  * @author AdarshSinghal
@@ -86,12 +86,13 @@ public class SyncPullClientServlet extends HttpServlet {
 
 	private void sendMessagesToUser(List<SubscriberMessage> messageList) throws ServletException {
 		for (SubscriberMessage subMessage : messageList) {
-			NotifyUtility utility = new NotifyUtility();
-			try {
-				utility.checkAllUserPreference(subMessage.getMessage());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			HttpClientRequestHandler reqHandler=new HttpClientRequestHandler();
+			RequestMapper req=new RequestMapper();
+			req.setMessageId(subMessage.getGlobalTransactionId());
+			req.setMessageData(subMessage.getMessage());
+			reqHandler.processRequest(req, "https://possible-haven-212003.appspot.com/userServlet");
+			//NotifyUtility utility = new NotifyUtility();
+			//utility.checkAllUserPreference(subMessage.getMessage());
 		}
 	}
 

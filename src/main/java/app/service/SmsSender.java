@@ -23,6 +23,7 @@ public class SmsSender {
 		String sid = ExternalProperties.getAppConfig("sms.auth.sid");
 		String token = ExternalProperties.getAppConfig("sms.auth.token");
 		Twilio.init(sid, token);
+		String ack=null;
 
 		/*
 		 * ProxiedTwilioClientCreator clientCreator = new
@@ -36,9 +37,18 @@ public class SmsSender {
 				new PhoneNumber(ExternalProperties.getAppConfig("sms.sender.number")), // from
 				message).create();
 
-		System.out.println("SMS sent successfully... " + twilioMessage.getSid());
+		
 
-		return twilioMessage.getSid();
+		if(null!=twilioMessage.getSid())
+		{
+				ack= "success";
+				System.out.println("SMS sent successfully... " + twilioMessage.getSid());
+		}
+		else
+		{
+			ack= "failed";
+		}
+		return ack;
 
 	}
 }
