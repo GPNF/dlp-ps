@@ -56,7 +56,7 @@ public class NotifyUtility {
 		if (userDetails.getSmsFlag().equalsIgnoreCase(YES))
 			smsAck = notifyUsersBySMS(userDetails, req.getMessageData());
 
-		if (emailAck != null && smsAck != null && emailAck.contains("success") && smsAck.contains("success")) {
+		if ((emailAck != null || smsAck != null) && (emailAck.contains("success") || smsAck.contains("success"))) {
 			delivered = true;
 		} else {
 			delivered = false;
@@ -70,6 +70,7 @@ public class NotifyUtility {
 	 */
 	private void deliveryConfirmation(RequestMapper req, boolean delivered) {
 		String statusDbUrl = "https://possible-haven-212003.appspot.com/queryMessageStat";
+		//String statusDbUrl = "http://localhost:8080/queryMessageStat";
 		HttpClientRequestHandler client = new HttpClientRequestHandler();
 
 		req.setDeliveryFlag("true");

@@ -48,16 +48,10 @@ public class InspectServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		BufferedReader d = req.getReader();
-		StringBuilder inputData = new StringBuilder();
-
-		String data = "";
-		while ((data = d.readLine()) != null) {
-			inputData.append(data);
-		}
+		String inputData = getInputData(req);
 
 		Gson gson =new GsonBuilder().create();
-		JsonPrimitive jsonPrimitive = (JsonPrimitive) gson.fromJson(inputData.toString(), JsonObject.class).get("message");
+		JsonPrimitive jsonPrimitive = (JsonPrimitive) gson.fromJson(inputData, JsonObject.class).get("message");
 		
 		String inputMessage = jsonPrimitive.getAsString();
 
@@ -90,9 +84,6 @@ public class InspectServlet extends HttpServlet {
 				for (Finding finding : findingList) {
 					if (finding.getLikelihood().toString().equals(LIKELY)
 							|| finding.getLikelihood().toString().equals(VERY_LIKELY)) {
-						System.out.println("Quote: " + finding.getQuote());
-						System.out.println("Info type: " + finding.getInfoType().getName());
-						System.out.println("Likelihood: " + finding.getLikelihood());
 						String quote = finding.getQuote();
 						String infoType = finding.getInfoType().getName();
 						String lkhood = finding.getLikelihood().toString();
@@ -124,5 +115,16 @@ public class InspectServlet extends HttpServlet {
 			resp.sendError(HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
+	}
+
+	private String getInputData(HttpServletRequest req) throws IOException {
+		BufferedReader d = req.getReader();
+		StringBuilder inputData = new StringBuilder();
+
+		String data = "";
+		while ((data = d.readLine()) != null) {
+			inputData.append(data);
+		}
+		return inputData.toString();
 	}
 }

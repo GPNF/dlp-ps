@@ -7,7 +7,7 @@
 <title>Publisher</title>
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-<link rel="stylesheet"
+<link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="./css/inspect.css">
 <script
@@ -92,6 +92,7 @@
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
+    <script src="js/random-user.js"></script>
 	<script src="js/inspect-message.js"></script>
 
 </body>

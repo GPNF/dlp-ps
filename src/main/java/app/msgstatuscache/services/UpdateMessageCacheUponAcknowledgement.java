@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -66,5 +67,14 @@ public class UpdateMessageCacheUponAcknowledgement extends HttpServlet {
 		JsonDataContainer container = gson.fromJson(reader, JsonDataContainer.class);
 		new DbQueryAndUpdateOps("WEB-INF/config_table.properties").insertIntoTable(container);
 
+	}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.setContentType("text/plain");
+	    response.setCharacterEncoding("UTF-8");
+
+	    response.getWriter().print("Hello Do Get method called  of queryMessageStat!\r\n");
+	//doGet(request, response);
 	}
 }

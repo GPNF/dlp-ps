@@ -26,7 +26,7 @@ public class MessagePublisher {
 	 * @throws Exception
 	 */
 
-	public void publishMessage(String topicName, PublisherMessage publisherMessage, StringBuilder messageId)
+	public void publishMessage(String topicName, PublisherMessage publisherMessage, StringBuilder messageId, String gbTxnId)
 			throws Exception {
 		ProjectTopicName projectTopicName = ProjectTopicName.of(PROJECT_ID, topicName);
 
@@ -42,7 +42,6 @@ public class MessagePublisher {
 			// Create a publisher instance with default settings bound to the
 			// topic
 			publisher = Publisher.newBuilder(projectTopicName).build();
-			String gbTxnId = "gbtxn" + new Date().getTime();
 			ByteString data = ByteString.copyFromUtf8(message);
 			PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
 					.putAttributes("globalTransactionId", gbTxnId).build();
@@ -57,7 +56,7 @@ public class MessagePublisher {
 			// Add an asynchronous callback to handle success / failure
 			DefaultApiFutureCallback callback = new DefaultApiFutureCallback(message, messageId);
 			ApiFutures.addCallback(future, callback);
-			callback.getOuputMessageId();
+			messageId = callback.getOuputMessageId();
 
 		} finally {
 			if (publisher != null) {

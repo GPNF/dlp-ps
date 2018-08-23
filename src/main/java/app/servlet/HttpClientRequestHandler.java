@@ -48,6 +48,7 @@ public class HttpClientRequestHandler {
 			int statusCode = response.getStatusLine().getStatusCode();
 
 			System.out.println("Client Status Code " + statusCode);
+			System.out.println("Client Status Code " + url);
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
