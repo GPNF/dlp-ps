@@ -24,7 +24,7 @@ public class DeIdentifier {
 	public static String deIdentifyWithMask(String string, DlpServiceClient dlpServiceClient, List<InfoType> infoTypes,
 			String projectId) {
 
-		Character maskingCharacter = '*';
+		Character maskingCharacter = 'x';
 		int numberToMask = Integer.parseInt("0");
 
 		ContentItem contentItem = ContentItem.newBuilder().setValue(string).build();
