@@ -13,6 +13,8 @@ public class ConfigParams {
 	private String userName;
 	private String passwd;
 	private String tableName;
+	private String topicName;
+	private String subscriberName;
 
 	private ConfigParams(ParamsBuilder builder) {
 		this.connectionString = builder.connectionString;
@@ -23,6 +25,16 @@ public class ConfigParams {
 		this.passwd = builder.passwd;
 		this.dbName = builder.dbName;
 		this.tableName = builder.tableName;
+		this.topicName = builder.topicName;
+		this.subscriberName = builder.subscriberName;
+	}
+
+	public String getTopicName() {
+		return topicName;
+	}
+
+	public String getSubscriberName() {
+		return subscriberName;
 	}
 
 	public String getTableName() {
@@ -66,6 +78,8 @@ public class ConfigParams {
 		private String userName;
 		private String passwd;
 		private String tableName;
+		private String topicName;
+		private String subscriberName;
 
 		public ParamsBuilder() {
 		}
@@ -75,6 +89,16 @@ public class ConfigParams {
 		 * this.connectionString = connString; this.conn = co; this.userName = uname;
 		 * this.passwd = passwd; }
 		 */
+
+		public ParamsBuilder setTopicName(String topicName) {
+			this.topicName = topicName;
+			return this;
+		}
+
+		public ParamsBuilder setSubscriptionName(String subscriptionName) {
+			this.subscriberName = subscriptionName;
+			return this;
+		}
 
 		public ParamsBuilder setInstanceConnectionName(String connName) {
 			this.instanceConnectionName = connName;

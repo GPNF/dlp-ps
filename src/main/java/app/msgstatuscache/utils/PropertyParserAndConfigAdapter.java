@@ -35,7 +35,10 @@ public class PropertyParserAndConfigAdapter {
 					.setPassword(this.propertiesObject.getProperty("password"))
 					.setInstanceConnectionName(this.propertiesObject.getProperty("instanceConnectionName"))
 					.setJDBCConnectionString(this.propertiesObject.getProperty("JDBCConnectionString"))
-					.setTableName(this.propertiesObject.getProperty("tablename")).build();
+					.setTableName(this.propertiesObject.getProperty("tablename"))
+					.setTopicName(this.propertiesObject.getProperty("logging.topic.name"))
+					.setSubscriptionName(this.propertiesObject.getProperty("logging.subscription.name"))
+					.build();
 		} catch (IOException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
