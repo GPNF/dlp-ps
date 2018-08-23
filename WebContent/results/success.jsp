@@ -19,8 +19,7 @@
   <div class="card-header alert-success">Successfully Published</div>
   
   <div class="card-body">
-	Message Id: <%= request.getAttribute("messageId") %><br>
-	Time taken: <%= request.getAttribute("timeTaken") %> sec
+	Global Transaction Id: <%= request.getAttribute("gbTxnId") %><br>
 	<a class="btn btn-primary" style="margin:20px auto;" href="/index.jsp">&lt;&lt;Publish More</a>
   </div>
 </div>

@@ -5,7 +5,10 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +25,7 @@ import app.service.TopicListProvider;
  * @author AdarshSinghal
  *
  */
-@WebServlet(name = "publish", urlPatterns = { "/topic/publish", "/topic/list"})
+@WebServlet(name = "publish", urlPatterns = { "/topic/publish", "/topic/list" })
 
 public class PublishServlet extends HttpServlet {
 
@@ -35,18 +38,17 @@ public class PublishServlet extends HttpServlet {
 		String pathInfo = req.getServletPath(); // /{value}/test
 		String[] pathParts = pathInfo.split("/");
 		String part2 = pathParts[2]; // test
-		
-		if(part2.equalsIgnoreCase("list")) {
-			
+
+		if (part2.equalsIgnoreCase("list")) {
+
 			TopicListProvider topicService = new TopicListProvider();
 			String topicListJson = topicService.getTopicListJson();
-			
+
 			resp.setContentType("application/json");
 			PrintWriter pw = resp.getWriter();
 			pw.print(topicListJson);
 			return;
 		}
-
 
 		req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		super.doGet(req, resp);
@@ -56,25 +58,48 @@ public class PublishServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String topicName = req.getParameter("topic-name");
 		String message = req.getParameter("message");
-		StringBuilder messageId = new StringBuilder("");
-		Date date = new Date();
-		long start = date.getTime();
 
+		List<String> topics;
+		if (topicName.contains(",")) {
+			topics = Arrays.asList(topicName.split(","));
+		} else {
+			topics = new ArrayList<>();
+			topics.add(topicName);
+		}
+
+		String gbTxnId = "g" + new Date().getTime() + "r" + (int)(Math.random() * 100);
+
+		List<String> messageIds = new ArrayList<>();
+
+		topics.forEach(topic -> {
+			StringBuilder messageId = new StringBuilder("");
+			boolean isMessageIdGenerated = publishMessage(topic, message, gbTxnId, messageId);
+			if (isMessageIdGenerated) {
+				messageIds.add(messageId.toString());
+			}
+		});
+		
+		req.setAttribute("gbTxnId", gbTxnId);
+
+		if (messageIds.size() != 0) {
+			req.getRequestDispatcher("/results/success.jsp").forward(req, resp);
+		} else {
+			req.getRequestDispatcher("/results/failure.jsp").forward(req, resp);
+		}
+
+	}
+
+	private boolean publishMessage(String topicName, String message, String gbTxnId, StringBuilder messageId) {
 		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
 		PublisherMessage publisher = new PublisherMessage(messageId.toString(), message, topicName);
 
 		try {
-			new MessagePublisher().publishMessage(topicName, publisher, messageId);
+			new MessagePublisher().publishMessage(topicName, publisher, messageId, gbTxnId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		long now = new Date().getTime();
-		while (now - start < 20000 && messageId.length() == 0) {
-			Date currDate = new Date();
-			now = currDate.getTime();
-		}
-		String publishTime = formatter.format(new Date(now));
+		String publishTime = formatter.format(new Date());
 		publisher.setPublishTime(publishTime);
 		boolean isMessageIdGenerated = messageId.toString() != null && messageId.toString().length() > 0;
 
@@ -85,13 +110,8 @@ public class PublishServlet extends HttpServlet {
 			} catch (SQLException | ParseException e) {
 				e.printStackTrace();
 			}
-			req.setAttribute("messageId", messageId.toString());
-			req.setAttribute("timeTaken", (now - start) / 1000);
-			req.getRequestDispatcher("/results/success.jsp").forward(req, resp);
-		} else {
-			req.getRequestDispatcher("/results/failure.jsp").forward(req, resp);
 		}
-
+		return isMessageIdGenerated;
 	}
 
 	private void persistInDB(PublisherMessage publisher) throws SQLException, ParseException {

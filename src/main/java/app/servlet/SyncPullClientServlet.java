@@ -90,7 +90,8 @@ public class SyncPullClientServlet extends HttpServlet {
 			RequestMapper req=new RequestMapper();
 			req.setMessageId(subMessage.getGlobalTransactionId());
 			req.setMessageData(subMessage.getMessage());
-			reqHandler.processRequest(req, "https://possible-haven-212003.appspot.com/userServlet");
+			reqHandler.processRequest(req, "https://possible-haven-212003.appspot.com/userService");
+			//reqHandler.processRequest(req, "http://localhost:8080/userService");
 			//NotifyUtility utility = new NotifyUtility();
 			//utility.checkAllUserPreference(subMessage.getMessage());
 		}

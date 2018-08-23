@@ -1,4 +1,4 @@
-package com.gp.test;
+package app.servlet;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,14 +18,14 @@ import app.util.NotifyUtility;
 /**
  * Servlet implementation class Test
  */
-@WebServlet("/userService")
-public class UserServlet extends HttpServlet {
+@WebServlet(name = "UserServlet", urlPatterns = { "/userService" })
+public class UserService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserServlet() {
+    public UserService() {
         super();
         // TODO Auto-generated constructor stub
     }
