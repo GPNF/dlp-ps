@@ -27,7 +27,8 @@ public class EmailSender {
 	public String sendEmail(UserDetailsSO userSO, String message) {
 
 		// ExternalProperties.getDbConfig("email.sendgrid.apikey");
-
+		Response response=null;
+		String ack=null;
 		Email from = new Email(ExternalProperties.getAppConfig("email.sendgrid.user"));
 		String subject = "Sendgrid test mail";
 
@@ -43,15 +44,23 @@ public class EmailSender {
 			request.setEndpoint("mail/send");
 			request.setBody(mail.build());
 
-			Response response = sg.api(request);
+			 response = sg.api(request);
 			System.out.println(response.getStatusCode());
 			System.out.println(response.getBody());
 			System.out.println(response.getHeaders());
 
 			System.out.println("Mail sent successfully...");
+			if(response.getStatusCode()>0 )
+			{
+				ack= "success";
+			}
+			else
+			{
+				ack="failed";
+			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		return "success";
+		return  ack;
 	}
 }
