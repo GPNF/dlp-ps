@@ -67,7 +67,6 @@ class LogTableOperations {
 				statement.setString(6, this.params.getTopicName());
 				statement.execute();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -79,6 +78,9 @@ class LogTableOperations {
 
 @WebServlet(name = "LoggingService", urlPatterns = { "/logging" })
 public class LoggingService extends HttpServlet {
+
+	private static final long serialVersionUID = -2990878220335313510L;
+
 	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
 		ServletInputStream inputStream = request.getInputStream();
 		JsonParser parser = JacksonFactory.getDefaultInstance().createJsonParser(inputStream);

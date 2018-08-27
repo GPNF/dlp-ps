@@ -21,64 +21,63 @@ import app.util.NotifyUtility;
 @WebServlet(name = "UserServlet", urlPatterns = { "/userService" })
 public class UserService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UserService() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		response.setContentType("text/plain");
-	    response.setCharacterEncoding("UTF-8");
-
-	    response.getWriter().print("Hello Do Get method called !\r\n");
-	//doGet(request, response);
+	public UserService() {
+		super();
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter();
-	
-		  response.setContentType("text/plain");
-		    response.setCharacterEncoding("UTF-8");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("UTF-8");
 
-		  
-		//doGet(request, response);
-			String globalMsgId = request.getParameter("messageId");
-			String messageData = request.getParameter("messageData");
-			
-			System.out.println("messageData "+messageData + " id "+ globalMsgId );
-	
-				Reader reader = request.getReader();
-						Gson gson = new Gson();
-						RequestMapper req = gson.fromJson(reader, RequestMapper.class); 
-						System.out.println("messageData "+req.getMessageData() + " id "+ req.getMessageId()+"flag"+req.getDeliveryFlag() );
+		response.getWriter().print("Hello Do Get method called !\r\n");
+		// doGet(request, response);
+	}
 
-				boolean status=NotifyUsers(req);	
-				 response.getWriter().print("Hello Do Post method called Result !\r\n" +status);
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("UTF-8");
+
+		// doGet(request, response);
+		String globalMsgId = request.getParameter("messageId");
+		String messageData = request.getParameter("messageData");
+
+		System.out.println("messageData " + messageData + " id " + globalMsgId);
+
+		Reader reader = request.getReader();
+		Gson gson = new Gson();
+		RequestMapper req = gson.fromJson(reader, RequestMapper.class);
+		System.out.println(
+				"messageData " + req.getMessageData() + " id " + req.getMessageId() + "flag" + req.getDeliveryFlag());
+
+		boolean status = NotifyUsers(req);
+		response.getWriter().print("Hello Do Post method called Result !\r\n" + status);
 	}
 
 	private boolean NotifyUsers(RequestMapper req) {
 		NotifyUtility utility = new NotifyUtility();
-		boolean status=false;
+		boolean status = false;
 		try {
-			status=utility.checkAllUserPreference(req);
+			status = utility.checkAllUserPreference(req);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return  status;
+		return status;
 	}
-	
 
 }

@@ -1,10 +1,13 @@
 package app.model;
 
+/**
+ * @author AmolPol
+ *
+ */
 public class RequestMapper {
+
 	private String messageData;
-
 	private String messageId;
-
 	private String deliveryFlag;
 
 	public String getDeliveryFlag() {
@@ -33,6 +36,8 @@ public class RequestMapper {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [messageData = " + messageData + ", messageId = " + messageId + "]";
+		return "RequestMapper [messageData=" + messageData + ", messageId=" + messageId + ", deliveryFlag="
+				+ deliveryFlag + "]";
 	}
+
 }

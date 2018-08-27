@@ -30,10 +30,8 @@ public class HttpClientRequestHandler {
 			requestJson = mapper.writeValueAsString(req);
 			entity = new StringEntity(requestJson);
 		} catch (JsonProcessingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -51,16 +49,13 @@ public class HttpClientRequestHandler {
 			System.out.println("Client Status Code " + url);
 
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
 				client.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

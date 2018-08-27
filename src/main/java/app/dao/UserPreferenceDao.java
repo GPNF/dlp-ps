@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import app.model.UpdateUserPreferenceModel;
 import app.model.UserDetailsSO;
 
 /**
@@ -57,6 +58,35 @@ public class UserPreferenceDao {
 		userSo.setFaxFlag(rs.getString("fax_prefered"));
 		userSo.setPhoneCallFlag(rs.getString("phone"));
 		return userSo;
+	}
+
+	public int updateUserPreference(UpdateUserPreferenceModel preference) throws SQLException {
+
+		String type = "";
+		String prefType = preference.getType();
+
+		switch (prefType) {
+		case "email":
+			type = "email_prefered";
+			break;
+		case "sms":
+			type = "sms_prefered";
+			break;
+		case "call":
+			type = "call_prefered";
+			break;
+		}
+
+		String value = preference.getValue().equals("true") ? "Yes" : "No";
+
+		String sql = "UPDATE User_Preferences SET " + type + " = ? WHERE id= ?";
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+		ps.setString(1, value);
+		ps.setInt(2, preference.getId());
+		int rowModified = ps.executeUpdate();
+
+		return rowModified;
 	}
 
 }
