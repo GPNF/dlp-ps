@@ -1,5 +1,9 @@
 package app.model;
 
+/**
+ * @author adarshsinghal
+ *
+ */
 public class InspectResult {
 
 	String quote;

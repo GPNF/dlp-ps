@@ -4,3 +4,14 @@ table tr th {
 	text-align: left;
 	vertical-align: center;
 }
+
+.overlay {
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background-color:#fff;
+    opacity:0.8;
+    z-index:1001;
+}

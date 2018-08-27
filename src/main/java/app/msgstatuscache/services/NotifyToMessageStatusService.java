@@ -17,6 +17,10 @@ import com.google.api.services.pubsub.model.PubsubMessage;
 import app.msgstatuscache.utils.ConfigParams;
 import app.msgstatuscache.utils.PropertyParserAndConfigAdapter;
 
+/**
+ * @author Aniruddha
+ *
+ */
 class DbOps {
 
 	private ConfigParams params;
@@ -28,6 +32,10 @@ class DbOps {
 		this.params = this.connAdapter.readPropertiesAndSetParameters();
 	}
 
+	/**
+	 * @param message
+	 * @throws IOException
+	 */
 	public void insertIntoTable(String message) throws IOException {
 		try (Connection conn = this.params.getConn()) {
 			String query = "insert into " + this.params.getTableName().trim() + "(glo_tran_id, dlv_rprt) VALUES (?, ?)";
@@ -38,7 +46,6 @@ class DbOps {
 				statement.setString(2, "In-progress");
 				statement.execute();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -52,10 +59,10 @@ class DbOps {
 @WebServlet(name = "NotifyToMessageStatusService", urlPatterns = { "/notifyServicetoStatDb", "/notifyService" })
 public class NotifyToMessageStatusService extends HttpServlet {
 
+	private static final long serialVersionUID = 360024119674491022L;
+
 	@Override
-	@SuppressWarnings("unchecked")
 	public final void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
-		// ServletInputStream inputStream = req.getInputStream();
 
 		ServletInputStream inputStream = req.getInputStream();
 		JsonParser parser = JacksonFactory.getDefaultInstance().createJsonParser(inputStream);

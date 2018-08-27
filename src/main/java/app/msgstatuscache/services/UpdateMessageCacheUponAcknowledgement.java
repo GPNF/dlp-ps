@@ -1,7 +1,6 @@
 package app.msgstatuscache.services;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -42,7 +41,6 @@ class DbQueryAndUpdateOps {
 				statement.setString(2, message.getMessageId());
 				statement.execute();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -59,21 +57,18 @@ public class UpdateMessageCacheUponAcknowledgement extends HttpServlet {
 
 	@Override
 	public final void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
-		// ServletInputStream inputStream = req.getInputStream();
 
-		Reader reader = req.getReader();
 		Gson gson = new Gson();
-		JsonDataContainer container = gson.fromJson(reader, JsonDataContainer.class);
+		JsonDataContainer container = gson.fromJson(req.getReader(), JsonDataContainer.class);
 		new DbQueryAndUpdateOps("WEB-INF/config_table.properties").insertIntoTable(container);
 
 	}
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("text/plain");
-	    response.setCharacterEncoding("UTF-8");
-
-	    response.getWriter().print("Hello Do Get method called  of queryMessageStat!\r\n");
-	//doGet(request, response);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print("Hello Do Get method called  of queryMessageStat!\r\n");
 	}
 }

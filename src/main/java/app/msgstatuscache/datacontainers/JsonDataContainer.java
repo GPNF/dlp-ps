@@ -1,10 +1,13 @@
 package app.msgstatuscache.datacontainers;
 
+/**
+ * @author Aniruddha
+ *
+ */
 public class JsonDataContainer {
+
 	private String messageData;
-
 	private String deliveryFlag;
-
 	private String messageId;
 
 	public String getMessageData() {
@@ -33,7 +36,7 @@ public class JsonDataContainer {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [messageData = " + messageData + ", deliveryFlag = " + deliveryFlag + ", messageId = "
+		return "JsonDataContainer [messageData=" + messageData + ", deliveryFlag=" + deliveryFlag + ", messageId="
 				+ messageId + "]";
 	}
 
