@@ -72,11 +72,7 @@
 					<h4>DLP Inspection</h4>
 					<table id="inspect-table"
 						class="table table-bordered table-striped">
-						<tr>
-							<th>Quote</th>
-							<th>InfoType</th>
-							<th>Likelihood</th>
-						</tr>
+						
 					</table>
 				</div>
 			</div>

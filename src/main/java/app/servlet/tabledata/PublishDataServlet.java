@@ -1,4 +1,4 @@
-package app.servlet;
+package app.servlet.tabledata;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,43 +14,43 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.dao.SubscriberDao;
+import app.dao.PublisherDao;
 import app.model.DataTableWrapper;
-import app.model.SubscriberMessage;
+import app.model.PublisherMessage;
 
 /**
  * @author AdarshSinghal
  *
  */
-@WebServlet(name = "PullDataServlet", urlPatterns = { "/pulldata", "/pullData", "/pull-data", "/PullData",
-		"/getPullData" })
-public class PullDataServlet extends HttpServlet {
+@WebServlet(name = "publishdata", urlPatterns = { "/publishdata", "/publishData", "/PublishData", "/getPublishData" })
+public class PublishDataServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 8626493333510999766L;
+	private static final long serialVersionUID = -5242138226681465405L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-		List<SubscriberMessage> subscriberMessages = getSubscriberMessageList();
+		List<PublisherMessage> publishers = getPublisherMessageList();
 
-		if (subscriberMessages == null || subscriberMessages.isEmpty()) {
+		if (publishers == null || publishers.isEmpty()) {
 			prepareNoContentResponse(response);
 			return;
 		}
 
-		prepareJsonResponse(response, subscriberMessages);
-
+		prepareJsonResponse(response, publishers);
 	}
 
 	/**
 	 * @param response
-	 * @param subscriberMessages
+	 * @param publishers
 	 * @throws JsonProcessingException
 	 * @throws IOException
 	 */
-	private void prepareJsonResponse(HttpServletResponse response, List<SubscriberMessage> subscriberMessages)
+	private void prepareJsonResponse(HttpServletResponse response, List<PublisherMessage> publishers)
 			throws JsonProcessingException, IOException {
-		DataTableWrapper wrapper = new DataTableWrapper(subscriberMessages);
+		DataTableWrapper wrapper = new DataTableWrapper(publishers);
+
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(wrapper);
 		PrintWriter out = response.getWriter();
@@ -63,15 +63,15 @@ public class PullDataServlet extends HttpServlet {
 	/**
 	 * @return List
 	 */
-	private List<SubscriberMessage> getSubscriberMessageList() {
-		List<SubscriberMessage> subscriberMessages = null;
+	private List<PublisherMessage> getPublisherMessageList() {
+		List<PublisherMessage> publishers = null;
 		try {
-			SubscriberDao dao = new SubscriberDao();
-			subscriberMessages = dao.getAllSubscriberMessage();
-		} catch (ClassNotFoundException | SQLException e1) {
-			e1.printStackTrace();
+			PublisherDao publisherDao = new PublisherDao();
+			publishers = publisherDao.getAllPublishers();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return subscriberMessages;
+		return publishers;
 	}
 
 	/**
@@ -85,4 +85,5 @@ public class PullDataServlet extends HttpServlet {
 		response.setStatus(204); // No content found
 		out.flush();
 	}
+
 }

@@ -25,7 +25,7 @@ import app.service.TopicListProvider;
  * @author AdarshSinghal
  *
  */
-@WebServlet(name = "publish", urlPatterns = { "/topic/publish", "/topic/list" })
+@WebServlet(name = "publish", urlPatterns = { "/topic/publish", "/api/topic/list" })
 
 public class PublishServlet extends HttpServlet {
 
@@ -36,10 +36,8 @@ public class PublishServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String pathInfo = req.getServletPath(); // /{value}/test
-		String[] pathParts = pathInfo.split("/");
-		String part2 = pathParts[2]; // test
 
-		if (part2.equalsIgnoreCase("list")) {
+		if (pathInfo.equals("/api/topic/list")) {
 
 			TopicListProvider topicService = new TopicListProvider();
 			String topicListJson = topicService.getTopicListJson();
@@ -59,6 +57,11 @@ public class PublishServlet extends HttpServlet {
 		String topicName = req.getParameter("topic-name");
 		String message = req.getParameter("message");
 
+		if (topicName == null || message == null) {
+			resp.sendError(400);
+			return;
+		}
+
 		List<String> topics;
 		if (topicName.contains(",")) {
 			topics = Arrays.asList(topicName.split(","));
@@ -67,7 +70,7 @@ public class PublishServlet extends HttpServlet {
 			topics.add(topicName);
 		}
 
-		String gbTxnId = "g" + new Date().getTime() + "r" + (int)(Math.random() * 100);
+		String gbTxnId = "g" + new Date().getTime() + "r" + (int) (Math.random() * 100);
 
 		List<String> messageIds = new ArrayList<>();
 
@@ -78,8 +81,9 @@ public class PublishServlet extends HttpServlet {
 				messageIds.add(messageId.toString());
 			}
 		});
-		
+
 		req.setAttribute("gbTxnId", gbTxnId);
+		req.setAttribute("messageIds", messageIds);
 
 		if (messageIds.size() != 0) {
 			req.getRequestDispatcher("/results/success.jsp").forward(req, resp);

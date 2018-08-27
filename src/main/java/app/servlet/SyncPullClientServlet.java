@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.pubsub.v1.ReceivedMessage;
 
 import app.dao.SubscriberDao;
@@ -23,7 +27,7 @@ import app.util.MessageUtils;
  * @author AdarshSinghal
  *
  */
-@WebServlet({ "/pullmessage" })
+@WebServlet({ "/pullmessage", "/api/pullmessage" })
 public class SyncPullClientServlet extends HttpServlet {
 	private static final String JSP_PAGE = "/pages/syncpullclient.jsp";
 	private static final long serialVersionUID = 1L;
@@ -52,6 +56,16 @@ public class SyncPullClientServlet extends HttpServlet {
 			request.getRequestDispatcher(JSP_PAGE).forward(request, response);
 
 		List<SubscriberMessage> messageList = pullMessages(maxMessageStr, returnImmediatelyStr);
+		
+		if(request.getServletPath().equals("/api/pullmessage")) {
+			Gson gson = new GsonBuilder().create();
+			JsonArray jsonArr = (JsonArray) gson.toJsonTree(messageList);
+			JsonObject container = new JsonObject();
+			container.add("messages", jsonArr);
+			response.setContentType("application/json");
+			response.getWriter().print(container.toString());
+			return;
+		}
 
 		request.setAttribute("messageList", messageList);
 		if (!messageList.isEmpty()) {
