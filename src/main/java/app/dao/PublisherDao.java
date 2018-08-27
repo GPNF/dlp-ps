@@ -35,6 +35,12 @@ public class PublisherDao {
 		this.connection = connProvider.getConnection();
 	}
 
+	/**
+	 * @param publisher
+	 * @return no. of rows modified
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
 	public int insertPubliser(PublisherMessage publisher) throws SQLException, ParseException {
 
 		String sql = "INSERT INTO publisher " + "(message_id, topic_name, message, published_timestamp, global_txn_id) "
@@ -65,6 +71,10 @@ public class PublisherDao {
 
 	}
 
+	/**
+	 * @return List of Publish Messages
+	 * @throws SQLException
+	 */
 	public List<PublisherMessage> getAllPublishers() throws SQLException {
 		List<PublisherMessage> publishers = new ArrayList<>();
 

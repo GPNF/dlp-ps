@@ -10,8 +10,17 @@
     padding: 8px;
 }
 
+
 #inspect-table tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: #ffffff;
+}
+
+#inspect-table tr:nth-child(odd) {
+    background-color: #eeeeee;
+}
+
+#inspect-table th{
+	background-color: #bbbbbb;
 }
 
 #inspect-row{

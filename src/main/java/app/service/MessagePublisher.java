@@ -1,7 +1,5 @@
 package app.service;
 
-import java.util.Date;
-
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutures;
 import com.google.cloud.pubsub.v1.Publisher;
@@ -13,6 +11,12 @@ import app.DefaultApiFutureCallback;
 import app.constants.Constants;
 import app.model.PublisherMessage;
 
+/**
+ * Responsible for publishing message to topic
+ * 
+ * @author adarshs1
+ *
+ */
 public class MessagePublisher {
 
 	private static final String PROJECT_ID = Constants.PROJECT_ID;
@@ -25,9 +29,8 @@ public class MessagePublisher {
 	 * @return
 	 * @throws Exception
 	 */
-
-	public void publishMessage(String topicName, PublisherMessage publisherMessage, StringBuilder messageId, String gbTxnId)
-			throws Exception {
+	public void publishMessage(String topicName, PublisherMessage publisherMessage, StringBuilder messageId,
+			String gbTxnId) throws Exception {
 		ProjectTopicName projectTopicName = ProjectTopicName.of(PROJECT_ID, topicName);
 
 		Publisher publisher = null;

@@ -84,10 +84,10 @@ public class ConfigParams {
 		public ParamsBuilder() {
 		}
 		/*
-		 * public ParamsBuilder(String connName, String connString, Connection co,
-		 * String uname, String passwd) { this.instanceConnectionName = connName;
-		 * this.connectionString = connString; this.conn = co; this.userName = uname;
-		 * this.passwd = passwd; }
+		 * public ParamsBuilder(String connName, String connString, Connection
+		 * co, String uname, String passwd) { this.instanceConnectionName =
+		 * connName; this.connectionString = connString; this.conn = co;
+		 * this.userName = uname; this.passwd = passwd; }
 		 */
 
 		public ParamsBuilder setTopicName(String topicName) {
@@ -111,8 +111,8 @@ public class ConfigParams {
 		}
 
 		/*
-		 * public ParamsBuilder buildConnectionObject(Connection cObj) { this.conn =
-		 * cObj; return this; }
+		 * public ParamsBuilder buildConnectionObject(Connection cObj) {
+		 * this.conn = cObj; return this; }
 		 */
 
 		public ParamsBuilder setUserName(String username) {

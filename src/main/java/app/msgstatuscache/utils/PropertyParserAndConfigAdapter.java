@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import com.google.gson.Gson;
-
 public class PropertyParserAndConfigAdapter {
 	private Properties propertiesObject;
 	private String propertyFilePath;
@@ -19,8 +17,9 @@ public class PropertyParserAndConfigAdapter {
 	}
 
 	/**
-	 * the primary intention of this function is to act as an Adapter which inits a
-	 * ConfigParams object and get the parameters from config.properties file
+	 * the primary intention of this function is to act as an Adapter which
+	 * inits a ConfigParams object and get the parameters from config.properties
+	 * file
 	 * 
 	 * @return ConfigParams object
 	 */
@@ -37,8 +36,7 @@ public class PropertyParserAndConfigAdapter {
 					.setJDBCConnectionString(this.propertiesObject.getProperty("JDBCConnectionString"))
 					.setTableName(this.propertiesObject.getProperty("tablename"))
 					.setTopicName(this.propertiesObject.getProperty("logging.topic.name"))
-					.setSubscriptionName(this.propertiesObject.getProperty("logging.subscription.name"))
-					.build();
+					.setSubscriptionName(this.propertiesObject.getProperty("logging.subscription.name")).build();
 		} catch (IOException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

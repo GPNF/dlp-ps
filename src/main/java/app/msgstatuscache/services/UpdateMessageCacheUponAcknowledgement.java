@@ -58,7 +58,6 @@ class DbQueryAndUpdateOps {
 public class UpdateMessageCacheUponAcknowledgement extends HttpServlet {
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public final void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
 		// ServletInputStream inputStream = req.getInputStream();
 

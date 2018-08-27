@@ -49,6 +49,8 @@ $(document).ready(function() {
   };
   
   function createTable(response) {
+	$('#inspect-table').empty();
+	$('#inspect-table').html('<tr><th>Quote</th><th>InfoType</th><th>Likelihood</th></tr>');
     $.each(response, function(i, item) {
         var $tr = $('<tr>').append(
             $('<td>').text(item.quote),

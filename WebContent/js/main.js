@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	// Load topics into select list
 	(function getTopics(){
-		$.get('/topic/list', function(data){
+		$.get('/api/topic/list', function(data){
 			$('#topic-loading').remove();
 
 			if(data.topics.length>1){
