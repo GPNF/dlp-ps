@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 
 import app.dao.SubscriberDao;
 import app.model.DataTableWrapper;
@@ -79,10 +80,13 @@ public class PullDataServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	private void prepareNoContentResponse(HttpServletResponse response) throws IOException {
-		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.setStatus(204); // No content found
+		PrintWriter out = response.getWriter();
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("data", "[]");
+		out.print(jsonObject);
 		out.flush();
 	}
 }

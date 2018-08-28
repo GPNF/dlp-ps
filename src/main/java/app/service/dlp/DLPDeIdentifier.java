@@ -1,4 +1,4 @@
-package app.service;
+package app.service.dlp;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +22,7 @@ import app.constants.Constants;
  * @author Bhagyashree
  *
  */
-public class DeIdentifier {
+public class DLPDeIdentifier {
 
 	public static String deIdentifyWithMask(String inputMessage, List<InfoType> infoTypes) throws IOException {
 

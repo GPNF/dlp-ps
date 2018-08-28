@@ -26,7 +26,7 @@
             <div class="form-group">
               <label for="max-message">Maximum Message</label> <input
                 id="max-message" name="max-message" type="number"
-                value="1" min="1" class="form-control" />
+                value="100" min="1" class="form-control" />
             </div>
             <div class="form-group">
               <label for="return-immediately">Return Immediately</label>

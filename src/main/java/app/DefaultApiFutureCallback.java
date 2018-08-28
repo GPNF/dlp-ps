@@ -18,9 +18,9 @@ public class DefaultApiFutureCallback implements ApiFutureCallback<String> {
 		return ouputMessageId;
 	}
 
-	public DefaultApiFutureCallback(String message, StringBuilder messageId) {
+	public DefaultApiFutureCallback(String message) {
 		this.inputMessage = message;
-		this.ouputMessageId = messageId;
+		this.ouputMessageId = new StringBuilder("");
 	}
 
 	@Override
@@ -36,10 +36,7 @@ public class DefaultApiFutureCallback implements ApiFutureCallback<String> {
 
 	@Override
 	public void onSuccess(String messageId) {
-		// Once published, returns server-assigned message ids
-		// (unique within the topic)
 		ouputMessageId.append(messageId);
-		System.out.println("Received MessageId: " + messageId);
 	}
 
 }

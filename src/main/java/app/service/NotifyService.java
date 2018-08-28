@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import app.model.InspectResult;
+import app.service.dlp.DLPService;
 
 /**
  * Responsible for Publishing messages for PubSub Layer 1 and also delegates DLP
@@ -24,8 +25,8 @@ public class NotifyService {
 	 */
 	public List<String> publishMessage(List<String> topics, String gbTxnId, String message) {
 
-		MessagePublisher publisher = new MessagePublisher();
-		List<String> messageIds = publisher.publishMessages(topics, gbTxnId, message);
+		NotifySvcMsgPublisher publisher = new NotifySvcMsgPublisher();
+		List<String> messageIds = publisher.publishMessage(topics, gbTxnId, message);
 		return messageIds;
 	}
 
