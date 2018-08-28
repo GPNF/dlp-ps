@@ -82,8 +82,8 @@ public class SyncPullClientServlet extends HttpServlet {
 
 		boolean returnImmediately = Boolean.parseBoolean(returnImmediatelyStr);
 
-		SyncPullAction syncPullSvc = new SyncPullAction();
-		List<ReceivedMessage> receivedMessages = syncPullSvc.getReceivedMessages(maxMessage, returnImmediately);
+		SyncPullAction syncPullAction = new SyncPullAction();
+		List<ReceivedMessage> receivedMessages = syncPullAction.getReceivedMessages(maxMessage, returnImmediately);
 		List<SubscriberMessage> messageList = MessageUtils.getSubscriberMessages(receivedMessages);
 		return messageList;
 	}

@@ -19,13 +19,17 @@ public class PublisherMessage {
 	 * @param publishTime
 	 * @param globalTxnId
 	 */
-	public PublisherMessage(String messageId, String message, String topicName, String publishTime) {
-		this(messageId, message, topicName);
+	public PublisherMessage(String message, String topicName, String messageId, String publishTime) {
+		this(message, topicName, messageId);
 		this.publishTime = publishTime;
 	}
 
-	public PublisherMessage(String messageId, String message, String topicName) {
+	public PublisherMessage(String message, String topicName, String messageId) {
+		this(message, topicName);
 		this.messageId = messageId;
+	}
+
+	public PublisherMessage(String message, String topicName) {
 		this.message = message;
 		this.topicName = topicName;
 	}

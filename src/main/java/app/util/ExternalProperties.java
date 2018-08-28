@@ -5,9 +5,11 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * This class handles all properties files. The get() method is available for
- * each property file. When you add new property file, you should write your
- * get() method where you need to specify properties file name.
+ * This class is designed to <b>handle all properties files</b>. The get()
+ * method is available for each property file. <br>
+ * <br>
+ * When you add new property file, you should write your get() method where you
+ * need to specify properties file name.
  * 
  * @author AdarshSinghal
  *

@@ -95,7 +95,7 @@ public class PublisherDao {
 			formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 			String formattedDate = formatter.format(publishTime);
 
-			PublisherMessage publisher = new PublisherMessage(messageId, message, topicName, formattedDate);
+			PublisherMessage publisher = new PublisherMessage(message, topicName, messageId, formattedDate);
 			publisher.setGlobalTransactionId(globalTxnId);
 
 			publishers.add(publisher);
