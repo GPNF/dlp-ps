@@ -48,7 +48,10 @@ $(document).ready(
         if (!flag) {
           checked = "";
         }
-        return '<input id='+id+' type="checkbox" data-toggle="toggle" ' + checked + '>';
+        
+        return '<label class="checkbox-container "><input id='+id+' type="checkbox" ' + checked + '><span class="checkmark"></span></label>'
+        
+       // return '<input id='+id+' type="checkbox" data-toggle="toggle" ' + checked + '>';
       }
    
       function initCheckBoxEvent(){

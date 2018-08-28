@@ -13,8 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import app.service.NotifyService;
-import app.service.TopicListProvider;
+import app.util.ExternalProperties;
 
 /**
  * @author AdarshSinghal
@@ -33,9 +38,13 @@ public class PublishServlet extends HttpServlet {
 
 		if (pathInfo.equals("/api/topic/list")) {
 
-			TopicListProvider topicService = new TopicListProvider();
-			String topicListJson = topicService.getTopicListJson();
+			String topics = ExternalProperties.getAppConfig("app.gc.pubsub.topic.layer1");
 
+			Gson gson = new GsonBuilder().create();
+			JsonElement topicJsonArr = gson.toJsonTree(topics.split(","));
+			JsonObject topicListJson = new JsonObject();
+			topicListJson.add("topics", topicJsonArr);
+			
 			resp.setContentType("application/json");
 			PrintWriter pw = resp.getWriter();
 			pw.print(topicListJson);
