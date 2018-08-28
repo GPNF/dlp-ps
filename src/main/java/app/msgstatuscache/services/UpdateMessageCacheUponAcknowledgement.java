@@ -60,7 +60,7 @@ public class UpdateMessageCacheUponAcknowledgement extends HttpServlet {
 
 		Gson gson = new Gson();
 		JsonDataContainer container = gson.fromJson(req.getReader(), JsonDataContainer.class);
-		new DbQueryAndUpdateOps("WEB-INF/config_table.properties").insertIntoTable(container);
+		new DbQueryAndUpdateOps("config_table.properties").insertIntoTable(container);
 
 	}
 

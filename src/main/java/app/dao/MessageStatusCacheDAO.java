@@ -15,7 +15,7 @@ public class MessageStatusCacheDAO {
 
 	public MessageStatusCacheDAO() {
 		super();
-		this.adapter = new PropertyParserAndConfigAdapter("WEB-INF/logging_configuration.properties");
+		this.adapter = new PropertyParserAndConfigAdapter("logging_configuration.properties");
 		this.params = this.adapter.readPropertiesAndSetParameters();
 	}
 

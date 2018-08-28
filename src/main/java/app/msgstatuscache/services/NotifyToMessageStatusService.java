@@ -68,7 +68,7 @@ public class NotifyToMessageStatusService extends HttpServlet {
 		JsonParser parser = JacksonFactory.getDefaultInstance().createJsonParser(inputStream);
 		parser.skipToKey("message");
 		PubsubMessage message = parser.parseAndClose(PubsubMessage.class);
-		new DbOps("WEB-INF/config_table.properties")
+		new DbOps("config_table.properties")
 				.insertIntoTable(message.getAttributes().get("globalTransactionId"));
 
 	}

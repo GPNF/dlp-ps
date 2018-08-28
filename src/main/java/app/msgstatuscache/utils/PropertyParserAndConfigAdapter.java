@@ -1,19 +1,24 @@
 package app.msgstatuscache.utils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
 
 public class PropertyParserAndConfigAdapter {
+//	private Properties propertiesObject;
+//	private String propertyFilePath;
+//	private ConfigParams params;
+
 	private Properties propertiesObject;
-	private String propertyFilePath;
+	private ClassLoader classLoaderObject;
+	private InputStream inStreamObject;
 	private ConfigParams params;
 
 	public PropertyParserAndConfigAdapter(String path) {
 		this.propertiesObject = new Properties();
-		this.propertyFilePath = path;
+		this.classLoaderObject = Thread.currentThread().getContextClassLoader();
+		this.inStreamObject = this.classLoaderObject.getResourceAsStream(path);
 	}
 
 	/**
@@ -23,10 +28,13 @@ public class PropertyParserAndConfigAdapter {
 	 * @return ConfigParams object
 	 */
 	public ConfigParams readPropertiesAndSetParameters() {
-		// try with resources
-		try (InputStream input = new FileInputStream(this.propertyFilePath)) {
-			this.propertiesObject.load(input);
-			// actual exchange of data occurs here
+		// Properties propertiesObject = new Properties();
+		// ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		// InputStream stream = loader.getResourceAsStream("myProp.properties");
+		// prop.load(stream);
+
+		try {
+			this.propertiesObject.load(this.inStreamObject);
 			this.params = new ConfigParams.ParamsBuilder()
 					.setDatabaseName(this.propertiesObject.getProperty("database"))
 					.setUserName(this.propertiesObject.getProperty("username"))
@@ -36,10 +44,14 @@ public class PropertyParserAndConfigAdapter {
 					.setTableName(this.propertiesObject.getProperty("tablename"))
 					.setTopicName(this.propertiesObject.getProperty("logging.topic.name"))
 					.setSubscriptionName(this.propertiesObject.getProperty("logging.subscription.name")).build();
-		} catch (IOException | SQLException e) {
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 		return this.params; // temporary
 	}
 
