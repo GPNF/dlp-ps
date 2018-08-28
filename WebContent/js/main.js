@@ -3,8 +3,6 @@ $(document).ready(function(){
 	// Load topics into select list
 	(function getTopics(){
 		$.get('/api/topic/list', function(data){
-			$('#topic-loading').remove();
-
 			if(data.topics.length>1){
 				var allOption = '<option value='+data.topics+'>All</option>';
 				$('#topic-name-select').append(allOption);

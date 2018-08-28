@@ -43,9 +43,7 @@
 
 					<div class="form-group">
 						<label for="topic-name">Topic Name:</label> 
-						<i id="topic-loading"
-							class="fa fa-spinner fa-pulse fa-1x fa-fw"
-							style="font-weight: bold"></i> <select id="topic-name-select"
+						<select id="topic-name-select"
 							name="topic-name" class="form-control">
 						</select>
 					</div>
