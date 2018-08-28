@@ -65,7 +65,7 @@ public class PublisherDao {
 		ps.setString(3, publisher.getMessage());
 		ps.setTimestamp(4, publishTime);
 		ps.setString(5, publisher.getGlobalTransactionId());
-
+		System.out.println(publisher.getGlobalTransactionId());
 		int rowsAffected = ps.executeUpdate();
 		return rowsAffected;
 

@@ -55,10 +55,13 @@ public class DeIdentifier {
 				.setDeidentifyConfig(deidentifyConfig).setItem(contentItem).build();
 
 		// Execute the deidentification request
-		DeidentifyContentResponse response = DlpServiceClient.create().deidentifyContent(request);
+		DlpServiceClient client = DlpServiceClient.create();
+		DeidentifyContentResponse response = client.deidentifyContent(request);
 
 		String result = response.getItem().getValue();
-		System.out.println(result);
+
+		client.shutdown();
+
 		return result;
 
 	}

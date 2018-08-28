@@ -20,7 +20,7 @@
         Published on ${fn:length(messageIds)} topics</div>
 
       <div class="card-body">
-        <b>Global Transaction Id:</b>
+        <b>Global Transaction Id:</b><br/>
         <%=request.getAttribute("gbTxnId")%><hr>
          <b>Message Id:</b> <br/>
         <c:forEach items="${messageIds}" var="msgId">
@@ -32,7 +32,7 @@
           <a class="btn btn-primary float-left"
           href="/index.jsp">&lt;&lt;Back</a>
           <span class="span4 text-center"><a class="btn btn-success"
-          href="/pages/publishdata.jsp">Published Messages</a></span>
+          href="/pages/publishdata.jsp">Show Table</a></span>
           <a class="btn btn-primary float-right"
           href="/pages/syncpullclient.jsp">Pull&gt;&gt;</a>
          </div>
