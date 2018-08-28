@@ -62,7 +62,8 @@ public class DLPService {
 		InspectContentRequest request = InspectContentRequest.newBuilder()
 				.setParent(ProjectName.of(Constants.PROJECT_ID).toString()).setInspectConfig(inspectConfig).setItem(contentItem)
 				.build();
-		InspectContentResponse inspectContentResponse = DlpServiceClient.create().inspectContent(request);
+		DlpServiceClient client = DlpServiceClient.create();
+		InspectContentResponse inspectContentResponse = client.inspectContent(request);
 		// Finding finding = response.getResult().getFindingsList().get(0);
 		List<Finding> findingList = inspectContentResponse.getResult().getFindingsList();
 
@@ -78,6 +79,7 @@ public class DLPService {
 					inspectResList.add(inspectRes);
 				}
 			}
+			client.shutdown();
 			return inspectResList;
 
 		}

@@ -18,7 +18,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import app.model.InspectResult;
-import app.service.DLPService;
+import app.service.NotifyService;
 
 @WebServlet(name = "Scan Data", urlPatterns = { "/inspect" })
 public class InspectServlet extends HttpServlet {
@@ -32,9 +32,9 @@ public class InspectServlet extends HttpServlet {
 		String inputJson = getInputData(request);
 		String inputMessage = getInputMessage(inputJson);
 
-		DLPService dlpService = new DLPService();
-		List<InspectResult> inspectResList = dlpService.getInspectionResult(inputMessage);
-		String deidentifiedRes = dlpService.getDeIdentifiedString(inputMessage);
+		NotifyService notifyService = new NotifyService();
+		List<InspectResult> inspectResList = notifyService.inspect(inputMessage);
+		String deidentifiedRes = notifyService.deIdentify(inputMessage);
 
 		if (inspectResList.size() > 0) {
 			returnResponseJson(httpResponse, inspectResList, deidentifiedRes);
