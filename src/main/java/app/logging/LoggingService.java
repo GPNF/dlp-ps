@@ -86,7 +86,7 @@ public class LoggingService extends HttpServlet {
 		JsonParser parser = JacksonFactory.getDefaultInstance().createJsonParser(inputStream);
 		parser.skipToKey("message");
 		PubsubMessage message = parser.parseAndClose(PubsubMessage.class);
-		new LogTableOperations("WEB-INF/logging_configuration.properties").makeAnEntryToLog(message);
+		new LogTableOperations("logging_configuration.properties").makeAnEntryToLog(message);
 	}
 
 }
