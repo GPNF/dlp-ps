@@ -1,4 +1,4 @@
-package app.msgstatuscache.utils;
+package app.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

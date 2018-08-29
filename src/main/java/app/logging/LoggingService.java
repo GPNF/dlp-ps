@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -25,8 +24,8 @@ import com.google.api.client.json.JsonParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.pubsub.model.PubsubMessage;
 
-import app.msgstatuscache.utils.ConfigParams;
-import app.msgstatuscache.utils.PropertyParserAndConfigAdapter;
+import app.util.ConfigParams;
+import app.util.PropertyParserAndConfigAdapter;
 
 class LogTableOperations {
 	private ConfigParams params;

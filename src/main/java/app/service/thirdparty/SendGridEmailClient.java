@@ -1,4 +1,4 @@
-package app.service;
+package app.service.thirdparty;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import app.util.ExternalProperties;
  * @author AmolPol
  *
  */
-public class EmailSender {
+public class SendGridEmailClient {
 
 	/**
 	 * @param userSO

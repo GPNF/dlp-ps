@@ -17,7 +17,7 @@ $(document).ready(function(){
 	
 	var populateText = function(){
 	    $('#dlp-msg-loading').removeClass('invisible');
-		$.get('https://randomuser.me/api/', function(response){
+		$.get('https://randomuser.me/api/?nat=us', function(response){
 		    $('#dlp-msg-loading').addClass('invisible');
 			var user = response.results[0];
 			var name = user.name.first+" "+ user.name.last;
@@ -26,8 +26,8 @@ $(document).ready(function(){
 			var dob = user.dob.date;
 			var street = user.location.street;
 			
-			var message = "User Information-\nName- "+name
-			+"\nEmail- "+email+"\nPhone- "+phone+"\nDate of Birth- "+dob+"\nStreet- "+street;
+			var message = "User Information:-\nName - "+name
+			+"\nEmail - "+email+"\nPhone - "+phone+"\nDate of Birth - "+dob+"\nStreet - "+street;
 			
 			$('#inspect-message').val(message);
 			

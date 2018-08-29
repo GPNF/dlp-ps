@@ -19,6 +19,7 @@ table tr th {
 	color: white;
 	text-align: left;
 	vertical-align: center;
+	width: 100%;
 }
 </style>
 <script
@@ -27,7 +28,7 @@ table tr th {
 <body>
 	<jsp:include page="/parts/header.html" />
 	<div id="pull-data" class="mt-5 invisible">
-		<table id="pull-datatable" class="display" style="">
+		<table id="pull-datatable" class="display">
 			<thead>
 				<tr>
 					<th>Pull Time</th>

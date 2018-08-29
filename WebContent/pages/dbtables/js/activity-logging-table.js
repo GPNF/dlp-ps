@@ -18,9 +18,11 @@ $(document).ready(
         {
           "data" : "messageId"
         }, {
-          "data" : function(data){
-        	  var html = '<span>'+data.messageData+'</span>'
-        	  return html;
+          "data" : function(d) {
+            var psMsgData = JSON.stringify(d);
+            var message = JSON.parse(psMsgData).messageData.replace(/\n/g,"<br>");
+        
+            return fixWidth(message, 300);
           }
         },
         {
@@ -38,5 +40,12 @@ $(document).ready(
         },
         mark : true
       });
+      
+      function fixWidth(columnData, width){
+        var result = '<span style="display:block;width:'
+          +width+'px; word-wrap:break-word;">'
+          + columnData+ '</span>';
+        return result;
+      }
 
     });

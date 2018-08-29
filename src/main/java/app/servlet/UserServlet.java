@@ -19,13 +19,13 @@ import app.util.NotifyUtility;
  * Servlet implementation class Test
  */
 @WebServlet(name = "UserServlet", urlPatterns = { "/userService" })
-public class UserService extends HttpServlet {
+public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public UserService() {
+	public UserServlet() {
 		super();
 	}
 
@@ -65,11 +65,11 @@ public class UserService extends HttpServlet {
 		System.out.println(
 				"messageData " + req.getMessageData() + " id " + req.getMessageId() + "flag" + req.getDeliveryFlag());
 
-		boolean status = NotifyUsers(req);
-		response.getWriter().print("Hello Do Post method called Result !\r\n" + status);
+		boolean status = notifyUsers(req);
+		response.getWriter().print("Status !\r\n" + status);
 	}
 
-	private boolean NotifyUsers(RequestMapper req) {
+	private boolean notifyUsers(RequestMapper req) {
 		NotifyUtility utility = new NotifyUtility();
 		boolean status = false;
 		try {
