@@ -1,4 +1,4 @@
-package app.service;
+package app.service.thirdparty;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -11,7 +11,7 @@ import app.util.ExternalProperties;
  * @author AmolPol
  *
  */
-public class SmsSender {
+public class TwilioSmsClient {
 
 	/**
 	 * @param userDetailsSO

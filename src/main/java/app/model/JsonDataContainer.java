@@ -1,4 +1,4 @@
-package app.msgstatuscache.datacontainers;
+package app.model;
 
 /**
  * @author Aniruddha

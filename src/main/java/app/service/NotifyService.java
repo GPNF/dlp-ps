@@ -15,6 +15,12 @@ import app.service.dlp.DLPService;
  */
 public class NotifyService {
 
+	private DLPService dlpService;
+
+	public NotifyService() {
+		dlpService = new DLPService();
+	}
+
 	/**
 	 * Publish messages on provided list of topics.
 	 * 
@@ -38,7 +44,6 @@ public class NotifyService {
 	 * @throws IOException
 	 */
 	public List<InspectResult> inspect(String inputMessage) throws IOException {
-		DLPService dlpService = new DLPService();
 		List<InspectResult> inspectResults = dlpService.getInspectionResult(inputMessage);
 		return inspectResults;
 	}
@@ -51,7 +56,6 @@ public class NotifyService {
 	 * @throws IOException
 	 */
 	public String deIdentify(String inputMsg) throws IOException {
-		DLPService dlpService = new DLPService();
 		String deIdentifiedStr = dlpService.getDeIdentifiedString(inputMsg);
 		return deIdentifiedStr;
 	}

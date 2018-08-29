@@ -22,7 +22,7 @@
 	<jsp:include page="/parts/header.html" />
 	<div class="container">
 		<div id="logging-data" class="mt-5 invisible">
-			<table id="logging-datatable" class="display" style="">
+			<table id="logging-datatable" class="display">
 				<thead>
 					<tr>
 						<th>Id</th>

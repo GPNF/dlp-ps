@@ -35,8 +35,13 @@ $(document).ready(function() {
                 {
                   "data" : function(d) {
                     var psMsgData = JSON.stringify(d);
-                    return JSON.parse(psMsgData).message.replace(/\n/g,
-                        "<br>");
+                    var message = JSON.parse(psMsgData).message.replace(/\n/g,"<br>");
+                    
+                    var result = '<span style="display:block;width:300px;word-wrap:break-word;">'
+                      + message+
+                  '</span>';
+                    
+                    return result;
                   }
                 },
                 {
@@ -49,7 +54,7 @@ $(document).ready(function() {
                   "data" : function(d) {
                     var ackIdData = JSON.stringify(d);
                     var ackId = JSON.parse(ackIdData).ackId;
-                    var result = '<span style="display:block;width:270px;word-wrap:break-word;">'
+                    var result = '<span style="display:block;width:200px;word-wrap:break-word;">'
                         + ackId
                     '</span>';
                     return result;

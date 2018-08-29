@@ -8,8 +8,8 @@ import javax.servlet.ServletException;
 import app.dao.UserDetailsDao;
 import app.model.RequestMapper;
 import app.model.UserDetailsSO;
-import app.service.EmailSender;
-import app.service.SmsSender;
+import app.service.thirdparty.SendGridEmailClient;
+import app.service.thirdparty.TwilioSmsClient;
 import app.servlet.HttpClientRequestHandler;
 
 /**
@@ -87,7 +87,7 @@ public class NotifyUtility {
 		String ack = null;
 		boolean isSmsEnabled = null != userDetails.getSmsFlag() && userDetails.getSmsFlag().equalsIgnoreCase(YES);
 		if (isSmsEnabled) {
-			SmsSender sms = new SmsSender();
+			TwilioSmsClient sms = new TwilioSmsClient();
 			ack = sms.sendSms(userDetails, message);
 
 		}
@@ -102,7 +102,7 @@ public class NotifyUtility {
 		String ack = null;
 		boolean isEmailEnabled = null != userDetails.getEmailFlag() && userDetails.getEmailFlag().equalsIgnoreCase(YES);
 		if (isEmailEnabled) {
-			EmailSender mail = new EmailSender();
+			SendGridEmailClient mail = new SendGridEmailClient();
 			ack = mail.sendEmail(userDetails, message);
 		}
 		return ack;
