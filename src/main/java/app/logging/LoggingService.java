@@ -1,12 +1,14 @@
 package app.logging;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -41,7 +43,7 @@ class LogTableOperations {
 		this.params = this.adapter.readPropertiesAndSetParameters();
 	}
 
-	public void makeAnEntryToLog(PubsubMessage message) {
+	public void makeAnEntryToLog(PubsubMessage message) throws UnsupportedEncodingException {
 
 		try (Connection conn = this.params.getConn()) {
 			String query = "insert into " + this.params.getTableName().trim()
@@ -56,11 +58,12 @@ class LogTableOperations {
 			} catch (ParseException e) {
 				logger.info(e.getMessage());
 			}
+			
 
 			Timestamp publishTime = new Timestamp(date.getTime());
 			try {
 				statement.setString(1, message.getMessageId().trim());
-				statement.setString(2, message.getData().trim());
+				statement.setString(2, message.getData());
 				statement.setString(3, this.params.getSubscriberName());
 				statement.setTimestamp(4, publishTime);
 				statement.setString(5, message.getAttributes().get("globalTransactionId"));

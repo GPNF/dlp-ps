@@ -14,6 +14,16 @@ $(document).ready(function() {
 	if(pathname==='/dbtables/user-details-table.jsp'){
 	  $('#user-pref-data').addClass('active');
 	}
+	
+	
+	
+	if(pathname==='/dbtables/activity-logging-table.jsp'){
+		  $('#activity-logging-data').addClass('active');
+	}
+	
+	if(pathname==='/dbtables/message-status-table.jsp'){
+		  $('#message-status-data').addClass('active');
+	}
 
 		
 	$('#top-header .navbar-nav a').click(function() {

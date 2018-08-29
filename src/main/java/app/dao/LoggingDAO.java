@@ -1,45 +1,50 @@
 package app.dao;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import app.model.LoggingModel;
 
-import app.msgstatuscache.utils.ConfigParams;
-import app.msgstatuscache.utils.PropertyParserAndConfigAdapter;
-
 public class LoggingDAO {
-	private ConfigParams params;
-	private PropertyParserAndConfigAdapter adapter;
 
-	public LoggingDAO() {
+	private Connection connection;
+
+	public LoggingDAO() throws SQLException {
 		super();
-		this.adapter = new PropertyParserAndConfigAdapter("logging_configuration.properties");
-		this.params = this.adapter.readPropertiesAndSetParameters();
+		DBConnectionProvider connProvider = new DBConnectionProvider();
+		connection = connProvider.getConnection();
 	}
 
-	public List<LoggingModel> getAllFieldDetails() {
+	public List<LoggingModel> getAllFieldDetails() throws SQLException, UnsupportedEncodingException {
 		LoggingModel loggingModelObject;
-		List<LoggingModel> loggingEntryList = new ArrayList();
+		List<LoggingModel> loggingEntryList = new ArrayList<>();
 		final String sql = "SELECT" + " id, message_id, message_data, subscription_name,"
 				+ "  published_timestamp, glo_tran_id, topic_name FROM activity_logging";
-		try (ResultSet rs = this.params.getConn().prepareStatement(sql).executeQuery()) {
-			while (rs.next()) {
-				loggingModelObject = getTableDetails(rs);
-				loggingEntryList.add(loggingModelObject);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			loggingModelObject = getTableDetails(rs);
+			loggingEntryList.add(loggingModelObject);
 		}
+
 		return loggingEntryList;
 	}
 
-	public LoggingModel getTableDetails(ResultSet rs) throws SQLException {
+	public LoggingModel getTableDetails(ResultSet rs) throws SQLException, UnsupportedEncodingException {
+
+		String b64msg = rs.getString("message_data");
+		byte[] decoded = Base64.getMimeDecoder().decode(b64msg.getBytes("UTF-8"));
+
 		return new LoggingModel.LoggingBuilder().setAutoIncrId(rs.getString("id"))
-				.setMessageId(rs.getString("message_id")).setMessageData(rs.getString("message_data"))
+				.setMessageId(rs.getString("message_id")).setMessageData(new String(decoded))
 				.setSubscriptionName(rs.getString("subscription_name"))
 				.setPublishedTimestamp(rs.getString("published_timestamp"))
 				.setGlobalTransactionId(rs.getString("glo_tran_id")).setTopicName(rs.getString("topic_name"))
