@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.protobuf.ByteString;
+import com.google.pubsub.v1.PubsubMessage;
 
 import app.service.NotifyService;
 import app.util.ExternalProperties;
@@ -59,6 +61,9 @@ public class PublishServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String topicName = req.getParameter("topic-name");
 		String message = req.getParameter("message");
+		String srcAuthLevel = req.getParameter("src-auth-level");
+		System.out.println(srcAuthLevel); 
+		//if(srcAuthLevel)
 
 		if (topicName == null || message == null) {
 			resp.sendError(400);
@@ -68,8 +73,15 @@ public class PublishServlet extends HttpServlet {
 		List<String> topics = getTopicList(topicName);
 
 		String gbTxnId = "g" + new Date().getTime() + "r" + (int) (Math.random() * 100);
+		
+		ByteString data = ByteString.copyFromUtf8(message);
+		PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
+				.putAttributes("globalTransactionId", gbTxnId)
+				.putAttributes("srcAuthLevel", srcAuthLevel)
+				.build();
+		System.out.println("From Publish Servlet, The PubSub Message is\n"+ pubsubMessage);
 		NotifyService notifyService = new NotifyService();
-		List<String> messageIds = notifyService.publishMessage(topics, message, gbTxnId);
+		List<String> messageIds = notifyService.publishMessage(topics, pubsubMessage);
 
 		req.setAttribute("gbTxnId", gbTxnId);
 		req.setAttribute("messageIds", messageIds);

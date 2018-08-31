@@ -3,6 +3,8 @@ package app.service;
 import java.io.IOException;
 import java.util.List;
 
+import com.google.pubsub.v1.PubsubMessage;
+
 import app.model.InspectResult;
 import app.service.dlp.DLPService;
 
@@ -29,10 +31,10 @@ public class NotifyService {
 	 * @param message
 	 * @return list of message ids
 	 */
-	public List<String> publishMessage(List<String> topics, String gbTxnId, String message) {
+	public List<String> publishMessage(List<String> topics, PubsubMessage pubsubMessage) {
 
 		NotifySvcMsgPublisher publisher = new NotifySvcMsgPublisher();
-		List<String> messageIds = publisher.publishMessage(topics, gbTxnId, message);
+		List<String> messageIds = publisher.publishMessage(topics, pubsubMessage);
 		return messageIds;
 	}
 
