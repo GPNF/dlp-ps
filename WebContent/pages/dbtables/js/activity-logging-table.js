@@ -11,6 +11,7 @@ $(document).ready(
           targets : 0
         } ],
         fixedColumns : true,
+        "order" : [ [ 5, 'desc' ] ],
 
         "columns" : [ {
           "data" : "autoIncrId"

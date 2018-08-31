@@ -1,5 +1,8 @@
+table{
+	border: 1px solid black;
+}
 table tr th {
-	background: #337ab7;
+	background: #000;
 	color: white;
 	text-align: left;
 	vertical-align: center;
@@ -33,8 +36,8 @@ table tr th {
   cursor: pointer;
 }
 .checkbox-container input:checked ~ .checkmark {
-  border: 1px solid #4b9832;
-  background: #4b9832;
+  border: 1px solid #000;
+  background: #000;
 }
 .checkbox-container input:checked ~ .checkmark:after {
   display: block;
@@ -71,5 +74,5 @@ table tr th {
   transform: rotate(45deg);
 }
 .checkbox-container:hover input ~ .checkmark {
-  border-color: #4b9832;
+  border-color: #000;
 }

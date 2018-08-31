@@ -12,25 +12,26 @@
   <head>
     <%@ include file="/parts/html-head.jsp" %>
     <link rel="stylesheet" type="text/css" href="/pages/dbtables/css/datatable-style.css" />
-    <title>Activity Logging</title>
+    <title>Subscriber2</title>
   </head>
   <body>
     <%@ include file="/parts/header.jsp"%>
-    <div class="row">
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        <div id="message-status-data" class="mt-5 invisible">
-          <table id="message-status-datatable" class="display">
-            <thead>
-              <tr>
-                <th>Global Transaction Id</th>
-                <th>Delivery Status</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-4"></div>
+    
+    <div id="pull-data" class="mt-5 invisible">
+      <h2 style="margin-bottom:20px; text-align:center">Subscriber Table</h2>
+      <table id="pull-datatable" class="display">
+        <thead>
+          <tr>
+            <th>Pull Time</th>
+            <th>Published Time</th>
+            <th>Message Id</th>
+            <th>Message</th>
+            <th>Subscription</th>
+            <th>Global Txn Id</th>
+            <th>Ack Id</th>
+          </tr>
+        </thead>
+      </table>
     </div>
     <div id="loading-div" class="invisible">
       <i id="loading" class="fa fa-refresh fa-spin"
@@ -43,6 +44,6 @@
     <script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
     <script
       src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
-    <script src="./js/message-status-table.js"></script>
+    <script src="./js/pulldata.js"></script>
   </body>
 </html>
