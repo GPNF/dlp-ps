@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 
 import app.dao.PublisherDao;
@@ -23,13 +22,9 @@ public class NotifySvcMsgPublisher {
 
 	private static final String YYYY_MM_DD_HH_MM_SS_A = "yyyy-MM-dd hh:mm:ss a";
 
-	public List<String> publishMessage(List<String> topics, String message, String gbTxnId) {
+	public List<String> publishMessage(List<String> topics, PubsubMessage pubsubMessage) {
 
 		List<String> messageIds = new ArrayList<>();
-
-		ByteString data = ByteString.copyFromUtf8(message);
-		PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
-				.putAttributes("globalTransactionId", gbTxnId).build();
 
 		topics.forEach(topic -> {
 
@@ -43,8 +38,8 @@ public class NotifySvcMsgPublisher {
 				e1.printStackTrace();
 			}
 
-			PublisherMessage publisherMessage = new PublisherMessage(message, topic);
-			publisherMessage.setGlobalTransactionId(gbTxnId);
+			PublisherMessage publisherMessage = new PublisherMessage(pubsubMessage.getData().toStringUtf8(), topic);
+			publisherMessage.setGlobalTransactionId(pubsubMessage.getAttributesOrThrow("globalTransactionId"));
 			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
 			String publishTime = formatter.format(new Date());
 			publisherMessage.setPublishTime(publishTime);
