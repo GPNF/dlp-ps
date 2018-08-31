@@ -18,7 +18,7 @@ public class TwilioSmsClient {
 	 * @param message
 	 * @return String
 	 */
-	public String sendSms(UserDetailsSO userDetailsSO, String message) {
+	public String sendSms(String receiverMobNumber, String actualMessage) {
 
 		String sid = ExternalProperties.getAppConfig("sms.auth.sid");
 		String token = ExternalProperties.getAppConfig("sms.auth.token");
@@ -32,10 +32,10 @@ public class TwilioSmsClient {
 		 * TwilioRestClient twilioRestClient = clientCreator.getClient();
 		 * Twilio.setRestClient(twilioRestClient);
 		 */
-		System.out.println("MobNo. " + userDetailsSO.getMobileNumber());
-		Message twilioMessage = Message.creator(new PhoneNumber(userDetailsSO.getMobileNumber()), // to
+		System.out.println("MobNo. " + receiverMobNumber);
+		Message twilioMessage = Message.creator(new PhoneNumber(receiverMobNumber), // to
 				new PhoneNumber(ExternalProperties.getAppConfig("sms.sender.number")), // from
-				message).create();
+				actualMessage).create();
 
 		
 
