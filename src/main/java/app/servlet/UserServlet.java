@@ -57,27 +57,31 @@ public class UserServlet extends HttpServlet {
 		String globalMsgId = request.getParameter("messageId");
 		String messageData = request.getParameter("messageData");
 
-		System.out.println("messageData " + messageData + " id " + globalMsgId);
-
 		Reader reader = request.getReader();
 		Gson gson = new Gson();
 		RequestMapper req = gson.fromJson(reader, RequestMapper.class);
 		System.out.println(
-				"messageData " + req.getMessageData() + " id " + req.getMessageId() + "flag" + req.getDeliveryFlag());
+				"messageData " + req.getMessageData() + " id " + req.getMessageId() + " flag " + req.getDeliveryFlag());
 
-		boolean status = notifyUsers(req);
-		response.getWriter().print("Status !\r\n" + status);
+		boolean status;
+		try {
+			 checkUserPrefs(req);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//response.getWriter().print("Status !\r\n " + status);
 	}
 
-	private boolean notifyUsers(RequestMapper req) {
+	private void checkUserPrefs(RequestMapper req) throws Exception {
 		NotifyUtility utility = new NotifyUtility();
-		boolean status = false;
+		
 		try {
-			status = utility.checkAllUserPreference(req);
+			utility.checkAllUserPreference(req);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return status;
+		
 	}
 
 }

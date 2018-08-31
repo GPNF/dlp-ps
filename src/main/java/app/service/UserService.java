@@ -6,7 +6,9 @@ import javax.servlet.ServletException;
 
 import app.model.RequestMapper;
 import app.model.SubscriberMessage;
+import app.model.UserDetailsSO;
 import app.servlet.HttpClientRequestHandler;
+import app.util.ExternalProperties;
 
 public class UserService {
 
@@ -16,8 +18,9 @@ public class UserService {
 			RequestMapper req = new RequestMapper();
 			req.setMessageId(subMessage.getGlobalTransactionId());
 			req.setMessageData(subMessage.getMessage());
-			reqHandler.processRequest(req, "https://possible-haven-212003.appspot.com/userService");
+			reqHandler.processRequest(req, ExternalProperties.getAppConfig("user.service.url"));
 		}
 	}
 
+	
 }

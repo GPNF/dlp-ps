@@ -24,7 +24,7 @@ public class SendGridEmailClient {
 	 * @param message
 	 * @return String
 	 */
-	public String sendEmail(UserDetailsSO userSO, String message) {
+	public String sendEmail(String receiverId, String actualMessage) {
 
 		// ExternalProperties.getDbConfig("email.sendgrid.apikey");
 		Response response=null;
@@ -32,8 +32,8 @@ public class SendGridEmailClient {
 		Email from = new Email(ExternalProperties.getAppConfig("email.sendgrid.user"));
 		String subject = "Sendgrid test mail";
 
-		Email to = new Email(userSO.getEmailId());
-		Content content = new Content("text/plain", message);
+		Email to = new Email(receiverId);
+		Content content = new Content("text/plain", actualMessage);
 		Mail mail = new Mail(from, subject, to, content);
 
 		SendGrid sg = new SendGrid(ExternalProperties.getAppConfig("email.sendgrid.apikey"));
