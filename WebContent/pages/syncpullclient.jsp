@@ -5,7 +5,7 @@
 <%@page import="app.service.TextTranslator, java.util.Locale"%>
 <%
   Locale locale = request.getLocale();
-  TextTranslator svc = new TextTranslator(locale.getLanguage());
+  TextTranslator translator = new TextTranslator(locale.getLanguage());
   %>
 <!DOCTYPE html>
 <html>
@@ -29,23 +29,25 @@
           <div id="sync-pull-form-div">
             <form id="pull-form" action="/pullmessage" method="POST">
               <div class="form-group">
-                <label for="max-message">Maximum Message</label> <input
+                <label for="max-message"><%=translator.translate("Maximum Message")%></label> <input
                   id="max-message" name="max-message" type="number"
                   value="100" min="1" class="form-control" />
               </div>
               <div class="form-group">
-                <label for="return-immediately">Return Immediately</label>
+                <label for="return-immediately"><%=translator.translate("Return Immediately")%></label>
                 <select id="return-immediately" name="return-immediately"
                   class="form-control">
-                  <option value="true">True</option>
-                  <option value="false">False</option>
+                  <option value="true"><%=translator.translate("True")%></option>
+                  <option value="false"><%=translator.translate("False")%></option>
                 </select>
               </div>
-              <button id="pull-msg-btn" style="width: 133px;"
-                class="btn btn-dark">Pull Messages</button>
+              <button id="pull-msg-btn" style="min-width: 133px;"
+                class="btn btn-dark"><%=translator.translate("Pull Messages")%></button>
+                
+               <a id="pull-datatable-btn" href="/pages/dbtables/pulldata.jsp" target="_blank"
+                class="btn btn-dark float-right"><%=translator.translate("Pull Table")%>&gt;&gt;</a>
               <c:if test="${noMsg}">
-                <span class="text-success" style="margin-left: 10px;">No
-                new messages.</span>
+                <div class="text-success"><%=translator.translate("No new messages")%>.</div>
               </c:if>
             </form>
           </div>

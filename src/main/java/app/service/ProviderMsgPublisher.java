@@ -1,7 +1,6 @@
 package app.service;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.PubsubMessage.Builder;
 
 import app.dao.PublisherDao;
-import app.dao.UpdateNotifierPubsubDao;
 import app.model.PublisherMessage;
 import app.model.UserMessageSO;
 

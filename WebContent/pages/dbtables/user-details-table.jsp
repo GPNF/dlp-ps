@@ -16,10 +16,14 @@
   </head>
   <body>
     <%@ include file="/parts/header.jsp" %>
-    <h4>User Details &amp; Preference</h4>
     <div class="container">
       <div id="userdetails-data" class="mt-5 invisible">
-        <table id="userdetails-datatable" class="display" style="">
+      <h4><%= svc.translate("User Preference Table") %></h4>
+        <div id="loading-div" class="invisible">
+      <i id="loading" class="fa fa-refresh fa-spin"
+       ></i>
+    </div>
+        <table id="userdetails-datatable" class="display">
           <thead>
             <tr>
               <th>Id</th>
@@ -34,10 +38,7 @@
         </table>
       </div>
     </div>
-    <div id="loading-div" class="invisible">
-      <i id="loading" class="fa fa-refresh fa-spin"
-        style="margin-left: calc(50% - 75px); font-size: 150px"></i>
-    </div>
+    
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script

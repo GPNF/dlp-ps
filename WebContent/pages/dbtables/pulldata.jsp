@@ -4,21 +4,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@page import="app.service.TextTranslator, java.util.Locale"%>
 <%
-  Locale locale = request.getLocale();
-  TextTranslator svc = new TextTranslator(locale.getLanguage());
-  %>
+	Locale locale = request.getLocale();
+	TextTranslator svc = new TextTranslator(locale.getLanguage());
+%>
 <!DOCTYPE html>
 <html>
-  <head>
-    <%@ include file="/parts/html-head.jsp" %>
-    <link rel="stylesheet" type="text/css" href="/pages/dbtables/css/datatable-style.css" />
-    <title>Subscriber2</title>
-  </head>
-  <body>
-    <%@ include file="/parts/header.jsp"%>
-    
+<head>
+<%@ include file="/parts/html-head.jsp"%>
+<link rel="stylesheet" type="text/css"
+  href="/pages/dbtables/css/datatable-style.css" />
+<title>Subscriber2</title>
+</head>
+<body>
+  <%@ include file="/parts/header.jsp"%>
+  <div style="margin:0px 15px 0px 5px">
     <div id="pull-data" class="mt-5 invisible">
-      <h2 style="margin-bottom:20px; text-align:center">Subscriber Table</h2>
+      <h4><%=svc.translate("Notification Service Pull Table")%></h4>
+      <div id="loading-div" class="invisible">
+        <i id="loading" class="fa fa-refresh fa-spin"></i>
+      </div>
       <table id="pull-datatable" class="display">
         <thead>
           <tr>
@@ -32,18 +36,18 @@
           </tr>
         </thead>
       </table>
+
     </div>
-    <div id="loading-div" class="invisible">
-      <i id="loading" class="fa fa-refresh fa-spin"
-        style="margin-left: calc(50% - 75px); font-size: 150px"></i>
-    </div>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script
-      src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
-    <script
-      src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
-    <script src="./js/pulldata.js"></script>
-  </body>
+  </div>
+
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script
+    src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
+  <script
+    src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
+  <script src="./js/pulldata.js"></script>
+</body>
 </html>

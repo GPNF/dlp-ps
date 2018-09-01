@@ -1,7 +1,14 @@
-#inspect-table {
+
+table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    border: ridge;
+}
+
+th{
+	background-color:black !important;
+	color:white;
 }
 
 #inspect-table td, #inspect-table th {

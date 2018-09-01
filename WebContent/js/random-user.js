@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	var counter=0;
-	$('#inspect-message').click(function(){
+	$('#random-user-message').click(function(){
 		startCounting();
 	});
 	
@@ -16,9 +16,9 @@ $(document).ready(function(){
 	};
 	
 	var populateText = function(){
-	    $('#dlp-msg-loading').removeClass('invisible');
+	    $('#msg-loading').removeClass('invisible');
 		$.get('https://randomuser.me/api/?nat=us', function(response){
-		    $('#dlp-msg-loading').addClass('invisible');
+		    $('#msg-loading').addClass('invisible');
 			var user = response.results[0];
 			var name = user.name.first+" "+ user.name.last;
 			var email = user.email;
@@ -29,7 +29,7 @@ $(document).ready(function(){
 			var message = "User Information:-\nName - "+name
 			+"\nEmail - "+email+"\nPhone - "+phone+"\nDate of Birth - "+dob+"\nStreet - "+street;
 			
-			$('#inspect-message').val(message);
+			$('#random-user-message').val(message);
 			
 			
 		});
