@@ -11,6 +11,11 @@ $(document).ready(function() {
 	if(pathname==='/pullmessage' || pathname==='/pulldata.jsp'){
 		$('#pull').addClass('active');
 	}
+	
+	if(pathname==='/pullmessage' || pathname==='/pulldata.jsp'){
+      $('#pull').addClass('active');
+  }
+	
 	if(pathname==='/dbtables/user-details-table.jsp'){
 	  $('#user-pref-data').addClass('active');
 	}

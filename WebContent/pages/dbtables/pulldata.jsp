@@ -13,35 +13,33 @@
 <%@ include file="/parts/html-head.jsp"%>
 <link rel="stylesheet" type="text/css"
   href="/pages/dbtables/css/datatable-style.css" />
-<title>Message Status Table</title>
+<title>Subscriber2</title>
 </head>
 <body>
   <%@ include file="/parts/header.jsp"%>
-
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-
-      <div id="message-status-data" class="mt-5 invisible">
-        <h4><%=svc.translate("Message Status Cache Table")%></h4>
-        <div id="loading-div" class="invisible">
-          <i id="loading" class="fa fa-refresh fa-spin"></i>
-        </div>
-        <table id="message-status-datatable" class="display mt-5">
-          <thead>
-            <tr>
-              <th>Global Transaction Id</th>
-              <th>Delivery Status</th>
-            </tr>
-          </thead>
-        </table>
+  <div style="margin:0px 15px 0px 5px">
+    <div id="pull-data" class="mt-5 invisible">
+      <h4><%=svc.translate("Notification Service Pull Table")%></h4>
+      <div id="loading-div" class="invisible">
+        <i id="loading" class="fa fa-refresh fa-spin"></i>
       </div>
+      <table id="pull-datatable" class="display">
+        <thead>
+          <tr>
+            <th>Pull Time</th>
+            <th>Published Time</th>
+            <th>Message Id</th>
+            <th>Message</th>
+            <th>Subscription</th>
+            <th>Global Txn Id</th>
+            <th>Ack Id</th>
+          </tr>
+        </thead>
+      </table>
 
     </div>
-
-    <div class="col-md-3"></div>
-
   </div>
+
 
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -50,6 +48,6 @@
   <script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
   <script
     src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
-  <script src="./js/message-status-table.js"></script>
+  <script src="./js/pulldata.js"></script>
 </body>
 </html>

@@ -6,7 +6,13 @@ $(document).ready(function() {
   $('#pull-datatable')
       .DataTable(
           {
-            "ajax" : "/pulldata",
+            "ajax" : {
+              "url": "/pulldata",
+              "data": function ( d ) {
+                console.log(d);
+              }
+          }
+                         ,
             "order" : [ [ 0, 'desc' ] ],
             columnDefs : [ {
               width : '20%',

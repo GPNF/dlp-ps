@@ -1,7 +1,7 @@
 $(document).ready(function() {
-
+  
   $('#inspect-btn').click(function() {
-    var message = $('#inspect-message').val();
+    var message = $('#random-user-message').val();
     if (message.length < 1) {
       return;
     }
