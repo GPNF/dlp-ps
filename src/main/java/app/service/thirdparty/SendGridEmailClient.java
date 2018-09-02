@@ -10,7 +10,6 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 
-import app.model.UserDetailsSO;
 import app.util.ExternalProperties;
 
 /**

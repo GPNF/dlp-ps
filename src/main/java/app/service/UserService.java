@@ -28,7 +28,7 @@ public class UserService {
 			MessageStatus requestObject = new MessageStatus();
 			requestObject.setMessageId(subMessage.getGlobalTransactionId());
 			requestObject.setMessageData(subMessage.getMessage());
-			httpClient.post(requestObject, userSvcURL);
+			httpClient.sendPostReturnStatus(requestObject, userSvcURL);
 		}
 	}
 

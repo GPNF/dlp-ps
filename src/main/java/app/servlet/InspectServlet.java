@@ -26,9 +26,9 @@ public class InspectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse httpResponse)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		httpResponse.setContentType("application/json");
+		response.setContentType("application/json");
 		String inputJson = getInputData(request);
 		String inputMessage = getInputMessage(inputJson);
 
@@ -36,12 +36,23 @@ public class InspectServlet extends HttpServlet {
 		List<InspectResult> inspectResList = notifyService.inspect(inputMessage);
 		String deidentifiedRes = notifyService.deIdentify(inputMessage);
 
+		if(inspectResList==null || inspectResList.isEmpty()) {
+			response.setCharacterEncoding("UTF-8");
+			response.setStatus(200);
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("data", "[]");
+			PrintWriter out = response.getWriter();
+			out.print(jsonObject);
+			out.flush();
+			return;
+		}
+		
 		if (inspectResList.size() > 0) {
-			returnResponseJson(httpResponse, inspectResList, deidentifiedRes);
+			returnResponseJson(response, inspectResList, deidentifiedRes);
 		}
 
 		else {
-			PrintWriter out = httpResponse.getWriter();
+			PrintWriter out = response.getWriter();
 			out.println(inputMessage);
 		}
 	}

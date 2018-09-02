@@ -2,6 +2,7 @@ package app.service;
 
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.Translate.TranslateOption;
+import com.google.cloud.translate.TranslateException;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 
@@ -37,11 +38,19 @@ public class TextTranslator {
 			return text;
 		}
 
+		TranslateOption tgtLangTranslateOption = TranslateOption.targetLanguage(targetLang);
+		TranslateOption srcLangTranslateOption = TranslateOption.sourceLanguage(srcLang);
 		Translate translate = TranslateOptions.getDefaultInstance().getService();
-		Translation translation = translate.translate(text, TranslateOption.sourceLanguage(srcLang),
-				TranslateOption.targetLanguage(targetLang));
-		String translatedText = translation.getTranslatedText();
-		System.out.printf("Translation: %s%n", translatedText);
+		Translation translationService;
+		try {
+
+			translationService = translate.translate(text, srcLangTranslateOption,
+					tgtLangTranslateOption);
+		} catch(TranslateException e) {
+			return text;
+		}
+		
+		String translatedText = translationService.getTranslatedText();
 		return translatedText;
 	}
 

@@ -18,18 +18,24 @@
     </b></a>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <%-- <a id="message-source" class="nav-item nav-link"
-          href="/pages/MessageSource.jsp"> <%=textTranslator.translate("Message Source")%></a> --%>
-        <a id="publish" class="nav-item nav-link" href="/"> <%=textTranslator.translate("Publish Message")%>
+        <a id="message-source" class="nav-item nav-link"
+          href="/pages/MessageSource.jsp"> <%=textTranslator.translate("Message Source")%></a>
+        <a id="publish" class="nav-item nav-link" href="/pages/InspectAndPublish.jsp"> <%=textTranslator.translate("Publish Message")%>
         </a><a id="pull" class="nav-item nav-link"
           href="/pages/syncpullclient.jsp"> <%=textTranslator.translate("Pull Client")%>
-        </a> <select
+        </a> 
+        
+        <a id="user-pref-data" class="nav-item nav-link"
+          href="/pages/dbtables/user-details-table.jsp"> 
+          <%=textTranslator.translate("User Preference")%>
+        </a>
+        
+        <select
           style="background-color: black; color: rgba(255, 255, 255, .5) !important; border: none; cursor: pointer;"
-          onchange="window.open(this.value,'_blank');this.value='Database Tables';">
+          onchange="window.open(this.value,'_blank');this.value=this.options[0].text">
           <option class="invisible"><%=textTranslator.translate("Database Tables")%></option>
           <option value="/pages/dbtables/publishdata.jsp"><%=textTranslator.translate("Publisher")%></option>
           <option value="/pages/dbtables/pulldata.jsp"><%=textTranslator.translate("Subscriber")%></option>
-          <option value="/pages/dbtables/user-details-table.jsp"><%=textTranslator.translate("User Preference")%></option>
           <option value="/pages/dbtables/activity-logging-table.jsp"><%=textTranslator.translate("Logging")%></option>
           <option value="/pages/dbtables/message-status-table.jsp"><%=textTranslator.translate("Message Status")%></option>
         </select>

@@ -77,7 +77,6 @@ public class PublishServlet extends HttpServlet {
 		ByteString data = ByteString.copyFromUtf8(message);
 		PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
 				.putAttributes("globalTransactionId", gbTxnId)
-				.putAttributes("srcAuthLevel", srcAuthLevel)
 				.build();
 		System.out.println("From Publish Servlet, The PubSub Message is\n"+ pubsubMessage);
 		NotifyService notifyService = new NotifyService();

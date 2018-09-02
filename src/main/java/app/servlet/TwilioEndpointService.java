@@ -15,7 +15,6 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.pubsub.model.PubsubMessage;
 
 import app.dao.UpdateNotifierPubsubDao;
-import app.service.messagestatus.NotifyToMessageStatusService;
 import app.util.NotifyUtility;
 
 /**
@@ -62,7 +61,6 @@ public class TwilioEndpointService extends HttpServlet {
 			UpdateNotifierPubsubDao dao =new UpdateNotifierPubsubDao();
 			dao.insertPushedDetails(message);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
