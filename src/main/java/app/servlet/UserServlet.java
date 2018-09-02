@@ -54,20 +54,15 @@ public class UserServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 
 		// doGet(request, response);
-		String globalMsgId = request.getParameter("messageId");
-		String messageData = request.getParameter("messageData");
-
 		Reader reader = request.getReader();
 		Gson gson = new Gson();
 		MessageStatus req = gson.fromJson(reader, MessageStatus.class);
 		System.out.println(
 				"messageData " + req.getMessageData() + " id " + req.getMessageId() + " flag " + req.getDeliveryFlag());
 
-		boolean status;
 		try {
 			 checkUserPrefs(req);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//response.getWriter().print("Status !\r\n " + status);

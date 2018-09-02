@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +57,13 @@ public class NotifySvcMsgPublisher {
 
 	}
 
+	public List<String> publishMessage(String commaSeparatedTopics, PubsubMessage pubsubMessage) {
+		List<String> topics = getTopicList(commaSeparatedTopics);
+		List<String> messageIds = publishMessage(topics, pubsubMessage);
+		return messageIds;
+
+	}
+
 	private void persistInDB(PublisherMessage publisherMessage) {
 		try {
 			PublisherDao publisherDao = new PublisherDao();
@@ -63,6 +71,17 @@ public class NotifySvcMsgPublisher {
 		} catch (SQLException | ParseException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<String> getTopicList(String topicName) {
+		List<String> topics;
+		if (topicName.contains(",")) {
+			topics = Arrays.asList(topicName.split(","));
+		} else {
+			topics = new ArrayList<>();
+			topics.add(topicName);
+		}
+		return topics;
 	}
 
 }

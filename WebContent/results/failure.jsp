@@ -20,7 +20,7 @@
     <div class="card" style="width:300px; margin:100px auto;">
       <div class="card-header alert-danger">Failed to publish</div>
       <div class="card-body">
-        <a class="btn btn-primary" style="margin:20px auto;" href="/index.jsp">&lt;&lt;Publish Again</a>
+        <a class="btn btn-primary" style="margin:20px auto;" href="/pages/MessageSource.jsp">&lt;&lt;Message Source</a>
       </div>
     </div>
     <script

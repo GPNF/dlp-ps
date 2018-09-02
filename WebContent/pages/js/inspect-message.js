@@ -10,14 +10,15 @@ $(document).ready(function() {
     var json = {
       "message" : message
     };
-    inspect(json);
+    inspect(JSON.stringify(json));
   });
 
   var inspect = function(jsondata) {
-
+    console.log('POST /inspect');
+    console.log(JSON.stringify(jsondata));
     $.ajax({
       url : '/inspect',
-      data : JSON.stringify(jsondata),
+      data : jsondata,
       type : 'post',
       cache : false,
       complete : function(data) {

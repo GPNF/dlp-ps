@@ -170,7 +170,7 @@ public class NotifyUtility {
 		HttpClientRequestHandler client = new HttpClientRequestHandler();
 
 		String updateStatusSvcURL = ExternalProperties.getAppConfig("updatestatus.service.url");
-		client.post(req, updateStatusSvcURL);
+		client.sendPostReturnStatus(req, updateStatusSvcURL);
 
 	}
 

@@ -22,26 +22,8 @@
   <body>
     <%@ include file="/parts/header.jsp" %>
     <div class="container">
-      <div class="row" style="margin-top: 50px;">
+      <div class="row">
         <div class="col-md-6">
-          <table id="auth-info-table" class="table-bordered table-striped" >
-            <thead>
-              <tr>
-                <th>Auth Level</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>0</td>
-                <td>No access to application</td>
-              </tr>
-              <tr>
-                <td>1,2,3</td>
-                <td>Will be used along with Group Auth level</td>
-              </tr>
-            </tbody>
-          </table>
           <h4 style="margin-bottom: 20px; margin-top: 50px;">DLP -
             <%= svc.translate("Inspection and Deidentification") %>
           </h4>
@@ -59,17 +41,7 @@
         <!-- End of Column 1 -->
         <div class="col-md-6">
           <form id="publish-form" action="/topic/publish" method="POST">
-            <div class="form-group">
-              <label for="src-auth-level-select"><%= svc.translate("Source Authorization Level") %></label>
-              <select id="src-auth-level-select" name="src-auth-level"
-                class="form-control">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
-            </div>
-            <h4 style="margin: 65px 0px 21px 0px;">Pub/Sub -
+            <h4 style="margin: 55px 0px 21px 0px;">Pub/Sub -
               <%= svc.translate("Publish") %>
             </h4>
             <div class="form-group">
@@ -103,8 +75,8 @@
       <!-- End of row -->
       <div style="margin-top: 50px;"></div>
     </div>
-    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
     <script type="text/javascript" src="/js/random-user.js"></script>
-    <script type="text/javascript" src="/js/inspect-message.js"></script>
+    <script type="text/javascript" src="./js/inspect-message.js"></script>
   </body>
 </html>

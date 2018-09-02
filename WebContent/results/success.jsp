@@ -32,10 +32,10 @@
           </c:forEach>
           <hr>
           <div style="text-align: center">
-            <a class="btn btn-primary float-left" href="/index.jsp">&lt;&lt;Back</a>
+            <a class="btn btn-dark float-left" href="/pages/MessageSource.jsp">&lt;&lt;Message Source</a>
             <span class="span4 text-center"><a
-              class="btn btn-success" href="/pages/dbtables/publishdata.jsp">Show
-            Table</a></span> <a class="btn btn-primary float-right"
+              class="btn btn-dark" href="/pages/dbtables/publishdata.jsp">Show Publish
+            Table</a></span> <a class="btn btn-dark float-right"
               href="/pages/syncpullclient.jsp">Pull&gt;&gt;</a>
           </div>
         </div>

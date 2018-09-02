@@ -25,16 +25,16 @@
 
         <div>
 
-          <form>
+          <form action="/notify" method="POST">
 
             <div class="form-group">
               <label for="src-auth-level-select"><%=svc.translate("Source Authorization Level")%></label>
               <select id="src-auth-level-select" name="src-auth-level"
                 class="form-control">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
+                <option value="0">External User (0)</option>
+                <option value="1">Merchant (1)</option>
+                <option value="2">Administrator (2)</option>
+                <option value="3">Executive (3)</option>
               </select>
             </div>
 
@@ -42,9 +42,9 @@
               <label for="group-id-select"><%=svc.translate("Group Id")%></label>
               <select id="group-id-select" name="group-id"
                 class="form-control">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
+                <option value="1">G1 &emsp;&emsp;(Requires Source Authorization Level >= 1)</option>
+                <option value="2">G2 &emsp;&emsp;(Requires Source Authorization Level >= 2)</option>
+                <option value="3">G3 &emsp;&emsp;(Does not exist)</option>
               </select>
             </div>
 
@@ -57,14 +57,17 @@
                 style="font-weight: bold"></i>
 
               <textarea id="random-user-message" name="message"
-                class="form-control" rows="8" cols="8" required></textarea>
+                class="form-control" rows="8" cols="8" required>Sample Text</textarea>
             </div>
 
             <button id="submit-btn" style="min-width: 81px;"
               class="btn btn-dark"><%=svc.translate("Submit")%></button>
-
+              
+              <c:if test="${isExceptionOccured}">
+              <span class="float-right" style="color:red">${exceptionMsg}</span>
+              </c:if>
+              
           </form>
-
         </div>
 
       </div>

@@ -45,10 +45,8 @@ public class PropertyParserAndConfigAdapter {
 					.setTopicName(this.propertiesObject.getProperty("logging.topic.name"))
 					.setSubscriptionName(this.propertiesObject.getProperty("logging.subscription.name")).build();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
