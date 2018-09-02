@@ -18,10 +18,13 @@ import app.service.dlp.DLPService;
 public class NotifyService {
 
 	private DLPService dlpService;
+	//private AuthorizationService authService;
 
 	public NotifyService() {
+		//authService = new AuthorizationService();
 		dlpService = new DLPService();
 	}
+	
 
 	/**
 	 * Publish messages on provided list of topics.
@@ -32,7 +35,7 @@ public class NotifyService {
 	 * @return list of message ids
 	 */
 	public List<String> publishMessage(List<String> topics, PubsubMessage pubsubMessage) {
-
+		
 		NotifySvcMsgPublisher publisher = new NotifySvcMsgPublisher();
 		List<String> messageIds = publisher.publishMessage(topics, pubsubMessage);
 		return messageIds;

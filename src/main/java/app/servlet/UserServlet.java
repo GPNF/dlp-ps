@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import app.model.RequestMapper;
+import app.model.MessageStatus;
 import app.util.NotifyUtility;
 
 /**
@@ -59,7 +59,7 @@ public class UserServlet extends HttpServlet {
 
 		Reader reader = request.getReader();
 		Gson gson = new Gson();
-		RequestMapper req = gson.fromJson(reader, RequestMapper.class);
+		MessageStatus req = gson.fromJson(reader, MessageStatus.class);
 		System.out.println(
 				"messageData " + req.getMessageData() + " id " + req.getMessageId() + " flag " + req.getDeliveryFlag());
 
@@ -73,7 +73,7 @@ public class UserServlet extends HttpServlet {
 		//response.getWriter().print("Status !\r\n " + status);
 	}
 
-	private void checkUserPrefs(RequestMapper req) throws Exception {
+	private void checkUserPrefs(MessageStatus req) throws Exception {
 		NotifyUtility utility = new NotifyUtility();
 		
 		try {

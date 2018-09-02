@@ -1,22 +1,14 @@
 package app.model;
 
 /**
- * @author Aniruddha
+ * @author AmolPol, Aniruddha
  *
  */
-public class JsonDataContainer {
+public class MessageStatus {
 
 	private String messageData;
-	private String deliveryFlag;
 	private String messageId;
-
-	public String getMessageData() {
-		return messageData;
-	}
-
-	public void setMessageData(String messageData) {
-		this.messageData = messageData;
-	}
+	private String deliveryFlag;
 
 	public String getDeliveryFlag() {
 		return deliveryFlag;
@@ -24,6 +16,14 @@ public class JsonDataContainer {
 
 	public void setDeliveryFlag(String deliveryFlag) {
 		this.deliveryFlag = deliveryFlag;
+	}
+
+	public String getMessageData() {
+		return messageData;
+	}
+
+	public void setMessageData(String messageData) {
+		this.messageData = messageData;
 	}
 
 	public String getMessageId() {
@@ -36,8 +36,8 @@ public class JsonDataContainer {
 
 	@Override
 	public String toString() {
-		return "JsonDataContainer [messageData=" + messageData + ", deliveryFlag=" + deliveryFlag + ", messageId="
-				+ messageId + "]";
+		return "RequestMapper [messageData=" + messageData + ", messageId=" + messageId + ", deliveryFlag="
+				+ deliveryFlag + "]";
 	}
 
 }

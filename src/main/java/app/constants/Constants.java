@@ -13,4 +13,10 @@ public class Constants {
 
 	public static final String SUBSCRIPTION_ID = ExternalProperties.getAppConfig("app.gc.pubsub.subscription.s2");
 
+	
+	public static final String TRUE = "true";
+	public static final String IN_PROGRESS = "In-progress";
+	public static final String DELIVERED = "Delivered";
+	
+	
 }

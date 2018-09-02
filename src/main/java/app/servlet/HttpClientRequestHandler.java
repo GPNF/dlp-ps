@@ -3,7 +3,6 @@ package app.servlet;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -13,55 +12,49 @@ import org.apache.http.impl.client.HttpClients;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.model.RequestMapper;
-
+/**
+ * @author AmolPol
+ *
+ */
 public class HttpClientRequestHandler {
 
-	public String processRequest(RequestMapper req, String url) {
-		String requestJson = null;
-		StringEntity entity = null;
-		CloseableHttpResponse response = null;
-		CloseableHttpClient client = null;
-		HttpPost httpPost = null;
-		ObjectMapper mapper = null;
+	/**
+	 * @param data
+	 * @param url
+	 * @return status code
+	 * @throws IOException
+	 */
+	public int post(Object data, String url) throws IOException {
 
-		try {
-			mapper = new ObjectMapper();
-			requestJson = mapper.writeValueAsString(req);
-			entity = new StringEntity(requestJson);
-		} catch (JsonProcessingException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		HttpPost httpPost = getHttpPostRequest(data, url);
 
-		try {
-			client = HttpClients.createDefault();
-			httpPost = new HttpPost(url);
-			httpPost.setEntity(entity);
-			httpPost.setHeader("Accept", "application/json");
-			httpPost.setHeader("Content-type", "application/json");
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = client.execute(httpPost);
+		int statusCode = response.getStatusLine().getStatusCode();
+		if (client != null)
+			client.close();
 
-			response = client.execute(httpPost);
-			int statusCode = response.getStatusLine().getStatusCode();
+		return statusCode;
 
-			System.out.println("Client Status Code " + statusCode);
-			System.out.println("Client Status Code " + url);
+	}
 
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				client.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return "success";
-
+	/** Form Post request
+	 * @param data
+	 * @param url
+	 * @return HttpPost
+	 * @throws JsonProcessingException
+	 * @throws UnsupportedEncodingException
+	 */
+	private HttpPost getHttpPostRequest(Object data, String url)
+			throws JsonProcessingException, UnsupportedEncodingException {
+		ObjectMapper mapper = new ObjectMapper();
+		String requestJson = mapper.writeValueAsString(data);
+		StringEntity entity = new StringEntity(requestJson);
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setEntity(entity);
+		httpPost.setHeader("Accept", "application/json");
+		httpPost.setHeader("Content-type", "application/json");
+		return httpPost;
 	}
 
 }

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.dao.MessageStatusCacheDAO;
+import app.dao.MessageStatusDAO;
 import app.model.DataTableWrapper;
 import app.model.MessageStatusCacheField;
 
@@ -38,10 +38,10 @@ public class MsgStatusCacheDataServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		MessageStatusCacheDAO dao;
 		List<MessageStatusCacheField> logDetails = null;
+		MessageStatusDAO dao;
 		try {
-			dao = new MessageStatusCacheDAO();
+			dao = new MessageStatusDAO();
 			logDetails = dao.getAllFieldDetails();
 		} catch (SQLException e) {
 			e.printStackTrace();
