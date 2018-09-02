@@ -44,8 +44,9 @@ public class NotificationService {
 	/**
 	 * @param messageList
 	 * @throws ServletException
+	 * @throws IOException
 	 */
-	public void sendMessagesToUser(List<SubscriberMessage> messageList) throws ServletException {
+	public void sendMessagesToUser(List<SubscriberMessage> messageList) throws ServletException, IOException {
 		userService.sendMessagesToUser(messageList);
 	}
 

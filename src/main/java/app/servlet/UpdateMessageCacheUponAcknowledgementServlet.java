@@ -1,6 +1,7 @@
 package app.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import app.dao.UpdateMessageCacheUponAcknowledgement;
-import app.model.JsonDataContainer;
+import app.dao.MessageStatusDAO;
+import app.model.MessageStatus;
 
 /**
  * @author Aniruddha
@@ -26,8 +27,12 @@ public class UpdateMessageCacheUponAcknowledgementServlet extends HttpServlet {
 	public final void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
 
 		Gson gson = new Gson();
-		JsonDataContainer container = gson.fromJson(req.getReader(), JsonDataContainer.class);
-		new UpdateMessageCacheUponAcknowledgement("config_table.properties").insertIntoTable(container);
+		MessageStatus messageStatus = gson.fromJson(req.getReader(), MessageStatus.class);
+		try {
+			new MessageStatusDAO().insertIntoTable(messageStatus);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 

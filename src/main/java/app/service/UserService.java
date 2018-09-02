@@ -1,26 +1,35 @@
 package app.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletException;
 
-import app.model.RequestMapper;
+import app.model.MessageStatus;
 import app.model.SubscriberMessage;
-import app.model.UserDetailsSO;
 import app.servlet.HttpClientRequestHandler;
 import app.util.ExternalProperties;
 
+/**
+ * @author AmolPol
+ *
+ */
 public class UserService {
 
-	public void sendMessagesToUser(List<SubscriberMessage> messageList) throws ServletException {
+	/**
+	 * @param messageList
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	public void sendMessagesToUser(List<SubscriberMessage> messageList) throws ServletException, IOException {
+		String userSvcURL = ExternalProperties.getAppConfig("user.service.url");
 		for (SubscriberMessage subMessage : messageList) {
-			HttpClientRequestHandler reqHandler = new HttpClientRequestHandler();
-			RequestMapper req = new RequestMapper();
-			req.setMessageId(subMessage.getGlobalTransactionId());
-			req.setMessageData(subMessage.getMessage());
-			reqHandler.processRequest(req, ExternalProperties.getAppConfig("user.service.url"));
+			HttpClientRequestHandler httpClient = new HttpClientRequestHandler();
+			MessageStatus requestObject = new MessageStatus();
+			requestObject.setMessageId(subMessage.getGlobalTransactionId());
+			requestObject.setMessageData(subMessage.getMessage());
+			httpClient.post(requestObject, userSvcURL);
 		}
 	}
 
-	
 }

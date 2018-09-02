@@ -1,6 +1,6 @@
 package app.util;
 
-import java.sql.SQLException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import com.google.api.services.pubsub.model.PubsubMessage;
 
 import app.dao.UserDetailsDao;
-import app.model.RequestMapper;
+import app.model.MessageStatus;
 import app.model.UserDetailsSO;
 import app.model.UserMessageSO;
 import app.service.ProviderMsgPublisher;
@@ -29,26 +29,30 @@ public class NotifyUtility {
 	 * @throws Exception
 	 * @throws ServletException
 	 */
-	public void checkAllUserPreference(RequestMapper req) throws Exception {
+	public void checkAllUserPreference(MessageStatus req) throws Exception {
 
 		UserDetailsDao userDetailsDao = new UserDetailsDao();
 		List<UserDetailsSO> allUsers = userDetailsDao.getAllUserDetails();
-		boolean published = false;
 		if (null != allUsers && allUsers.size() > 0)
-			published = publishUserMessage(allUsers, req);
+			publishUserMessage(allUsers, req);
 		else {
 			throw new Exception("No Preferences Set for any user");
 		}
 
 		/*
-		 * if (published) { for (UserDetailsSO userDetails : allUsers) {
-		 * delivered = notifyUser(req, userDetails); } if (delivered)
-		 * deliveryConfirmation(req, delivered); }
+		 * if (published) { for (UserDetailsSO userDetails : allUsers) { delivered =
+		 * notifyUser(req, userDetails); } if (delivered) deliveryConfirmation(req,
+		 * delivered); }
 		 */
 
 	}
 
-	private boolean publishUserMessage(List<UserDetailsSO> allUsers, RequestMapper req) {
+	/**
+	 * @param allUsers
+	 * @param req
+	 * @return boolean
+	 */
+	private boolean publishUserMessage(List<UserDetailsSO> allUsers, MessageStatus req) {
 
 		List<UserMessageSO> emailPrefered = new ArrayList<>();
 		List<UserMessageSO> smsPrefered = new ArrayList<>();
@@ -143,43 +147,46 @@ public class NotifyUtility {
 	 * @return
 	 */
 	/*
-	 * private boolean notifyUser(RequestMapper req, UserDetailsSO userDetails)
-	 * { boolean delivered; String emailAck = null; String smsAck = null; if
+	 * private boolean notifyUser(RequestMapper req, UserDetailsSO userDetails) {
+	 * boolean delivered; String emailAck = null; String smsAck = null; if
 	 * (userDetails.getEmailFlag().equalsIgnoreCase(YES)) emailAck =
 	 * notifyUsersByEmail(userDetails, req.getMessageData());
 	 * 
 	 * if (userDetails.getSmsFlag().equalsIgnoreCase(YES)) smsAck =
 	 * notifyUsersBySMS(userDetails, req.getMessageData());
 	 * 
-	 * if ((emailAck != null || smsAck != null) && (emailAck.contains("success")
-	 * || smsAck.contains("success"))) { delivered = true; } else { delivered =
-	 * false; } return delivered; }
+	 * if ((emailAck != null || smsAck != null) && (emailAck.contains("success") ||
+	 * smsAck.contains("success"))) { delivered = true; } else { delivered = false;
+	 * } return delivered; }
 	 */
 
 	/**
 	 * @param req
 	 * @param delivered
+	 * @throws IOException
 	 */
-	private void updateDelConfirmation(RequestMapper req) {
+	private void updateDelConfirmation(MessageStatus req) throws IOException {
 
 		HttpClientRequestHandler client = new HttpClientRequestHandler();
 
-		client.processRequest(req, ExternalProperties.getAppConfig("updatestatus.service.url"));
+		String updateStatusSvcURL = ExternalProperties.getAppConfig("updatestatus.service.url");
+		client.post(req, updateStatusSvcURL);
 
 	}
 
 	/**
 	 * @param userDetails
 	 * @param message
+	 * @throws IOException
 	 */
-	public void notifyUsersBySMS(PubsubMessage message) {
+	public void notifyUsersBySMS(PubsubMessage message) throws IOException {
 		String ack = null;
-		RequestMapper req = null;
+		MessageStatus req = null;
 		TwilioSmsClient sms = new TwilioSmsClient();
 		ack = sms.sendSms(message.getAttributes().get("mobileNumber"), message.getData());
 
 		if (null != ack && ack != "") {
-			req = new RequestMapper();
+			req = new MessageStatus();
 			req.setDeliveryFlag("true");
 			req.setMessageData(message.getData());
 			req.setMessageId(message.getAttributes().get("globalTransactionId"));
@@ -191,14 +198,15 @@ public class NotifyUtility {
 	/**
 	 * @param userDetails
 	 * @param message
+	 * @throws IOException
 	 */
-	public void notifyUsersByEmail(PubsubMessage message) {
+	public void notifyUsersByEmail(PubsubMessage message) throws IOException {
 		String ack = null;
-		RequestMapper req = null;
+		MessageStatus req = null;
 		SendGridEmailClient mail = new SendGridEmailClient();
 		ack = mail.sendEmail(message.getAttributes().get("emailId"), message.getData());
 		if (null != ack && ack != "") {
-			req = new RequestMapper();
+			req = new MessageStatus();
 			req.setDeliveryFlag("true");
 			req.setMessageData(message.getData());
 			req.setMessageId(message.getAttributes().get("globalTransactionId"));
