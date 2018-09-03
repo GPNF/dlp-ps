@@ -48,12 +48,14 @@ public class NotifyServlet extends HttpServlet {
 		NotifyService notifyService = new NotifyService();
 		String gbTxnId = "g" + new Date().getTime() + "r" + (int) (Math.random() * 100);
 		srcMessage.setGlobalTxnId(gbTxnId);
+		boolean isExceptionOccurred = false;
 		try {
 			messageIds = notifyService.notify(srcMessage);
 		} catch (SQLException | ExternalUserNotAllowedException | NoSuchGroupException
 				| InsufficientAuthorizationException | PANDataFoundSecurityViolationException e) {
 			request.setAttribute("exceptionMsg", e.getMessage());
-			request.setAttribute("isExceptionOccured", true);
+			isExceptionOccurred=true;
+			request.setAttribute("isExceptionOccured", isExceptionOccurred);
 			request.getRequestDispatcher("/pages/MessageSource.jsp").forward(request, response);
 		}
 		
@@ -61,10 +63,11 @@ public class NotifyServlet extends HttpServlet {
 		request.setAttribute("gbTxnId", gbTxnId);
 		request.setAttribute("messageIds", messageIds);
 
-		if (messageIds.size() != 0) {
+		if (messageIds !=null && messageIds.size() != 0) {
 			request.getRequestDispatcher("/results/success.jsp").forward(request, response);
 		} else {
-			request.getRequestDispatcher("/results/failure.jsp").forward(request, response);
+			if(!isExceptionOccurred)
+				request.getRequestDispatcher("/results/failure.jsp").forward(request, response);
 		}
 		
 	}

@@ -95,9 +95,11 @@ public class NotifyService {
 		
 		ByteString data = ByteString.copyFromUtf8(deIdentifiedStr);
 		String srcAuthLvlStr = String.valueOf(srcMessage.getSourceauthLevel());
+		String groupIdStr = String.valueOf(srcMessage.getGroupId());
 		PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
 				.putAttributes("globalTransactionId", srcMessage.getGlobalTxnId())
-				.putAttributes("srcAuthLevel", srcAuthLvlStr).build();
+				.putAttributes("srcAuthLevel", srcAuthLvlStr)
+				.putAttributes("destGroupId", groupIdStr).build();
 		
 		NotifySvcMsgPublisher publisher = new NotifySvcMsgPublisher();
 		List<String> messageIds = publisher.publishMessage(topicNames, pubsubMessage);
