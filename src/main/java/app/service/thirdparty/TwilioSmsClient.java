@@ -1,6 +1,7 @@
 package app.service.thirdparty;
 
 import com.twilio.Twilio;
+import com.twilio.exception.ApiException;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
@@ -36,12 +37,19 @@ public class TwilioSmsClient {
 		 * Twilio.setRestClient(twilioRestClient);
 		 */
 		System.out.println("MobNo. " + receiverMobNumber);
-		Message twilioMessage = Message.creator(new PhoneNumber(receiverMobNumber), // to
-				new PhoneNumber(ExternalProperties.getAppConfig("sms.sender.number")), // from
-				actualMessage).create();
+		Message twilioMessage=null;
+		try {
+			String senderNumber = ExternalProperties.getAppConfig("sms.sender.number");
+			twilioMessage = Message.creator(new PhoneNumber(receiverMobNumber), // to
+					new PhoneNumber(senderNumber), // from
+					actualMessage).create();
+		} catch(ApiException e) {
+			e.printStackTrace();
+		}
+		
 
 		String ack = null;
-		if (null != twilioMessage.getSid()) {
+		if (twilioMessage!=null && null != twilioMessage.getSid()) {
 			ack = "success";
 			System.out.println("SMS sent successfully... " + twilioMessage.getSid());
 		} else {
