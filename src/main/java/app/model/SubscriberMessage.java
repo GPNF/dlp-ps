@@ -15,6 +15,7 @@ public class SubscriberMessage {
 	private String pullTime;
 	private String globalTransactionId;
 	private String ackId;
+	private String destGroupId;
 
 	public SubscriberMessage(String messageId, String message, String publishTime, String ackId, String globalTxnId) {
 		super();
@@ -24,6 +25,17 @@ public class SubscriberMessage {
 		this.ackId = ackId;
 		this.globalTransactionId = globalTxnId;
 	}
+
+	
+	public String getDestGroupId() {
+		return destGroupId;
+	}
+
+
+	public void setDestGroupId(String destGroupId) {
+		this.destGroupId = destGroupId;
+	}
+
 
 	public String getId() {
 		return id;

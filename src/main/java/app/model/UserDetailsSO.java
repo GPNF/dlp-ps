@@ -15,6 +15,17 @@ public class UserDetailsSO {
 	private String smsFlag;
 	private String faxFlag;
 	private String phoneCallFlag;
+	private String groupId;
+	
+	
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 
 	public String getPhoneCallFlag() {
 		return phoneCallFlag;

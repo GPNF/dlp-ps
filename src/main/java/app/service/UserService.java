@@ -28,6 +28,8 @@ public class UserService {
 			MessageStatus requestObject = new MessageStatus();
 			requestObject.setMessageId(subMessage.getGlobalTransactionId());
 			requestObject.setMessageData(subMessage.getMessage());
+			if(null!=subMessage.getDestGroupId() && subMessage.getDestGroupId()!="")
+			requestObject.setDestGroupId(subMessage.getDestGroupId());
 			httpClient.sendPostReturnStatus(requestObject, userSvcURL);
 		}
 	}
