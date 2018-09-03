@@ -22,6 +22,7 @@ public class UserService {
 	 * @throws IOException
 	 */
 	public void sendMessagesToUser(List<SubscriberMessage> messageList) throws ServletException, IOException {
+		System.out.println("Sending SMS to user");
 		String userSvcURL = ExternalProperties.getAppConfig("user.service.url");
 		for (SubscriberMessage subMessage : messageList) {
 			HttpClientRequestHandler httpClient = new HttpClientRequestHandler();
