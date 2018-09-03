@@ -9,6 +9,17 @@ public class MessageStatus {
 	private String messageData;
 	private String messageId;
 	private String deliveryFlag;
+	private String destGroupId;
+
+	
+	
+	public String getDestGroupId() {
+		return destGroupId;
+	}
+
+	public void setDestGroupId(String destGroupId) {
+		this.destGroupId = destGroupId;
+	}
 
 	public String getDeliveryFlag() {
 		return deliveryFlag;

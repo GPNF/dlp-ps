@@ -49,6 +49,8 @@ public class MessageUtils {
 		String subscriptionId = Constants.SUBSCRIPTION_ID;
 		subMsg.setSubscriptionId(subscriptionId);
 		subMsg.setPullTime(pullTime);
+
+		subMsg.setDestGroupId(pubsubMsg.getAttributesOrDefault("destGroupId",null));
 		return subMsg;
 	}
 

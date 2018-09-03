@@ -31,10 +31,17 @@ public class NotifyUtility {
 	 */
 	public void checkAllUserPreference(MessageStatus req) throws Exception {
 
+		List<UserDetailsSO> allUsers=null;
 		UserDetailsDao userDetailsDao = new UserDetailsDao();
-		List<UserDetailsSO> allUsers = userDetailsDao.getAllUserDetails();
+		if(null!=req.getDestGroupId()&& req.getDestGroupId()!="")
+		 allUsers =	userDetailsDao.getAllUserDetails(req.getDestGroupId());
+		else
+			allUsers = userDetailsDao.getAllUserDetails();
+
+		//List<UserDetailsSO> allUsers = userDetailsDao.getAllUserDetails();
+		boolean published = false;
 		if (null != allUsers && allUsers.size() > 0)
-			publishUserMessage(allUsers, req);
+			published = publishUserMessage(allUsers, req);
 		else {
 			throw new Exception("No Preferences Set for any user");
 		}
