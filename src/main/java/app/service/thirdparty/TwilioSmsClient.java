@@ -4,6 +4,7 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
+import app.util.AES;
 import app.util.ExternalProperties;
 
 /**
@@ -20,9 +21,12 @@ public class TwilioSmsClient {
 	public String sendSms(String receiverMobNumber, String actualMessage) {
 
 		String sid = ExternalProperties.getAppConfig("sms.auth.sid");
+		String decryptedSid = AES.decrypt(sid);
+
 		String token = ExternalProperties.getAppConfig("sms.auth.token");
-		Twilio.init(sid, token);
-		String ack=null;
+		String decryptedToken = AES.decrypt(token);
+
+		Twilio.init(decryptedSid, decryptedToken);
 
 		/*
 		 * ProxiedTwilioClientCreator clientCreator = new
@@ -36,16 +40,12 @@ public class TwilioSmsClient {
 				new PhoneNumber(ExternalProperties.getAppConfig("sms.sender.number")), // from
 				actualMessage).create();
 
-		
-
-		if(null!=twilioMessage.getSid())
-		{
-				ack= "success";
-				System.out.println("SMS sent successfully... " + twilioMessage.getSid());
-		}
-		else
-		{
-			ack= "failed";
+		String ack = null;
+		if (null != twilioMessage.getSid()) {
+			ack = "success";
+			System.out.println("SMS sent successfully... " + twilioMessage.getSid());
+		} else {
+			ack = "failed";
 		}
 		return ack;
 
