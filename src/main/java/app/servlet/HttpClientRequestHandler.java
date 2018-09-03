@@ -29,9 +29,16 @@ public class HttpClientRequestHandler {
 	public HttpResponse sendGetReturnResponse(String url) throws ClientProtocolException, IOException {
 
 		HttpClient client = HttpClientBuilder.create().build();
+		
 		HttpGet request = new HttpGet(url);
 		HttpResponse response = client.execute(request);
 		return response;
+	}
+	
+	public static void main(String[] args) throws ClientProtocolException, IOException {
+/*		HttpClientRequestHandler handler = new HttpClientRequestHandler();
+		String res = handler.sendGetReturnContent("http://possible-haven-212003.appspot.com/api/topic/list");
+		System.out.println(res);*/
 	}
 
 	/**

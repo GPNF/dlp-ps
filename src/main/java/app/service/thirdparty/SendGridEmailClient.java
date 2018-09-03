@@ -10,6 +10,7 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 
+import app.util.AES;
 import app.util.ExternalProperties;
 
 /**
@@ -28,14 +29,21 @@ public class SendGridEmailClient {
 		// ExternalProperties.getDbConfig("email.sendgrid.apikey");
 		Response response=null;
 		String ack=null;
-		Email from = new Email(ExternalProperties.getAppConfig("email.sendgrid.user"));
+		String fromEmail = ExternalProperties.getAppConfig("email.sendgrid.user");
+		String decrytedFromEmail  = AES.decrypt(fromEmail);
+		Email from = new Email(decrytedFromEmail);
 		String subject = "Sendgrid test mail";
 
 		Email to = new Email(receiverId);
 		Content content = new Content("text/plain", actualMessage);
 		Mail mail = new Mail(from, subject, to, content);
 
-		SendGrid sg = new SendGrid(ExternalProperties.getAppConfig("email.sendgrid.apikey"));
+		String sendGridApiKey = ExternalProperties.getAppConfig("email.sendgrid.apikey");
+		String decryptedKey = AES.decrypt(sendGridApiKey);
+		SendGrid sg = new SendGrid(decryptedKey);
+		
+		
+		
 		Request request = new Request();
 		try {
 
