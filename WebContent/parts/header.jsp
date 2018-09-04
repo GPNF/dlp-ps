@@ -3,7 +3,6 @@
 	java.util.Locale requestLocale = request.getLocale();
 	app.service.TextTranslator textTranslator = new app.service.TextTranslator(requestLocale.getLanguage());
 %>
-
 <!-- Nav Header -->
 <div id="top-header">
   <nav class="navbar navbar-expand-md navbar-dark"
@@ -14,20 +13,20 @@
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="/"><b> <%=textTranslator.translate("GNF")%>
+    <a class="navbar-brand mr-5" href="/"><b> <%=textTranslator.translate("GNF")%>
     </b></a>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a id="message-source" class="nav-item nav-link"
+        <a id="message-source" class="nav-item nav-link mr-2"
           href="/pages/MessageSource.jsp"> <%=textTranslator.translate("Message Source")%></a>
-        <a id="publish" class="nav-item nav-link" href="/pages/InspectAndPublish.jsp"> <%=textTranslator.translate("Publish Message")%>
+        <a id="publish" class="nav-item nav-link mr-2" href="/pages/InspectAndPublish.jsp"> <%=textTranslator.translate("Publish Message")%>
         </a><a id="pull" class="nav-item nav-link"
           href="/pages/syncpullclient.jsp"> <%=textTranslator.translate("Pull Client")%>
         </a> 
         
-        <a id="user-pref-data" class="nav-item nav-link"
+        <a id="user-pref-data" class="nav-item nav-link mr-2"
           href="/pages/dbtables/user-details-table.jsp"> 
-          <%=textTranslator.translate("User Preference")%>
+          <%=textTranslator.translate("Notification Preference")%>
         </a>
         
         <select
@@ -38,6 +37,7 @@
           <option value="/pages/dbtables/pulldata.jsp"><%=textTranslator.translate("Subscriber")%></option>
           <option value="/pages/dbtables/activity-logging-table.jsp"><%=textTranslator.translate("Logging")%></option>
           <option value="/pages/dbtables/message-status-table.jsp"><%=textTranslator.translate("Message Status")%></option>
+          <option value="/pages/dbtables/user-group-details-table.jsp"><%=textTranslator.translate("User Group Details")%></option>
         </select>
 
       </div>

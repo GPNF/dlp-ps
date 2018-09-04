@@ -4,9 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import app.exception.NoSuchGroupException;
+import app.model.UserGroupDetails;
 
+/**
+ * @author adarshsinghal
+ *
+ */
 public class UserGroupDetailsDAO {
 
 	private Connection connection;
@@ -41,6 +48,46 @@ public class UserGroupDetailsDAO {
 		rs.close();
 		ps.close();
 		return grpAuthLevel;
+	}
+
+	/**
+	 * Execute select query on user_group_details table
+	 * 
+	 * @return List&lt;UserGroupDetails&gt;
+	 * @throws SQLException
+	 */
+	public List<UserGroupDetails> getUserGroupDetails() throws SQLException {
+		List<UserGroupDetails> userGroupDetailsList = new ArrayList<>();
+
+		String sql = "SELECT *FROM user_group_details";
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			UserGroupDetails userGroupDetails = getUserGroupDetailsFromDb(rs);
+			userGroupDetailsList.add(userGroupDetails);
+		}
+
+		return userGroupDetailsList;
+	}
+
+	/**
+	 * Populate values into POJO from resultset
+	 * 
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
+	private UserGroupDetails getUserGroupDetailsFromDb(ResultSet rs) throws SQLException {
+
+		UserGroupDetails userGroupDetails = new UserGroupDetails();
+
+		userGroupDetails.setGroupId(rs.getInt("group_id"));
+		userGroupDetails.setGroupName(rs.getString("group_name"));
+		userGroupDetails.setGroupAuthLevel(rs.getInt("group_auth_level"));
+
+		return userGroupDetails;
 	}
 
 }

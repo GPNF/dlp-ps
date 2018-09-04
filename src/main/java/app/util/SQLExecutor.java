@@ -12,29 +12,39 @@ import app.dao.DBConnectionProvider;
  * <ul>
  * <li>executeUpdate(String sql)</li>
  * <li>truncateTables() - Publisher, Subscriber, Logging, Message Status</li>
- * <li>truncateTables(String... tables)</li>
- * </ul <br>
+ * <li>truncateTables(String... tables)</li> </ul <br>
  * 
  * @author adarshsinghal
  *
  */
 public class SQLExecutor {
+	static Connection connection;
+
+	public SQLExecutor() throws SQLException {
+		DBConnectionProvider connProvider = new DBConnectionProvider();
+		connection = connProvider.getConnection();
+	}
 
 	public static void main(String[] args) throws SQLException {
-		truncateTables();
+		SQLExecutor sqlExecutor = new SQLExecutor();
+		sqlExecutor.truncateTables();
 	}
 
-	private static Statement executeUpdate(String sql) throws SQLException {
-		DBConnectionProvider connProvider = new DBConnectionProvider();
-		Connection conn = connProvider.getConnection();
-		Statement sm = conn.createStatement();
-		return sm;
+	private void executeUpdate(String sql) throws SQLException {
+		Statement sm = connection.createStatement();
+		sm.executeUpdate(sql);
+		sm.close();
+
 	}
 
-	public static void truncateTables(String... tables) throws SQLException {
+	public void truncateTables(String... tables) throws SQLException {
 		for (int i = 0; i < tables.length; i++) {
-			executeUpdate("DELETE FROM  " + tables[i]);
+			executeUpdate("TRUNCATE  " + tables[i]);
 		}
+	}
+
+	public void truncateTables(String table) throws SQLException {
+		executeUpdate("TRUNCATE  " + table);
 	}
 
 	/**
@@ -45,10 +55,10 @@ public class SQLExecutor {
 	 * publisher <br>
 	 * subscriber
 	 */
-	public static void truncateTables() throws SQLException {
+	public void truncateTables() throws SQLException {
 		String[] tables = { "activity_logging", "message_status_cache_db", "publisher", "subscriber" };
 		for (int i = 0; i < tables.length; i++) {
-			executeUpdate("DELETE FROM " + tables[i]);
+			executeUpdate("TRUNCATE " + tables[i]);
 		}
 	}
 
