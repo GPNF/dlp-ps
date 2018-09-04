@@ -12,29 +12,40 @@
   <head>
     <jsp:include page="/parts/html-head.jsp" />
     <link rel="stylesheet" type="text/css" href="/pages/dbtables/css/datatable-style.css" />
-    <title>User Notification Preference</title>
+    <title>User Group Details</title>
   </head>
   <body>
     <%@ include file="/parts/header.jsp" %>
     <div class="container">
-      <div id="userdetails-data" class="mt-5 invisible">
-      <h4><%= svc.translate("User Notification Preference Table") %></h4>
+      <div id="user-grp-details-data" class="mt-5 invisible">
+      <h4><%= svc.translate("User Preference Table") %></h4>
         <div id="loading-div" class="invisible">
       <i id="loading" class="fa fa-refresh fa-spin"
        ></i>
     </div>
-        <table id="userdetails-datatable" class="display">
+    <div class="row">
+      <div class="col-md-2">
+      
+      </div>
+      
+      <div class="col-md-8">
+        <table id="user-grp-details-datatable" class="display">
           <thead>
             <tr>
-              <th>Id</th>
-              <th>User Name</th>
-              <th>Email</th>
-              <th>Mobile Number</th>
-              <th>Email Preference</th>
-              <th>SMS Preference</th>
+              <th>Group Id</th>
+              <th>Group Name</th>
+              <th>Group Authorization Level</th>
             </tr>
           </thead>
         </table>
+      </div>
+      
+      <div class="col-md-2">
+      
+      </div>
+    
+    </div>
+        
       </div>
     </div>
     
@@ -45,6 +56,6 @@
     <script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
     <script
       src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
-    <script src="./js/user-details-table.js"></script>
+    <script src="./js/user-group-details-table.js"></script>
   </body>
 </html>

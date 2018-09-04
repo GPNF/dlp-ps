@@ -25,7 +25,7 @@
 
         <div>
 
-          <form action="/notify" method="POST">
+          <form id="msg-src-form" action="/notify" method="POST">
 
             <div class="form-group">
               <label for="src-auth-level-select"><%=svc.translate("Source Authorization Level")%></label>
@@ -80,6 +80,7 @@
 
 
   <script type="text/javascript" src="/js/random-user.js"></script>
+  <script type="text/javascript" src="/pages/js/message-source.js"></script>
 
 </body>
 </html>

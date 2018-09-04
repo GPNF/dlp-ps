@@ -78,6 +78,6 @@
     <!-- End of container -->
     <script
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="./js/syncpullclient.js"></script>
+    <script src="/pages/js/syncpullclient.js"></script>
   </body>
 </html>

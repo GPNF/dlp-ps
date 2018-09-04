@@ -10,7 +10,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import app.model.MessageStatus;
 import app.model.UserDetailsSO;
 
 /**
@@ -48,7 +47,7 @@ public class UserDetailsDao {
 		}
 		return userList;
 	}
-	
+
 	public List<UserDetailsSO> getAllUserDetails(String groupId) throws SQLException {
 		List<UserDetailsSO> userList = new ArrayList<>();
 		UserDetailsSO userSo = null;
@@ -63,11 +62,11 @@ public class UserDetailsDao {
 				final String userDetails = "select user_id,user_name,user_email_id,user_mobile_number,user_fax_number from User_Details where user_id=?";
 				try (PreparedStatement userdet = connection.prepareStatement(userDetails)) {
 					userdet.setString(1, String.valueOf(userIdList.getInt("user_id")));
-					
+
 					ResultSet rs = userdet.executeQuery();
 					while (rs.next()) {
-					userSo = getUserDetails(rs,groupId);
-					userList.add(userSo);
+						userSo = getUserDetails(rs, groupId);
+						userList.add(userSo);
 					}
 				}
 			}
@@ -86,7 +85,8 @@ public class UserDetailsDao {
 		userSo.setUserName(rs.getString("user_name"));
 		return userSo;
 	}
-	private UserDetailsSO getUserDetails(ResultSet rs,String groupId) throws SQLException {
+
+	private UserDetailsSO getUserDetails(ResultSet rs, String groupId) throws SQLException {
 		UserDetailsSO userSo;
 		UserPreferenceDao userPreferenceDao = new UserPreferenceDao();
 		userSo = userPreferenceDao.getUserPreferenceDetails(String.valueOf(rs.getInt("user_id")));
