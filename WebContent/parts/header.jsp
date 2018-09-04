@@ -37,7 +37,7 @@
           <option value="/pages/dbtables/pulldata.jsp"><%=textTranslator.translate("Subscriber")%></option>
           <option value="/pages/dbtables/activity-logging-table.jsp"><%=textTranslator.translate("Logging")%></option>
           <option value="/pages/dbtables/message-status-table.jsp"><%=textTranslator.translate("Message Status")%></option>
-          <option value="/pages/dbtables/user-group-details-table.jsp"><%=textTranslator.translate("User Group Details")%></option>
+          <option value="/pages/dbtables/user-group-details-table.jsp"><%=textTranslator.translate("Group Details")%></option>
         </select>
 
       </div>

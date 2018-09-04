@@ -12,7 +12,7 @@
   <head>
     <%@ include file="/parts/html-head.jsp" %>
     <link rel="stylesheet" type="text/css" href="./css/inspect.css">
-    <title>Publisher</title>
+    <title>DLP & PubSub</title>
     <style>
       td,th{
       padding:0px 10px;
