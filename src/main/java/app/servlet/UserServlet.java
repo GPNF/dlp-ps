@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import app.model.MessageStatus;
-import app.util.NotifyUtility;
+import app.service.UserService;
 
 /**
  * Servlet implementation class Test
@@ -61,22 +61,21 @@ public class UserServlet extends HttpServlet {
 				"messageData " + req.getMessageData() + " id " + req.getMessageId() + " flag " + req.getDeliveryFlag());
 
 		try {
-			 checkUserPrefs(req);
+			checkUserPrefs(req);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//response.getWriter().print("Status !\r\n " + status);
+		// response.getWriter().print("Status !\r\n " + status);
 	}
 
 	private void checkUserPrefs(MessageStatus req) throws Exception {
-		NotifyUtility utility = new NotifyUtility();
-		
+		UserService userService = new UserService();
 		try {
-			utility.checkAllUserPreference(req);
+			userService.checkAllUserPreference(req);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

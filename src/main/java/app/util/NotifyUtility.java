@@ -2,13 +2,11 @@ package app.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-
-import javax.servlet.ServletException;
 
 import com.google.api.services.pubsub.model.PubsubMessage;
 
-import app.dao.UserDetailsDao;
 import app.model.MessageStatus;
 import app.model.UserDetailsSO;
 import app.model.UserMessageSO;
@@ -25,41 +23,11 @@ public class NotifyUtility {
 	private static final String YES = "Yes";
 
 	/**
-	 * @param message
-	 * @throws Exception
-	 * @throws ServletException
-	 */
-	public void checkAllUserPreference(MessageStatus req) throws Exception {
-
-		List<UserDetailsSO> allUsers=null;
-		UserDetailsDao userDetailsDao = new UserDetailsDao();
-		if(null!=req.getDestGroupId()&& req.getDestGroupId()!="")
-		 allUsers =	userDetailsDao.getAllUserDetails(req.getDestGroupId());
-		else
-			allUsers = userDetailsDao.getAllUserDetails();
-
-		//List<UserDetailsSO> allUsers = userDetailsDao.getAllUserDetails();
-		boolean published = false;
-		if (null != allUsers && allUsers.size() > 0)
-			published = publishUserMessage(allUsers, req);
-		else {
-			throw new Exception("No Preferences Set for any user");
-		}
-
-		/*
-		 * if (published) { for (UserDetailsSO userDetails : allUsers) { delivered =
-		 * notifyUser(req, userDetails); } if (delivered) deliveryConfirmation(req,
-		 * delivered); }
-		 */
-
-	}
-
-	/**
 	 * @param allUsers
 	 * @param req
 	 * @return boolean
 	 */
-	private boolean publishUserMessage(List<UserDetailsSO> allUsers, MessageStatus req) {
+	public boolean publishUserMessage(List<UserDetailsSO> allUsers, MessageStatus req) {
 
 		List<UserMessageSO> emailPrefered = new ArrayList<>();
 		List<UserMessageSO> smsPrefered = new ArrayList<>();
@@ -150,25 +118,6 @@ public class NotifyUtility {
 
 	/**
 	 * @param req
-	 * @param userDetails
-	 * @return
-	 */
-	/*
-	 * private boolean notifyUser(RequestMapper req, UserDetailsSO userDetails) {
-	 * boolean delivered; String emailAck = null; String smsAck = null; if
-	 * (userDetails.getEmailFlag().equalsIgnoreCase(YES)) emailAck =
-	 * notifyUsersByEmail(userDetails, req.getMessageData());
-	 * 
-	 * if (userDetails.getSmsFlag().equalsIgnoreCase(YES)) smsAck =
-	 * notifyUsersBySMS(userDetails, req.getMessageData());
-	 * 
-	 * if ((emailAck != null || smsAck != null) && (emailAck.contains("success") ||
-	 * smsAck.contains("success"))) { delivered = true; } else { delivered = false;
-	 * } return delivered; }
-	 */
-
-	/**
-	 * @param req
 	 * @param delivered
 	 * @throws IOException
 	 */
@@ -190,7 +139,11 @@ public class NotifyUtility {
 		String ack = null;
 		MessageStatus req = null;
 		TwilioSmsClient sms = new TwilioSmsClient();
-		ack = sms.sendSms(message.getAttributes().get("mobileNumber"), message.getData());
+		
+		byte[] decodedMessageData = Base64.getMimeDecoder().decode(message.getData().getBytes());
+		String decodedMessage = new String(decodedMessageData);
+		
+		ack = sms.sendSms(message.getAttributes().get("mobileNumber"),decodedMessage);
 
 		if (null != ack && ack != "") {
 			req = new MessageStatus();
@@ -211,7 +164,10 @@ public class NotifyUtility {
 		String ack = null;
 		MessageStatus req = null;
 		SendGridEmailClient mail = new SendGridEmailClient();
-		ack = mail.sendEmail(message.getAttributes().get("emailId"), message.getData());
+		byte[] decodedMessageData = Base64.getMimeDecoder().decode(message.getData().getBytes());
+		String decodedMessage = new String(decodedMessageData);
+		
+		ack = mail.sendEmail(message.getAttributes().get("emailId"), decodedMessage);
 		if (null != ack && ack != "") {
 			req = new MessageStatus();
 			req.setDeliveryFlag("true");
