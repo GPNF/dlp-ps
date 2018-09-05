@@ -65,6 +65,12 @@ td>a {
       <td><a href="#user_group_details"> <%=translator.translate("user_group_details")%>
       </a></td>
     </tr>
+    
+     <tr>
+      <td><a href="#createTable"> <%=translator.translate("CREATE TABLE")%>
+      </a></td>
+    </tr>
+    
   </table>
 
   <div class="container">
@@ -200,6 +206,89 @@ MySQL [msgdb]> DESCRIBE user_group_details;
 | group_name       | varchar(50)     | NO   | UNI | NULL    |                |
 | group_auth_level | int(6)          | NO   |     | NULL    |                |
 +------------------+-----------------+------+-----+---------+----------------+
+</pre>
+
+<h3 class="mt-5 text-center">Show Create Table</h3>
+
+<pre id="createTable">
+
+CREATE TABLE `User_Details` (
+  `user_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(50) NOT NULL,
+  `user_email_id` varchar(50) NOT NULL,
+  `user_mobile_number` varchar(50) DEFAULT NULL,
+  `user_fax_number` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `User_Preferences` (
+  `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(50) NOT NULL,
+  `email_prefered` varchar(10) NOT NULL,
+  `sms_prefered` varchar(10) NOT NULL,
+  `fax_prefered` varchar(10) DEFAULT NULL,
+  `phone` varchar(10) DEFAULT NULL,
+  `user_id` int(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `activity_logging` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_id` varchar(100) NOT NULL,
+  `message_data` text NOT NULL,
+  `subscription_name` varchar(20) DEFAULT NULL,
+  `published_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `glo_tran_id` varchar(30) DEFAULT NULL,
+  `topic_name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `group_membership` (
+  `user_id` int(6) NOT NULL,
+  `group_id` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `message_status_cache_db` (
+  `glo_tran_id` varchar(30) NOT NULL,
+  `dlv_rprt` varchar(22) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `publisher` (
+  `message_id` varchar(100) NOT NULL,
+  `topic_name` varchar(20) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `published_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `global_txn_id` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `subscriber` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_id` varchar(100) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `subscription_name` varchar(20) NOT NULL,
+  `published_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pull_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ack_id` varchar(255) DEFAULT NULL,
+  `global_txn_id` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `user_group_details` (
+  `group_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(50) NOT NULL,
+  `group_auth_level` int(6) NOT NULL,
+  PRIMARY KEY (`group_id`),
+  UNIQUE KEY `group_name` (`group_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
 </pre>
 
 

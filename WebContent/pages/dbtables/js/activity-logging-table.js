@@ -27,9 +27,10 @@ $(document).ready(
           }
         },
         {
-          "data" : "subscriptionName"
+          
+        	  "data" : "topicName"
         }, {
-          "data" : "topicName"
+        	"data" : "subscriptionName"
         }, {
           "data" : "publishedTimestamp"
         }, {

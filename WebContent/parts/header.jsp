@@ -38,6 +38,7 @@
           <option value="/pages/dbtables/activity-logging-table.jsp"><%=textTranslator.translate("Logging")%></option>
           <option value="/pages/dbtables/message-status-table.jsp"><%=textTranslator.translate("Message Status")%></option>
           <option value="/pages/dbtables/user-group-details-table.jsp"><%=textTranslator.translate("Group Details")%></option>
+          <option value="/pages/dbtables/group-membership-table.jsp"><%=textTranslator.translate("Group Membership")%></option>
         </select>
 
       </div>
