@@ -20,14 +20,14 @@ $(document).ready(function(){
 		$.get('https://randomuser.me/api/?nat=us', function(response){
 		    $('#msg-loading').addClass('invisible');
 			var user = response.results[0];
-			var name = user.name.first+" "+ user.name.last;
+		//	var name = user.name.first+" "+ user.name.last;
 			var email = user.email;
-			var phone = user.phone;
-			var dob = user.dob.date;
-			var street = user.location.street;
+			//var phone = user.phone;
+			//var dob = user.dob.date;
+			//var street = user.location.street;
 			
-			var message = "User Information:-\nName - "+name
-			+"\nEmail - "+email+"\nPhone - "+phone+"\nDate of Birth - "+dob+"\nStreet - "+street;
+			var message = "This is a sample notification.\n This contains an email address:-"
+			+"\nEmail - "+email;
 			
 			$('#random-user-message').val(message);
 			
