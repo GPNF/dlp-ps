@@ -92,35 +92,6 @@ public class UserGroupDetailsDAO {
 		return userGroupDetails;
 	}
 	
-	public List<UserGroupModel> getUserGroupMembershipDetails() throws SQLException
-	{
-		List<UserGroupModel> userGroupDetailsList = new ArrayList<>();
-		UserGroupModel userGroupModel = null;
-		List<UserDetailsSO> userList = null;
-		UserDetailsDao userDetailsDao = new UserDetailsDao();
-		String sql = "SELECT * FROM user_group_details";
 
-		PreparedStatement ps = connection.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-
-		while (rs.next()) {
-			userList = userDetailsDao.getAllUserDetails(String.valueOf(rs.getInt("group_id")));
-			if (!userList.isEmpty()) {
-				for (UserDetailsSO userDet : userList) {
-
-					userGroupModel = new UserGroupModel();
-					userGroupModel.setGroupId(String.valueOf(rs.getInt("group_id")));
-					userGroupModel.setGroupAuthLevel(String.valueOf(rs.getInt("group_auth_level")));
-					userGroupModel.setGroupName(rs.getString("group_name"));
-					userGroupModel.setUserId(String.valueOf(userDet.getUserId()));
-					userGroupModel.setUserName(userDet.getUserName());
-					userGroupDetailsList.add(userGroupModel);
-
-				}
-			}
-		}
-
-		return userGroupDetailsList;
-	}
 
 }

@@ -16,14 +16,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.dao.UserGroupMembershipDAO;
 import app.model.DataTableWrapper;
-import app.model.UserGroupMembership;
+import app.model.UserGroupModel;
 
 /**
  * Servlet implementation class UserGroupMembershipServlet
  */
 @WebServlet({ "/UserGroupMembershipServlet", "/api/get-user-group-membership" })
 public class UserGroupMembershipServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = -1010176831489295952L;
 
 	/**
@@ -32,7 +32,7 @@ public class UserGroupMembershipServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<UserGroupMembership> groupMembershipList = null;
+		List<UserGroupModel> groupMembershipList = null;
 		try {
 			groupMembershipList = getgroupMembershipList();
 		} catch (SQLException e) {
@@ -63,7 +63,7 @@ public class UserGroupMembershipServlet extends HttpServlet {
 	 * @throws JsonProcessingException
 	 * @throws IOException
 	 */
-	private void prepareJsonResponse(HttpServletResponse response, List<UserGroupMembership> groupMembershipList)
+	private void prepareJsonResponse(HttpServletResponse response, List<UserGroupModel> groupMembershipList)
 			throws JsonProcessingException, IOException {
 		DataTableWrapper wrapper = new DataTableWrapper(groupMembershipList);
 		ObjectMapper mapper = new ObjectMapper();
@@ -79,10 +79,10 @@ public class UserGroupMembershipServlet extends HttpServlet {
 	 * @return List
 	 * @throws SQLException
 	 */
-	private List<UserGroupMembership> getgroupMembershipList() throws SQLException {
+	private List<UserGroupModel> getgroupMembershipList() throws SQLException {
 		UserGroupMembershipDAO groupMembershipDao = new UserGroupMembershipDAO();
-		List<UserGroupMembership> UserGroupMembership = groupMembershipDao.getMembershipTableData();
-		return UserGroupMembership;
+		List<UserGroupModel> UserGroupModel = groupMembershipDao.getUserGroupMembershipDetails();
+		return UserGroupModel;
 	}
 
 	/**
