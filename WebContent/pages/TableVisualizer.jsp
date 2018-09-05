@@ -212,6 +212,7 @@ MySQL [msgdb]> DESCRIBE user_group_details;
 
 <pre id="createTable">
 
+drop table if exists User_Details;
 CREATE TABLE `User_Details` (
   `user_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `user_name` varchar(50) NOT NULL,
@@ -219,9 +220,9 @@ CREATE TABLE `User_Details` (
   `user_mobile_number` varchar(50) DEFAULT NULL,
   `user_fax_number` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-
+drop table if exists User_Preferences;
 CREATE TABLE `User_Preferences` (
   `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `user_name` varchar(50) NOT NULL,
@@ -231,9 +232,9 @@ CREATE TABLE `User_Preferences` (
   `phone` varchar(10) DEFAULT NULL,
   `user_id` int(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-
+drop table if exists activity_logging;
 CREATE TABLE `activity_logging` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message_id` varchar(100) NOT NULL,
@@ -243,21 +244,21 @@ CREATE TABLE `activity_logging` (
   `glo_tran_id` varchar(30) DEFAULT NULL,
   `topic_name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
-
+drop table if exists group_membership;
 CREATE TABLE `group_membership` (
   `user_id` int(6) NOT NULL,
   `group_id` int(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+drop table if exists message_status_cache_db;
 CREATE TABLE `message_status_cache_db` (
   `glo_tran_id` varchar(30) NOT NULL,
   `dlv_rprt` varchar(22) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+drop table if exists publisher;
 CREATE TABLE `publisher` (
   `message_id` varchar(100) NOT NULL,
   `topic_name` varchar(20) NOT NULL,
@@ -265,9 +266,9 @@ CREATE TABLE `publisher` (
   `published_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `global_txn_id` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+drop table if exists subscriber;
 CREATE TABLE `subscriber` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message_id` varchar(100) NOT NULL,
@@ -278,16 +279,17 @@ CREATE TABLE `subscriber` (
   `ack_id` varchar(255) DEFAULT NULL,
   `global_txn_id` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-
+drop table if exists user_group_details;
 CREATE TABLE `user_group_details` (
   `group_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `group_name` varchar(50) NOT NULL,
   `group_auth_level` int(6) NOT NULL,
   PRIMARY KEY (`group_id`),
   UNIQUE KEY `group_name` (`group_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
 
 </pre>
 

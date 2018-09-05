@@ -30,71 +30,62 @@ public class UserDetailsDao {
 
 	/**
 	 * @return List of UserDetailsSO
+	 * @throws SQLException
 	 */
-	public List<UserDetailsSO> getAllUserDetails() {
-		List<UserDetailsSO> userList = new ArrayList<>();
-		UserDetailsSO userSo = null;
-		final String allUsers = "SELECT user_id,user_name,user_email_id,user_mobile_number,user_fax_number FROM User_Details";
+	public List<UserDetailsSO> getAllUserDetails() throws SQLException {
+
+		final String allUsers = "SELECT ud.user_id ,ud.user_name, ud.user_email_id,ud.user_mobile_number,up.email_prefered,up.sms_prefered,gd.group_id \r\n"
+				+ "FROM user_group_details gd JOIN group_membership gm on gm.group_id=gd.group_id \r\n"
+				+ "JOIN User_Details ud on gm.user_id = ud.user_id\r\n"
+				+ "JOIN User_Preferences up on up.user_id=ud.user_id ";
+
+		List<UserDetailsSO> userList;
+
 		try (ResultSet rs = connection.prepareStatement(allUsers).executeQuery()) {
+			userList = getUserDetails(rs);
+		}
+		return userList;
+	}
 
-			while (rs.next()) {
-				userSo = getUserDetails(rs);
-				userList.add(userSo);
-			}
+	/**
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
+	private List<UserDetailsSO> getUserDetails(ResultSet rs) throws SQLException {
+		List<UserDetailsSO> userList = new ArrayList<>();
+		while (rs.next()) {
+			UserDetailsSO userSo = new UserDetailsSO();
+			userSo.setMobileNumber(rs.getString("user_mobile_number"));
+			userSo.setEmailId(rs.getString("user_email_id"));
+			userSo.setUserId(String.valueOf(rs.getInt("user_id")));
+			userSo.setUserName(rs.getString("user_name"));
+			userSo.setGroupId(String.valueOf(rs.getInt("group_id")));
+			userSo.setEmailFlag(rs.getString("email_prefered"));
+			userSo.setSmsFlag(rs.getString("sms_prefered"));
 
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
+			userList.add(userSo);
 		}
 		return userList;
 	}
 
 	public List<UserDetailsSO> getAllUserDetails(String groupId) throws SQLException {
-		List<UserDetailsSO> userList = new ArrayList<>();
-		UserDetailsSO userSo = null;
-		final String user_membership = "select user_id from group_membership where group_id=?";
+		List<UserDetailsSO> userList ;
+
+		final String user_membership = "SELECT ud.user_id ,ud.user_name, ud.user_email_id,ud.user_mobile_number,up.email_prefered,up.sms_prefered,gd.group_id \r\n"
+				+ "FROM user_group_details gd JOIN group_membership gm on gm.group_id=gd.group_id \r\n"
+				+ "JOIN User_Details ud on gm.user_id = ud.user_id\r\n"
+				+ "JOIN User_Preferences up on up.user_id=ud.user_id and gd.group_id=?";
+
 		try (PreparedStatement groupMember = connection.prepareStatement(user_membership)) {
 
 			groupMember.setString(1, groupId);
 
-			ResultSet userIdList = groupMember.executeQuery();
+			ResultSet rs = groupMember.executeQuery();
 
-			while (userIdList.next()) {
-				final String userDetails = "select user_id,user_name,user_email_id,user_mobile_number,user_fax_number from User_Details where user_id=?";
-				try (PreparedStatement userdet = connection.prepareStatement(userDetails)) {
-					userdet.setString(1, String.valueOf(userIdList.getInt("user_id")));
-
-					ResultSet rs = userdet.executeQuery();
-					while (rs.next()) {
-						userSo = getUserDetails(rs, groupId);
-						userList.add(userSo);
-					}
-				}
-			}
+			userList=getUserDetails(rs);
 
 			return userList;
 		}
-	}
-
-	private UserDetailsSO getUserDetails(ResultSet rs) throws SQLException {
-		UserDetailsSO userSo;
-		UserPreferenceDao userPreferenceDao = new UserPreferenceDao();
-		userSo = userPreferenceDao.getUserPreferenceDetails(String.valueOf(rs.getInt("user_id")));
-		userSo.setMobileNumber(rs.getString("user_mobile_number"));
-		userSo.setEmailId(rs.getString("user_email_id"));
-		userSo.setUserId(String.valueOf(rs.getInt("user_id")));
-		userSo.setUserName(rs.getString("user_name"));
-		return userSo;
-	}
-
-	private UserDetailsSO getUserDetails(ResultSet rs, String groupId) throws SQLException {
-		UserDetailsSO userSo;
-		UserPreferenceDao userPreferenceDao = new UserPreferenceDao();
-		userSo = userPreferenceDao.getUserPreferenceDetails(String.valueOf(rs.getInt("user_id")));
-		userSo.setMobileNumber(rs.getString("user_mobile_number"));
-		userSo.setEmailId(rs.getString("user_email_id"));
-		userSo.setUserId(String.valueOf(rs.getInt("user_id")));
-		userSo.setUserName(rs.getString("user_name"));
-		userSo.setGroupId(groupId);
-		return userSo;
 	}
 }
