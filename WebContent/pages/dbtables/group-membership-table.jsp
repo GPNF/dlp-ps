@@ -30,8 +30,11 @@
           <table id="group-membership-datatable" class="display">
           <thead>
             <tr>
-              <th>User Id</th>
               <th>Group Id</th>
+              <th>Group Name</th>
+              <th>Group Auth Level</th>
+              <th>User Id</th>
+              <th>Username</th>
             </tr>
           </thead>
         </table>
