@@ -36,13 +36,14 @@ public class TwilioSmsClient {
 		 * TwilioRestClient twilioRestClient = clientCreator.getClient();
 		 * Twilio.setRestClient(twilioRestClient);
 		 */
+		String formattedMessage="Dear Customer,\n"+actualMessage;
 		System.out.println("MobNo. " + receiverMobNumber);
 		Message twilioMessage=null;
 		try {
 			String senderNumber = ExternalProperties.getAppConfig("sms.sender.number");
 			twilioMessage = Message.creator(new PhoneNumber(receiverMobNumber), // to
 					new PhoneNumber(senderNumber), // from
-					actualMessage).create();
+					formattedMessage).create();
 		} catch(ApiException e) {
 			e.printStackTrace();
 		}
