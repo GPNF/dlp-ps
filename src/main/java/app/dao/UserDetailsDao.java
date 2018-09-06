@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import app.model.UserDetailsSO;
 
 /**
@@ -21,11 +18,16 @@ import app.model.UserDetailsSO;
 public class UserDetailsDao {
 
 	private Connection connection;
-	Logger logger = LoggerFactory.getLogger(UserDetailsDao.class);
 
 	public UserDetailsDao() throws SQLException {
 		DBConnectionProvider connProvider = new DBConnectionProvider();
 		this.connection = connProvider.getConnection();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (connection != null)
+			connection.close();
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class UserDetailsDao {
 	}
 
 	public List<UserDetailsSO> getAllUserDetails(String groupId) throws SQLException {
-		List<UserDetailsSO> userList ;
+		List<UserDetailsSO> userList;
 
 		final String user_membership = "SELECT ud.user_id ,ud.user_name, ud.user_email_id,ud.user_mobile_number,up.email_prefered,up.sms_prefered,gd.group_id \r\n"
 				+ "FROM user_group_details gd JOIN group_membership gm on gm.group_id=gd.group_id \r\n"
@@ -83,7 +85,7 @@ public class UserDetailsDao {
 
 			ResultSet rs = groupMember.executeQuery();
 
-			userList=getUserDetails(rs);
+			userList = getUserDetails(rs);
 
 			return userList;
 		}

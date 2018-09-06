@@ -3,17 +3,20 @@ package app.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 import app.util.ExternalProperties;
 
 /**
- * Provides JDBC connection
+ * Provides JDBC connection. Use getConnection() method to obtain connection
+ * object.
  * 
  * @author AdarshSinghal
  *
  */
 public class DBConnectionProvider {
 
+	private static final Logger LOGGER = Logger.getLogger(DBConnectionProvider.class.getName());
 	private Connection connection;
 
 	/**
@@ -24,12 +27,8 @@ public class DBConnectionProvider {
 	 * @throws SQLException
 	 */
 	public DBConnectionProvider() throws SQLException {
-		this.connectDb();
-	}
-
-	private void connectDb() throws SQLException {
-		String jdbcUrl = getJdbcUrl();
-		initJdbcDriver();
+		String jdbcUrl = formJdbcConnectionUrl();
+		initializeJdbcDriver();
 		setConnection(jdbcUrl);
 	}
 
@@ -39,22 +38,27 @@ public class DBConnectionProvider {
 		connection = DriverManager.getConnection(jdbcUrl, user, passwd);
 	}
 
-	private void initJdbcDriver() {
+	/**
+	 * Initializes JDBC Driver. Driver name is used from DBConfig property file.
+	 */
+	private void initializeJdbcDriver() {
 		try {
-			String driver = ExternalProperties.getDbConfig("app.gc.cloudsql.jdbc.driver");
-			Class.forName(driver).newInstance();
+			String jdbcDriver = ExternalProperties.getDbConfig("app.gc.cloudsql.jdbc.driver");
+			Class.forName(jdbcDriver).newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			e.printStackTrace();
+			LOGGER.severe(e.getMessage());
 		}
 	}
 
-	private String getJdbcUrl() {
-		String dbName = ExternalProperties.getDbConfig("app.gc.cloudsql.db");
+	private String formJdbcConnectionUrl() {
+
+		String databaseName = ExternalProperties.getDbConfig("app.gc.cloudsql.db");
 		String cloudSqlInstance = ExternalProperties.getDbConfig("app.gc.cloudsql.instance");
+
 		String jdbcUrl = String.format(
 				"jdbc:mysql://google/%s?cloudSqlInstance=%s"
 						+ "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-				dbName, cloudSqlInstance);
+				databaseName, cloudSqlInstance);
 		return jdbcUrl;
 	}
 

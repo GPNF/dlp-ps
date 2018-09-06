@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -12,17 +11,23 @@ import com.google.pubsub.v1.PubsubMessage;
 
 import app.dao.PublisherDao;
 import app.model.PublisherMessage;
+import app.util.ListUtils;
 
 /**
- * Responsible for publishing message to topic
+ * Responsible for publishing PubsubMessage to Pubsub Topic
  * 
  * @author adarshs1
  *
  */
-public class NotifySvcMsgPublisher {
+public class NotifyServiceMessagePublisher {
 
 	private static final String YYYY_MM_DD_HH_MM_SS_A = "yyyy-MM-dd hh:mm:ss a";
 
+	/**
+	 * @param topics
+	 * @param pubsubMessage
+	 * @return messageIdList
+	 */
 	public List<String> publishMessage(List<String> topics, PubsubMessage pubsubMessage) {
 
 		List<String> messageIds = new ArrayList<>();
@@ -39,17 +44,20 @@ public class NotifySvcMsgPublisher {
 				e1.printStackTrace();
 			}
 
-			PublisherMessage publisherMessage = new PublisherMessage(pubsubMessage.getData().toStringUtf8(), topic);
-			publisherMessage.setGlobalTransactionId(pubsubMessage.getAttributesOrThrow("globalTransactionId"));
+			String stringUtf8 = pubsubMessage.getData().toStringUtf8();
+			String globalTxnId = pubsubMessage.getAttributesOrThrow("globalTransactionId");
+			PublisherMessage publishedMessage = new PublisherMessage(stringUtf8, topic);
+			publishedMessage.setGlobalTransactionId(globalTxnId);
+			
 			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
 			String publishTime = formatter.format(new Date());
-			publisherMessage.setPublishTime(publishTime);
+			publishedMessage.setPublishTime(publishTime);
 			if (messageId != null && !messageId.isEmpty()) {
-				publisherMessage.setMessageId(messageId);
+				publishedMessage.setMessageId(messageId);
 				messageIds.add(messageId);
 			}
 
-			persistInDB(publisherMessage);
+			persistInDB(publishedMessage);
 
 		});
 
@@ -57,31 +65,27 @@ public class NotifySvcMsgPublisher {
 
 	}
 
+	/**
+	 * @param commaSeparatedTopics
+	 * @param pubsubMessage
+	 * @return list of messageIds
+	 */
 	public List<String> publishMessage(String commaSeparatedTopics, PubsubMessage pubsubMessage) {
-		List<String> topics = getTopicList(commaSeparatedTopics);
-		List<String> messageIds = publishMessage(topics, pubsubMessage);
-		return messageIds;
+		List<String> topics = ListUtils.getListFromCSV(commaSeparatedTopics);
+		return publishMessage(topics, pubsubMessage);
 
 	}
 
+	/** Insert into Publisher table
+	 * @param publisherMessage
+	 */
 	private void persistInDB(PublisherMessage publisherMessage) {
 		try {
 			PublisherDao publisherDao = new PublisherDao();
-			publisherDao.insertPubliser(publisherMessage);
+			publisherDao.insertPublishMessage(publisherMessage);
 		} catch (SQLException | ParseException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private List<String> getTopicList(String topicName) {
-		List<String> topics;
-		if (topicName.contains(",")) {
-			topics = Arrays.asList(topicName.split(","));
-		} else {
-			topics = new ArrayList<>();
-			topics.add(topicName);
-		}
-		return topics;
 	}
 
 }

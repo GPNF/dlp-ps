@@ -25,13 +25,19 @@ import app.model.SubscriberMessage;
  */
 public class SubscriberDao {
 	private static final String YYYY_MM_DD_HH_MM_SS_A_Z = "yyyy-MM-dd hh:mm:ss a z";
-	Logger logger = LoggerFactory.getLogger(SubscriberDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SubscriberDao.class);
 
 	private Connection connection;
 
 	public SubscriberDao() throws SQLException, ClassNotFoundException {
 		DBConnectionProvider connProvider = new DBConnectionProvider();
 		this.connection = connProvider.getConnection();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		if (connection != null)
+			connection.close();
 	}
 
 	/**
@@ -69,7 +75,7 @@ public class SubscriberDao {
 			publishDate = formatter.parse(subscriberMessage.getPublishTime());
 			pullDate = formatter.parse(subscriberMessage.getPullTime());
 		} catch (ParseException e) {
-			logger.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 
 		Timestamp publishTimestamp = new Timestamp(publishDate.getTime());

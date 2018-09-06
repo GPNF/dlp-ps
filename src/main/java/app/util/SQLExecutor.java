@@ -10,14 +10,16 @@ import java.util.List;
 import app.dao.DBConnectionProvider;
 
 /**
- * <span style='color:red'>Use with caution.</span> Executes DDL/DML commands.
- * Following are supported operations:-
+ * This class is created for convenience but can lead to serious rework or data loss if misused.
+ * <br>
+ * <span style='color:red'>USE WITH CAUTION</span> &emsp; Executes DDL/DML commands.
+ *  Following are supported operations:-
  * <ul>
  * <li>executeUpdate(String sql)</li>
  * <li>truncateTables() - Publisher, Subscriber, Logging, Message Status</li>
  * <li>truncateTables(String... tables)</li> </ul <br>
  * 
- * @author adarshsinghal
+ * @author AdarshSinghal
  *
  */
 public class SQLExecutor {

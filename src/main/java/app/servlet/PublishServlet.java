@@ -2,8 +2,6 @@ package app.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +20,11 @@ import com.google.pubsub.v1.PubsubMessage;
 
 import app.service.NotifyService;
 import app.util.ExternalProperties;
+import app.util.ListUtils;
 
 /**
+ * Responsible for publishing messages on topics
+ * 
  * @author AdarshSinghal
  *
  */
@@ -46,7 +47,7 @@ public class PublishServlet extends HttpServlet {
 			JsonElement topicJsonArr = gson.toJsonTree(topics.split(","));
 			JsonObject topicListJson = new JsonObject();
 			topicListJson.add("topics", topicJsonArr);
-			
+
 			resp.setContentType("application/json");
 			PrintWriter pw = resp.getWriter();
 			pw.print(topicListJson);
@@ -62,23 +63,22 @@ public class PublishServlet extends HttpServlet {
 		String topicName = req.getParameter("topic-name");
 		String message = req.getParameter("message");
 		String srcAuthLevel = req.getParameter("src-auth-level");
-		System.out.println(srcAuthLevel); 
-		//if(srcAuthLevel)
+		System.out.println(srcAuthLevel);
+		// if(srcAuthLevel)
 
 		if (topicName == null || message == null) {
 			resp.sendError(400);
 			return;
 		}
 
-		List<String> topics = getTopicList(topicName);
+		List<String> topics = ListUtils.getListFromCSV(topicName);
 
 		String gbTxnId = "g" + new Date().getTime() + "r" + (int) (Math.random() * 100);
-		
+
 		ByteString data = ByteString.copyFromUtf8(message);
 		PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
-				.putAttributes("globalTransactionId", gbTxnId)
-				.build();
-		System.out.println("From Publish Servlet, The PubSub Message is\n"+ pubsubMessage);
+				.putAttributes("globalTransactionId", gbTxnId).build();
+		System.out.println("From Publish Servlet, The PubSub Message is\n" + pubsubMessage);
 		NotifyService notifyService = new NotifyService();
 		List<String> messageIds = notifyService.publishMessage(topics, pubsubMessage);
 
@@ -91,17 +91,6 @@ public class PublishServlet extends HttpServlet {
 			req.getRequestDispatcher("/results/failure.jsp").forward(req, resp);
 		}
 
-	}
-
-	private List<String> getTopicList(String topicName) {
-		List<String> topics;
-		if (topicName.contains(",")) {
-			topics = Arrays.asList(topicName.split(","));
-		} else {
-			topics = new ArrayList<>();
-			topics.add(topicName);
-		}
-		return topics;
 	}
 
 }

@@ -1,51 +1,34 @@
 package app.servlet.tabledata;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import app.dao.MessageStatusDAO;
-import app.model.DataTableWrapper;
 import app.model.MessageStatusCacheField;
 
 /**
- * Servlet implementation class MsgStatusCacheDataServlet
+ * This servlet is used to get message status cache data
+ * 
+ * @author AdarshSinghal
+ *
  */
 @WebServlet("/api/getMsgStatusCacheData")
-public class MsgStatusCacheDataServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class MsgStatusCacheDataServlet extends TableDataParentServlet<MessageStatusCacheField> {
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public MsgStatusCacheDataServlet() {
-		super();
-	}
+	private static final long serialVersionUID = 6587925302210756509L;
+	private static final Logger LOGGER = Logger.getLogger(MsgStatusCacheDataServlet.class.getName());
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<MessageStatusCacheField> logDetails = null;
-		MessageStatusDAO dao;
-		try {
-			dao = new MessageStatusDAO();
-			logDetails = dao.getAllFieldDetails();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+		List<MessageStatusCacheField> logDetails = getMessageStatusDetailsList();
 
 		if (logDetails == null || logDetails.isEmpty()) {
 			prepareNoContentResponse(response);
@@ -55,29 +38,16 @@ public class MsgStatusCacheDataServlet extends HttpServlet {
 		prepareJsonResponse(response, logDetails);
 	}
 
-	/**
-	 * @param response
-	 * @throws IOException
-	 */
-	private void prepareNoContentResponse(HttpServletResponse response) throws IOException {
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.setStatus(204); // No content found
-		out.flush();
-	}
-
-	private void prepareJsonResponse(HttpServletResponse response, List<MessageStatusCacheField> logDetails)
-			throws JsonProcessingException, IOException {
-		DataTableWrapper wrapper = new DataTableWrapper(logDetails);
-
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(wrapper);
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		out.print(json);
-		out.flush();
+	private List<MessageStatusCacheField> getMessageStatusDetailsList() {
+		List<MessageStatusCacheField> logDetails = null;
+		MessageStatusDAO dao;
+		try {
+			dao = new MessageStatusDAO();
+			logDetails = dao.getAllFieldDetails();
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return logDetails;
 	}
 
 }

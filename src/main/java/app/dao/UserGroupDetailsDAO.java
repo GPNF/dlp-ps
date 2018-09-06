@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.exception.NoSuchGroupException;
-import app.model.UserDetailsSO;
 import app.model.UserGroupDetails;
-import app.model.UserGroupModel;
 
 /**
- * @author adarshsinghal
+ * @author AdarshSinghal
  *
  */
 public class UserGroupDetailsDAO {
@@ -23,6 +21,12 @@ public class UserGroupDetailsDAO {
 	public UserGroupDetailsDAO() throws SQLException {
 		DBConnectionProvider connProvider = new DBConnectionProvider();
 		connection = connProvider.getConnection();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		if (connection != null)
+			connection.close();
 	}
 
 	/**

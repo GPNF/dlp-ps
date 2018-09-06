@@ -1,51 +1,62 @@
 package app.service.dlp;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.google.privacy.dlp.v2.InfoType;
 
 import app.exception.PANDataFoundSecurityViolationException;
 import app.model.InspectResult;
 
 /**
- * Responsible for Inspection, Risk analysis & De-Identification
+ * Responsible for DLP Inspection, Risk analysis & Deidentification <br>
+ * <br>
+ * Service class should be 'As Simple As Possible'. 
+ * If you're modifying this class, add operation &amp; delegate logics to other class
  * 
- * @author adarshs1
+ * @author AdarshSinghal
  *
  */
 public class DLPService {
 
-	private static final String ALL_BASIC = "ALL_BASIC";
-	List<String> sensitiveInfoTypes = Arrays.asList("CREDIT_CARD_NUMBER", "INDIA_PAN_INDIVIDUAL");
-
+	/**
+	 * @param inputMessage
+	 * @return inspectResult
+	 * @throws IOException
+	 */
 	public List<InspectResult> getInspectionResult(String inputMessage) throws IOException {
 		DLPInspector dlpInspector = new DLPInspector();
-		List<InspectResult> inspectResult = dlpInspector.getInspectionResult(inputMessage);
-		return inspectResult;
+		return dlpInspector.getInspectionResult(inputMessage);
 	}
 
-	public String getDeIdentifiedString(String inputMsg) throws IOException {
-		List<InfoType> infoTypes = new ArrayList<InfoType>();
-		infoTypes.add(InfoType.newBuilder().setName(ALL_BASIC).build());
-		String deidentifiedRes = DLPDeIdentifier.deIdentifyWithMask(inputMsg, infoTypes);
-		return deidentifiedRes;
+	/**
+	 * @param inputMessage
+	 * @return deidentifiedMessage
+	 * @throws IOException
+	 */
+	public String getDeidentifiedString(String inputMessage) throws IOException {
+
+		DLPDeIdentifier dlpDeidentifier = new DLPDeIdentifier();
+		return dlpDeidentifier.getDeidentifiedString(inputMessage);
 	}
 
+	/**
+	 * @param inputMessage
+	 * @throws IOException
+	 * @throws PANDataFoundSecurityViolationException
+	 */
 	public void checkForSensitiveData(String inputMessage) throws IOException, PANDataFoundSecurityViolationException {
 		List<InspectResult> inspectionResults = getInspectionResult(inputMessage);
-		if (inspectionResults == null || inspectionResults.isEmpty())
-			return;
-
-		boolean sensitiveDataPresent = inspectionResults.stream()
-				.anyMatch(result -> sensitiveInfoTypes.contains(result.getInfoType()));
+		boolean sensitiveDataPresent = inspectionResults.stream().anyMatch(result -> hasSensitiveData(result));
 
 		if (sensitiveDataPresent) {
 			throw new PANDataFoundSecurityViolationException();
 		}
 
+	}
+
+	private boolean hasSensitiveData(InspectResult inspectResult) {
+		List<String> sensitiveInfoTypes = Arrays.asList("CREDIT_CARD_NUMBER", "INDIA_PAN_INDIVIDUAL");
+		return sensitiveInfoTypes.contains(inspectResult.getInfoType());
 	}
 
 }
