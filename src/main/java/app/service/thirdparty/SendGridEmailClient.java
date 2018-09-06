@@ -34,7 +34,7 @@ public class SendGridEmailClient {
 		Email from = new Email(decrytedFromEmail);
 		String subject = "Global Notification test mail";
 
-		String formattedMessage = "<p>Dear Customer,<br/><br/>Greetings from <b>Global Payments</b>.</p>" + "actualMessage"
+		String formattedMessage = "<p>Dear Customer,<br/><br/>Greetings from <b>Global Payments</b>.</p>" + actualMessage
 				+ "<p>Looking forward to more opportunities to be of service to you. <br/></p>"
 				+ "<p>Sincerely,<br/>Customer Service Team<br/>Global Payments</p>"
 				+ "<p><i>This is a system-generated e-mail. Please do not reply to this e-mail.</i></p>";
