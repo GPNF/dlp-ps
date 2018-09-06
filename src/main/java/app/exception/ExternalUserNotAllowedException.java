@@ -1,7 +1,7 @@
 package app.exception;
 
 /**
- * @author adarshsinghal
+ * @author AdarshSinghal
  *
  */
 public class ExternalUserNotAllowedException extends Exception {

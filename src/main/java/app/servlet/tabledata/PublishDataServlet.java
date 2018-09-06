@@ -1,32 +1,28 @@
 package app.servlet.tabledata;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
-
 import app.dao.PublisherDao;
-import app.model.DataTableWrapper;
 import app.model.PublisherMessage;
 
-/**
+/** This servlet should be used to pull data of PublisherTable
  * @author AdarshSinghal
  *
  */
-@WebServlet(name = "publishdata", urlPatterns = { "/publishdata", "/publishData", "/PublishData", "/getPublishData" })
-public class PublishDataServlet extends HttpServlet {
+@WebServlet(name = "publishdata", urlPatterns = { "/publishdata", "/api/publishdata", "/api/PublishData",
+		"/api/getPublishData" })
+public class PublishDataServlet extends TableDataParentServlet<PublisherMessage> {
 
 	private static final long serialVersionUID = -5242138226681465405L;
+	private static final Logger LOGGER = Logger.getLogger(PublishDataServlet.class.getName());
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,25 +39,6 @@ public class PublishDataServlet extends HttpServlet {
 	}
 
 	/**
-	 * @param response
-	 * @param publishers
-	 * @throws JsonProcessingException
-	 * @throws IOException
-	 */
-	private void prepareJsonResponse(HttpServletResponse response, List<PublisherMessage> publishers)
-			throws JsonProcessingException, IOException {
-		DataTableWrapper wrapper = new DataTableWrapper(publishers);
-
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(wrapper);
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		out.print(json);
-		out.flush();
-	}
-
-	/**
 	 * @return List
 	 */
 	private List<PublisherMessage> getPublisherMessageList() {
@@ -70,24 +47,9 @@ public class PublishDataServlet extends HttpServlet {
 			PublisherDao publisherDao = new PublisherDao();
 			publishers = publisherDao.getAllPublishers();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.severe(e.getMessage());
 		}
 		return publishers;
-	}
-
-	/**
-	 * @param response
-	 * @throws IOException
-	 */
-	private void prepareNoContentResponse(HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.setStatus(204); // No content found
-		PrintWriter out = response.getWriter();
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("data", "[]");
-		out.print(jsonObject);
-		out.flush();
 	}
 
 }

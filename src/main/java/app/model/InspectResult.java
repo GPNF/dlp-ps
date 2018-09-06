@@ -1,7 +1,7 @@
 package app.model;
 
 /**
- * @author adarshsinghal
+ * @author AdarshSinghal
  *
  */
 public class InspectResult {

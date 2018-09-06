@@ -27,6 +27,12 @@ public class UserPreferenceDao {
 		this.connection = connProvider.getConnection();
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		if (connection != null)
+			connection.close();
+	}
+
 	/**
 	 * @param userId
 	 * @return UserDetailsSO

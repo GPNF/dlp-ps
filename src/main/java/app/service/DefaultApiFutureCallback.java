@@ -1,4 +1,4 @@
-package app;
+package app.service;
 
 import com.google.api.core.ApiFutureCallback;
 import com.google.api.gax.rpc.ApiException;

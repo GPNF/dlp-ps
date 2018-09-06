@@ -1,7 +1,8 @@
 package app.model;
 
 /**
- * @author adarshsinghal
+ * {@link app.dao.UserGroupDetailsDAO#getUserGroupDetailsFromDb(ResultSet)} 
+ * @author AdarshSinghal
  *
  */
 public class UserGroupDetails {

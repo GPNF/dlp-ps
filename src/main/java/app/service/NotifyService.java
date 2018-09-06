@@ -17,14 +17,23 @@ import app.service.dlp.DLPService;
 import app.util.ExternalProperties;
 
 /**
- * Responsible for Publishing messages for PubSub Layer 1 and also delegates DLP
- * specific task to DLPService.
+ * Responsible for Publishing messages for PubSub Layer 1 which contains three
+ * topics. <br>
+ * <br>
+ * Delegates DLP specific responsibility to DLPService. <br>
+ * Delegates Authorization specific responsibility to AuthorizationService. <br>
+ * <br>
+ * Service class should be 'As Simple As Possible'. If you're modifying this
+ * class, add operation &amp; delegate logics to other class <br>
+ * <br>
  * 
- * @author adarshsinghal
+ * @author AdarshSinghal
  *
  */
 public class NotifyService {
 
+	// TODO Remove dependencies from here. Use HTTPClient API to hit POST URL which
+	// is already implemented by updateDelConfirmation() of NotifyUtility
 	private DLPService dlpService;
 	private AuthorizationService authService;
 
@@ -34,7 +43,7 @@ public class NotifyService {
 	}
 
 	/**
-	 * Publish messages on provided list of topics.
+	 * Publish PubsubMessage on provided list of topics.
 	 * 
 	 * @param topics
 	 * @param gbTxnId
@@ -43,37 +52,35 @@ public class NotifyService {
 	 */
 	public List<String> publishMessage(List<String> topics, PubsubMessage pubsubMessage) {
 
-		NotifySvcMsgPublisher publisher = new NotifySvcMsgPublisher();
+		NotifyServiceMessagePublisher publisher = new NotifyServiceMessagePublisher();
 		List<String> messageIds = publisher.publishMessage(topics, pubsubMessage);
 		return messageIds;
 	}
 
 	/**
-	 * Uses DLPService to Inspect the given string
+	 * Uses DLPService to perform DLP Inspection on the given string
 	 * 
 	 * @param inputMessage
 	 * @return list of inspection results
 	 * @throws IOException
 	 */
-	public List<InspectResult> inspect(String inputMessage) throws IOException {
-		List<InspectResult> inspectResults = dlpService.getInspectionResult(inputMessage);
-		return inspectResults;
+	public List<InspectResult> getInspectionResult(String inputMessage) throws IOException {
+		return dlpService.getInspectionResult(inputMessage);
 	}
 
 	/**
-	 * Uses DLP Service to de-identify the given string
+	 * Uses DLP Service to perform DLP Deidentification on the given string
 	 * 
 	 * @param inputMsg
 	 * @return de-identified String
 	 * @throws IOException
 	 */
-	public String deIdentify(String inputMsg) throws IOException {
-		String deIdentifiedStr = dlpService.getDeIdentifiedString(inputMsg);
-		return deIdentifiedStr;
+	public String getDeidentifiedString(String inputMsg) throws IOException {
+		return dlpService.getDeidentifiedString(inputMsg);
 	}
 
 	/**
-	 * @param srcMessage
+	 * @param sourceMessage
 	 * @return messageIds
 	 * @throws SQLException
 	 * @throws ExternalUserNotAllowedException
@@ -82,28 +89,51 @@ public class NotifyService {
 	 * @throws IOException
 	 * @throws PANDataFoundSecurityViolationException
 	 */
-	public List<String> notify(SourceMessage srcMessage)
+	public List<String> notify(SourceMessage sourceMessage)
 			throws SQLException, ExternalUserNotAllowedException, NoSuchGroupException,
 			InsufficientAuthorizationException, IOException, PANDataFoundSecurityViolationException {
-		String message = srcMessage.getMessage();
-		String topicNames = ExternalProperties.getAppConfig("app.gc.pubsub.topic.layer1");
-		
-		authService.checkSourceAuthorization(srcMessage);
+		String message = sourceMessage.getMessage();
+
+		// Application level Source authorization against Target Group
+		authService.checkSourceAuthorization(sourceMessage);
+
+		// Inspection & termination on violation
 		dlpService.checkForSensitiveData(message);
 
-		String deIdentifiedStr = dlpService.getDeIdentifiedString(message);
-		
-		ByteString data = ByteString.copyFromUtf8(deIdentifiedStr);
-		String srcAuthLvlStr = String.valueOf(srcMessage.getSourceauthLevel());
-		String groupIdStr = String.valueOf(srcMessage.getGroupId());
-		PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
-				.putAttributes("globalTransactionId", srcMessage.getGlobalTxnId())
-				.putAttributes("srcAuthLevel", srcAuthLvlStr)
-				.putAttributes("destGroupId", groupIdStr).build();
-		
-		NotifySvcMsgPublisher publisher = new NotifySvcMsgPublisher();
+		// DeIdentification - Redact/Mask PIIs.
+		String deidentifiedStr = dlpService.getDeidentifiedString(sourceMessage.getMessage());
+
+		PubsubMessage pubsubMessage = SourceToPubSubMessageConverter.convert(sourceMessage, deidentifiedStr);
+
+		String topicNames = ExternalProperties.getAppConfig("app.gc.pubsub.topic.layer1");
+		NotifyServiceMessagePublisher publisher = new NotifyServiceMessagePublisher();
 		List<String> messageIds = publisher.publishMessage(topicNames, pubsubMessage);
 		return messageIds;
+	}
+
+	/**
+	 * Since PubsubMessage is an Immutable & we need to use deIdentified String
+	 * (from DLP), we have to handle it here. <br>
+	 * 
+	 * @param sourceMessage
+	 * @param deidentifiedStr
+	 * @return
+	 * @throws IOException
+	 * 
+	 * @author AdarshSinghal
+	 */
+	private static class SourceToPubSubMessageConverter {
+
+		private static PubsubMessage convert(SourceMessage sourceMessage, String deidentifiedStr) throws IOException {
+			ByteString data = ByteString.copyFromUtf8(deidentifiedStr);
+			String srcAuthLvlStr = String.valueOf(sourceMessage.getSourceauthLevel());
+			String groupIdStr = String.valueOf(sourceMessage.getGroupId());
+
+			PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data)
+					.putAttributes("globalTransactionId", sourceMessage.getGlobalTxnId())
+					.putAttributes("srcAuthLevel", srcAuthLvlStr).putAttributes("destGroupId", groupIdStr).build();
+			return pubsubMessage;
+		}
 	}
 
 }
