@@ -34,24 +34,13 @@ public class SendGridEmailClient {
 		Email from = new Email(decrytedFromEmail);
 		String subject = "Global Notification test mail";
 
-		String formattedMessage = "Dear Customer," + "\n\nGreetings from Global Payments." + actualMessage
-				+ "\n\nLooking forward to more opportunities to be of service to you." + "\n\nSincerely,"
-				+ "\nCustomer Service Team" + "\nGlobal Payments"
-				+ "\n\nThis is a system-generated e-mail.Please do not reply to this e-mail.";
-
-		/*
-		 * String formattedMessage =
-		 * "<p>Dear Customer,<br/>Greetings from Global Payments.</p>" +
-		 * actualMessage +
-		 * "<p>Looking forward to more opportunities to be of service to you <br/></p>"
-		 * + "<hr/><p>Sincerely,<br/>Customer Service Team\nGlobal Payments</p>"
-		 * +
-		 * "<p><b><i>This is a system-generated e-mail.Please do not reply to this e-mail.</i></b></p>"
-		 * ;
-		 */
+		String formattedMessage = "<p>Dear Customer,<br/><br/>Greetings from <b>Global Payments</b>.</p>" + "actualMessage"
+				+ "<p>Looking forward to more opportunities to be of service to you. <br/></p>"
+				+ "<p>Sincerely,<br/>Customer Service Team<br/>Global Payments</p>"
+				+ "<p><i>This is a system-generated e-mail. Please do not reply to this e-mail.</i></p>";
 
 		Email to = new Email(receiverId);
-		Content content = new Content("text/plain", formattedMessage);
+		Content content = new Content("text/html", formattedMessage);
 		Mail mail = new Mail(from, subject, to, content);
 
 		String sendGridApiKey = ExternalProperties.getAppConfig("email.sendgrid.apikey");
