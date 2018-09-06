@@ -33,8 +33,8 @@
                 class="form-control">
                 <option value="0">External User (0)</option>
                 <option value="1">Merchant (1)</option>
-                <option value="2">Administrator (2)</option>
-                <option value="3">Executive (3)</option>
+                <option value="2">Executive (2)</option>
+                <option value="3">Administrator (3)</option>
               </select>
             </div>
 
