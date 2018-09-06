@@ -17,7 +17,7 @@ import app.model.SubscriberMessage;
  * <li>Publishing on provider specific topics</li>
  * </ul>
  * 
- * @author adarshsinghal
+ * @author amolpol
  *
  */
 public class NotificationService {
