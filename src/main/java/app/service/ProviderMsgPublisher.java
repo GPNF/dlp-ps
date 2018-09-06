@@ -77,7 +77,7 @@ public class ProviderMsgPublisher {
 	private void persistInDB(PublisherMessage publisherMessage) {
 		try {
 			PublisherDao publisherDao = new PublisherDao();
-			publisherDao.insertPubliser(publisherMessage);
+			publisherDao.insertPublishMessage(publisherMessage);
 		} catch (SQLException | ParseException e) {
 			e.printStackTrace();
 		}

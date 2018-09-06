@@ -1,32 +1,30 @@
 package app.servlet.tabledata;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
-
 import app.dao.SubscriberDao;
-import app.model.DataTableWrapper;
 import app.model.SubscriberMessage;
 
 /**
+ * This servlet is used to get data from <b>Subscriber Table</b>. The Subscriber Table
+ * entry is made on successful pull from Notification Service who is listening to
+ * Subscription2. Notification Service acts as Subscriber for Subscription2.
+ * 
  * @author AdarshSinghal
  *
  */
 @WebServlet(name = "PullDataServlet", urlPatterns = { "/pulldata", "/pullData", "/pull-data", "/PullData",
-		"/getPullData" ,"/api/pulldata"})
-public class PullDataServlet extends HttpServlet {
-
+		"/getPullData", "/api/pulldata" })
+public class PullDataServlet extends TableDataParentServlet<SubscriberMessage> {
+	private static final Logger LOGGER = Logger.getLogger(PullDataServlet.class.getName());
 	private static final long serialVersionUID = 8626493333510999766L;
 
 	@Override
@@ -44,24 +42,6 @@ public class PullDataServlet extends HttpServlet {
 	}
 
 	/**
-	 * @param response
-	 * @param subscriberMessages
-	 * @throws JsonProcessingException
-	 * @throws IOException
-	 */
-	private void prepareJsonResponse(HttpServletResponse response, List<SubscriberMessage> subscriberMessages)
-			throws JsonProcessingException, IOException {
-		DataTableWrapper wrapper = new DataTableWrapper(subscriberMessages);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(wrapper);
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		out.print(json);
-		out.flush();
-	}
-
-	/**
 	 * @return List
 	 */
 	private List<SubscriberMessage> getSubscriberMessageList() {
@@ -69,24 +49,9 @@ public class PullDataServlet extends HttpServlet {
 		try {
 			SubscriberDao dao = new SubscriberDao();
 			subscriberMessages = dao.getAllSubscriberMessage();
-		} catch (ClassNotFoundException | SQLException e1) {
-			e1.printStackTrace();
+		} catch (ClassNotFoundException | SQLException e) {
+			LOGGER.severe(e.getMessage());
 		}
 		return subscriberMessages;
-	}
-
-	/**
-	 * @param response
-	 * @throws IOException
-	 */
-	private void prepareNoContentResponse(HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.setStatus(204); // No content found
-		PrintWriter out = response.getWriter();
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("data", "[]");
-		out.print(jsonObject);
-		out.flush();
 	}
 }

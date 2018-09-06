@@ -1,6 +1,7 @@
 package app.service.dlp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.cloud.dlp.v2.DlpServiceClient;
@@ -19,20 +20,51 @@ import com.google.pubsub.v1.ProjectName;
 import app.constants.Constants;
 
 /**
- * @author Bhagyashree
+ * This class is responsible for DLP Deidentification. Provide infotype, masking
+ * characters, number of characters to mask to configure.
+ * 
+ * @author Bhagyashree, AdarshSinghal
  *
  */
 public class DLPDeIdentifier {
 
-	public static String deIdentifyWithMask(String inputMessage, List<InfoType> infoTypes) throws IOException {
+	private static final String ALL_BASIC = "ALL_BASIC";
 
-		Character maskingCharacter = 'x';
-		int numberToMask = Integer.parseInt("0");
+	/**
+	 * @param inputMessage
+	 * @param infoTypes
+	 * @return deidentifiedMessage
+	 * @throws IOException
+	 */
+	public String deIdentifyWithMask(String inputMessage, List<InfoType> infoTypes) throws IOException {
 
+		DeidentifyConfig deidentifyConfig = getDeidentifyConfig();
 		ContentItem contentItem = ContentItem.newBuilder().setValue(inputMessage).build();
+		InspectConfig inspectConfig = InspectConfig.newBuilder().addAllInfoTypes(infoTypes).build();
 
-		CharacterMaskConfig characterMaskConfig = CharacterMaskConfig.newBuilder()
-				.setMaskingCharacter(maskingCharacter.toString()).setNumberToMask(numberToMask).build();
+		// Create the deidentification request object
+		DeidentifyContentRequest request = DeidentifyContentRequest.newBuilder()
+				.setParent(ProjectName.of(Constants.PROJECT_ID).toString()).setInspectConfig(inspectConfig)
+				.setDeidentifyConfig(deidentifyConfig).setItem(contentItem).build();
+
+		// Execute the deidentification request
+		DlpServiceClient client = DlpServiceClient.create();
+		DeidentifyContentResponse response = client.deidentifyContent(request);
+
+		String deidentifiedMessage = response.getItem().getValue();
+
+		client.shutdown();
+
+		return deidentifiedMessage;
+
+	}
+
+	private DeidentifyConfig getDeidentifyConfig() {
+		String maskingCharacter = "x";
+		int numberToMask = 0;
+
+		CharacterMaskConfig characterMaskConfig = CharacterMaskConfig.newBuilder().setMaskingCharacter(maskingCharacter)
+				.setNumberToMask(numberToMask).build();
 
 		// Create the deidentification transformation configuration
 		PrimitiveTransformation primitiveTransformation = PrimitiveTransformation.newBuilder()
@@ -44,26 +76,20 @@ public class DLPDeIdentifier {
 		InfoTypeTransformations infoTypeTransformationArray = InfoTypeTransformations.newBuilder()
 				.addTransformations(infoTypeTransformationObject).build();
 
-		InspectConfig inspectConfig = InspectConfig.newBuilder().addAllInfoTypes(infoTypes).build();
-
 		DeidentifyConfig deidentifyConfig = DeidentifyConfig.newBuilder()
 				.setInfoTypeTransformations(infoTypeTransformationArray).build();
+		return deidentifyConfig;
+	}
 
-		// Create the deidentification request object
-		DeidentifyContentRequest request = DeidentifyContentRequest.newBuilder()
-				.setParent(ProjectName.of(Constants.PROJECT_ID).toString()).setInspectConfig(inspectConfig)
-				.setDeidentifyConfig(deidentifyConfig).setItem(contentItem).build();
-
-		// Execute the deidentification request
-		DlpServiceClient client = DlpServiceClient.create();
-		DeidentifyContentResponse response = client.deidentifyContent(request);
-
-		String result = response.getItem().getValue();
-
-		client.shutdown();
-
-		return result;
-
+	/**
+	 * @param inputMsg
+	 * @return deidentifiedMessage
+	 * @throws IOException
+	 */
+	public String getDeidentifiedString(String inputMsg) throws IOException {
+		List<InfoType> infoTypes = new ArrayList<InfoType>();
+		infoTypes.add(InfoType.newBuilder().setName(ALL_BASIC).build());
+		return deIdentifyWithMask(inputMsg, infoTypes);
 	}
 
 }

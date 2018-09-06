@@ -9,6 +9,10 @@ import java.util.List;
 
 import app.model.UserGroupModel;
 
+/**
+ * @author AmolPol, AdarshSinghal
+ *
+ */
 public class UserGroupMembershipDAO {
 
 	private Connection connection;
@@ -16,6 +20,12 @@ public class UserGroupMembershipDAO {
 	public UserGroupMembershipDAO() throws SQLException {
 		DBConnectionProvider connProvider = new DBConnectionProvider();
 		connection = connProvider.getConnection();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (connection != null)
+			connection.close();
 	}
 
 	public List<UserGroupModel> getUserGroupMembershipDetails() throws SQLException {
@@ -34,7 +44,6 @@ public class UserGroupMembershipDAO {
 			userGroupModel.setUserName(rs.getString("user_name"));
 			userGroupDetailsList.add(userGroupModel);
 		}
-		System.out.println(userGroupDetailsList);
 		return userGroupDetailsList;
 	}
 
