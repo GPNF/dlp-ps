@@ -33,8 +33,8 @@ public class InspectServlet extends HttpServlet {
 		String inputMessage = getInputMessage(inputJson);
 
 		NotifyService notifyService = new NotifyService();
-		List<InspectResult> inspectResList = notifyService.inspect(inputMessage);
-		String deidentifiedRes = notifyService.deIdentify(inputMessage);
+		List<InspectResult> inspectResList = notifyService.getInspectionResult(inputMessage);
+		String deidentifiedRes = notifyService.getDeidentifiedString(inputMessage);
 
 		if(inspectResList==null || inspectResList.isEmpty()) {
 			response.setCharacterEncoding("UTF-8");
