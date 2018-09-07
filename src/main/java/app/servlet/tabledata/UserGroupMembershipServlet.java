@@ -1,9 +1,9 @@
 package app.servlet.tabledata;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,20 +11,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import app.dao.UserGroupMembershipDAO;
-import app.model.DataTableWrapper;
 import app.model.UserGroupModel;
 
 /**
- * Servlet implementation class UserGroupMembershipServlet
+ * This servlet is used to get user group membership data
+ * 
+ * @author AdarshSinghal
+ *
  */
 @WebServlet({ "/UserGroupMembershipServlet", "/api/get-user-group-membership" })
-public class UserGroupMembershipServlet extends HttpServlet {
+public class UserGroupMembershipServlet extends TableDataParentServlet<UserGroupModel> {
 
 	private static final long serialVersionUID = -1010176831489295952L;
+	private static final Logger LOGGER = Logger.getLogger(UserGroupDetailsServlet.class.getName());
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -32,12 +32,8 @@ public class UserGroupMembershipServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<UserGroupModel> groupMembershipList = null;
-		try {
-			groupMembershipList = getgroupMembershipList();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+		List<UserGroupModel> groupMembershipList = getUserGroupList();
 
 		if (groupMembershipList == null || groupMembershipList.isEmpty()) {
 			prepareNoContentResponse(response);
@@ -48,53 +44,16 @@ public class UserGroupMembershipServlet extends HttpServlet {
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-
-	/**
-	 * @param response
-	 * @param groupMembershipList
-	 * @throws JsonProcessingException
-	 * @throws IOException
-	 */
-	private void prepareJsonResponse(HttpServletResponse response, List<UserGroupModel> groupMembershipList)
-			throws JsonProcessingException, IOException {
-		DataTableWrapper wrapper = new DataTableWrapper(groupMembershipList);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(wrapper);
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		out.print(json);
-		out.flush();
-	}
-
-	/**
-	 * @return List
-	 * @throws SQLException
-	 */
-	private List<UserGroupModel> getgroupMembershipList() throws SQLException {
-		UserGroupMembershipDAO groupMembershipDao = new UserGroupMembershipDAO();
-		List<UserGroupModel> UserGroupModel = groupMembershipDao.getUserGroupMembershipDetails();
-		return UserGroupModel;
-	}
-
-	/**
-	 * @param response
-	 * @throws IOException
-	 */
-	private void prepareNoContentResponse(HttpServletResponse response) throws IOException {
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.setStatus(204); // No content found
-		out.flush();
+	private List<UserGroupModel> getUserGroupList() {
+		List<UserGroupModel> groupMembershipList = null;
+		try {
+			UserGroupMembershipDAO groupMembershipDao = new UserGroupMembershipDAO();
+			List<UserGroupModel> UserGroupModel1 = groupMembershipDao.getUserGroupMembershipDetails();
+			groupMembershipList = UserGroupModel1;
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return groupMembershipList;
 	}
 
 }

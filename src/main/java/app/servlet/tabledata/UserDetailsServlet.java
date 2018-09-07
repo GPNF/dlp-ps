@@ -1,41 +1,34 @@
 package app.servlet.tabledata;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import app.dao.UserDetailsDao;
-import app.model.DataTableWrapper;
 import app.model.UserDetailsSO;
 
 /**
+ * This servlet is used to get user details.
+ * 
  * @author AdarshSinghal
  *
  */
 @WebServlet(name = "UserDetailsServlet", urlPatterns = { "/userdetailsdata" })
-public class UserDetailsServlet extends HttpServlet {
+public class UserDetailsServlet extends TableDataParentServlet<UserDetailsSO> {
 
 	private static final long serialVersionUID = 8626493333510999766L;
+	private static final Logger LOGGER = Logger.getLogger(UserDetailsServlet.class.getName());
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 
-		List<UserDetailsSO> userDetailsList = null;
-		try {
-			userDetailsList = getUserDetailsList();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		List<UserDetailsSO> userDetailsList = getUserDetailsList();
 
 		if (userDetailsList == null || userDetailsList.isEmpty()) {
 			prepareNoContentResponse(response);
@@ -46,43 +39,16 @@ public class UserDetailsServlet extends HttpServlet {
 
 	}
 
-	/**
-	 * @param response
-	 * @param userDetailsList
-	 * @throws JsonProcessingException
-	 * @throws IOException
-	 */
-	private void prepareJsonResponse(HttpServletResponse response, List<UserDetailsSO> userDetailsList)
-			throws JsonProcessingException, IOException {
-		DataTableWrapper wrapper = new DataTableWrapper(userDetailsList);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(wrapper);
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		out.print(json);
-		out.flush();
+	private List<UserDetailsSO> getUserDetailsList() {
+		List<UserDetailsSO> userDetailsList = null;
+		try {
+			UserDetailsDao userDetailsDao = new UserDetailsDao();
+			List<UserDetailsSO> allUsers = userDetailsDao.getAllUserDetails();
+			userDetailsList = allUsers;
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return userDetailsList;
 	}
 
-	/**
-	 * @return List
-	 * @throws SQLException
-	 */
-	private List<UserDetailsSO> getUserDetailsList() throws SQLException {
-		UserDetailsDao userDetailsDao = new UserDetailsDao();
-		List<UserDetailsSO> allUsers = userDetailsDao.getAllUserDetails();
-		return allUsers;
-	}
-
-	/**
-	 * @param response
-	 * @throws IOException
-	 */
-	private void prepareNoContentResponse(HttpServletResponse response) throws IOException {
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.setStatus(204); // No content found
-		out.flush();
-	}
 }

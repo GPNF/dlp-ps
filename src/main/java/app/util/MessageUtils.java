@@ -21,7 +21,7 @@ import app.model.SubscriberMessage;
  * <br>
  * ReceivedMessage is part of PubSub Java API. SubscriberMessage is POJO.
  * 
- * @author adarshsinghal
+ * @author AdarshSinghal
  *
  */
 public class MessageUtils {

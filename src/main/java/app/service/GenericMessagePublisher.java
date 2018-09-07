@@ -6,14 +6,13 @@ import com.google.cloud.pubsub.v1.Publisher;
 import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.PubsubMessage;
 
-import app.DefaultApiFutureCallback;
 import app.constants.Constants;
 
 /**
  * This class can be used for publishing on single topic. All required message
  * attributes needs to be set before using publish method.
  * 
- * @author adarshsinghal
+ * @author AdarshSinghal
  *
  */
 public class GenericMessagePublisher {

@@ -18,26 +18,20 @@ import app.exception.PANDataFoundSecurityViolationException;
 import app.model.SourceMessage;
 import app.service.NotifyService;
 
+
 /**
- * Servlet implementation class NotifyServlet
+ * @author adarshsinghal
+ *
  */
 @WebServlet(name = "NotifyServlet", urlPatterns = { "/notify" })
 public class NotifyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.getWriter().append("This operation can only be performed using POST");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		

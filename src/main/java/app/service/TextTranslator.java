@@ -7,7 +7,10 @@ import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 
 /**
- * @author adarshsinghal
+ * This class uses Google Translate API to provide the translations into target
+ * language.
+ * 
+ * @author AdarshSinghal
  *
  */
 public class TextTranslator {
@@ -22,36 +25,44 @@ public class TextTranslator {
 		this.targetLanguage = targetLanguage;
 	}
 
+	/**
+	 * @param text
+	 * @return translatedText
+	 */
 	public String translate(String text) {
-		String translatedText = translate(text, targetLanguage);
-		return translatedText;
+		return translate(text, targetLanguage);
 	}
 
 	public String translate(String text, String targetLang) {
-		String translatedText = translate(text, targetLang, "en");
-		return translatedText;
+		return translate(text, targetLang, "en");
 	}
 
-	public String translate(String text, String targetLang, String srcLang) {
+	/**
+	 * @param text
+	 * @param targetLanguage
+	 * @param sourceLanguage
+	 * @return translatedText
+	 */
+	public String translate(String text, String targetLanguage, String sourceLanguage) {
 
-		if (targetLang.equals(srcLang)) {
+		if (targetLanguage.equals(sourceLanguage)) {
 			return text;
 		}
 
-		TranslateOption tgtLangTranslateOption = TranslateOption.targetLanguage(targetLang);
-		TranslateOption srcLangTranslateOption = TranslateOption.sourceLanguage(srcLang);
+		TranslateOption tgtLangTranslateOption = TranslateOption.targetLanguage(targetLanguage);
+		TranslateOption srcLangTranslateOption = TranslateOption.sourceLanguage(sourceLanguage);
 		Translate translate = TranslateOptions.getDefaultInstance().getService();
+
 		Translation translationService;
 		try {
 
-			translationService = translate.translate(text, srcLangTranslateOption,
-					tgtLangTranslateOption);
-		} catch(TranslateException e) {
+			translationService = translate.translate(text, srcLangTranslateOption, tgtLangTranslateOption);
+		} catch (TranslateException e) {
+			// If fail to translate, then don't translate.
 			return text;
 		}
-		
-		String translatedText = translationService.getTranslatedText();
-		return translatedText;
+
+		return translationService.getTranslatedText();
 	}
 
 }

@@ -15,17 +15,21 @@ import app.util.NotifyUtility;
 
 /**
  * @author AmolPol
+ *This class is used to fetch user related information  through UserServlet endpoint 
  *
  */
 public class UserService {
 
 	/**
+	 * this method being called after pulling messages from notify subscription of pubsub layer
+	 * receives pulled messages from notify pull pubsub 
+	 * layer calls decoupled UserServlet endpoint to check user and there group details to whom we have to send message 
 	 * @param messageList
 	 * @throws ServletException
 	 * @throws IOException
 	 */
 	public void sendMessagesToUser(List<SubscriberMessage> messageList) throws ServletException, IOException {
-		System.out.println("Sending SMS to user");
+		
 		String userSvcURL = ExternalProperties.getAppConfig("user.service.url");
 		for (SubscriberMessage subMessage : messageList) {
 			HttpClientRequestHandler httpClient = new HttpClientRequestHandler();
@@ -39,9 +43,14 @@ public class UserService {
 	}
 
 	/**
+	 * this method listens request on user servlet endpoint
+	 * receives actual messages after pulling from subscriptions 
+	 * prepares the userlist based on group from dao and 
+	 * calls notify uitility to handle and publish on pubsub 
 	 * @param message
 	 * @throws Exception
 	 * @throws ServletException
+	 * 
 	 */
 	public void checkAllUserPreference(MessageStatus req) throws Exception {
 
@@ -60,12 +69,6 @@ public class UserService {
 		else {
 			throw new Exception("No Preferences Set for any user");
 		}
-
-		/*
-		 * if (published) { for (UserDetailsSO userDetails : allUsers) {
-		 * delivered = notifyUser(req, userDetails); } if (delivered)
-		 * deliveryConfirmation(req, delivered); }
-		 */
 
 	}
 
