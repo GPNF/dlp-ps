@@ -1,3 +1,13 @@
+<!--
+  - Author(s): AdarshSinghal
+  - Date: 09/07/2018
+  - Description: Useful for developers to view table structure on page. 
+  -     Hidden from UI page but created with intention of saving time 
+  -     & convenience for all developers.
+  -     These are the SQL queries covered:- SHOW TABLES, DESCRIBE TABLE, SHOW CREATE TABLE
+-->
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>

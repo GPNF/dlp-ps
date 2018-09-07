@@ -1,3 +1,9 @@
+<!--
+  - Author(s): AdarshSinghal
+  - Date: 09/07/2018
+  - Description: Message Source Page
+-->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -39,7 +45,7 @@
             </div>
 
             <div class="form-group">
-              <label for="group-id-select"><%=svc.translate("Group Id")%></label>
+              <label for="group-id-select"><%=svc.translate("Target Group Id")%></label>
               <select id="group-id-select" name="group-id"
                 class="form-control">
                 <option value="1">G1 &emsp;&emsp;(Requires Source Authorization Level >= 1)</option>

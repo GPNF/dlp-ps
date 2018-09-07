@@ -1,3 +1,9 @@
+<!--
+  - Author(s): AdarshSinghal
+  - Date: 09/07/2018
+  - Description: Imports for required files for styling or behavior
+-->
+
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css"
   href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
