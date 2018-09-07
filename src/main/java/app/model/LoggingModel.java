@@ -1,5 +1,11 @@
 package app.model;
-
+/**
+ * 
+ * @author Aniruddha Sinha
+ * @description: The logging model consists of the fields which are respective
+ *               fields/columns in the Activity_logging table
+ *
+ */
 public class LoggingModel {
 	private String autoIncrId;
 	private String messageId;

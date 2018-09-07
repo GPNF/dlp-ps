@@ -16,32 +16,14 @@ import app.model.MessageStatus;
 import app.service.UserService;
 
 /**
- * Servlet implementation class Test
+ * This class is responsible for handling request of sync pull client and
+ *  calling user service to check preferences
+ * @author amolp
+ *
  */
 @WebServlet(name = "UserServlet", urlPatterns = { "/userService" })
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public UserServlet() {
-		super();
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		response.setContentType("text/plain");
-		response.setCharacterEncoding("UTF-8");
-
-		response.getWriter().print("Hello Do Get method called !\r\n");
-		// doGet(request, response);
-	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -53,26 +35,25 @@ public class UserServlet extends HttpServlet {
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 
-		// doGet(request, response);
+		
 		Reader reader = request.getReader();
 		Gson gson = new Gson();
 		MessageStatus req = gson.fromJson(reader, MessageStatus.class);
-		System.out.println(
-				"messageData " + req.getMessageData() + " id " + req.getMessageId() + " flag " + req.getDeliveryFlag());
-
-		try {
-			checkUserPrefs(req);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// response.getWriter().print("Status !\r\n " + status);
+				
+		checkUserPrefs(req);
+		
 	}
-
-	private void checkUserPrefs(MessageStatus req) throws Exception {
+/**
+ * Calls the user service class to get the user prefernces and route the message
+ * @param req
+ */
+	private void checkUserPrefs(MessageStatus req)  {
 		UserService userService = new UserService();
 		try {
 			userService.checkAllUserPreference(req);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

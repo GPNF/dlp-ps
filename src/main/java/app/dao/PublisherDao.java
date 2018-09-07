@@ -6,14 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-import java.util.logging.Logger;
 
 import app.model.PublisherMessage;
+import app.util.DateUtility;
 
 /**
  * CRUD operation on publisher table
@@ -23,9 +20,7 @@ import app.model.PublisherMessage;
  */
 public class PublisherDao {
 
-	private static final String YYYY_MM_DD_HH_MM_SS_A_Z = "yyyy-MM-dd hh:mm:ss a z";
 	private Connection connection;
-	private static final Logger LOGGER = Logger.getLogger(PublisherDao.class.getName());
 
 	public PublisherDao() throws SQLException {
 		DBConnectionProvider connProvider = new DBConnectionProvider();
@@ -53,16 +48,7 @@ public class PublisherDao {
 
 		try (PreparedStatement ps = connection.prepareStatement(sql)) {
 			String formattedDate = publisher.getPublishTime();
-			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
-			formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
-			Date date = new Date();
-			try {
-				date = formatter.parse(formattedDate);
-			} catch (ParseException e) {
-				LOGGER.severe(e.getMessage());
-			}
-
-			Timestamp publishTime = new Timestamp(date.getTime());
+			Timestamp publishTime = DateUtility.getTimestamp(formattedDate);
 
 			ps.setString(1, publisher.getMessageId());
 			ps.setString(2, publisher.getTopicName());
@@ -89,25 +75,32 @@ public class PublisherDao {
 		try (ResultSet rs = ps.executeQuery()) {
 			while (rs.next()) {
 
-				String messageId = rs.getString("message_id");
-				String topicName = rs.getString("topic_name");
-				String message = rs.getString("message");
-				String globalTxnId = rs.getString("global_txn_id");
-				Timestamp time = rs.getTimestamp("published_timestamp");
-				Date publishTime = new Date(time.getTime());
-
-				SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
-				formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
-				String formattedDate = formatter.format(publishTime);
-
-				PublisherMessage publisher = new PublisherMessage(message, topicName, messageId, formattedDate);
-				publisher.setGlobalTransactionId(globalTxnId);
+				PublisherMessage publisher = getPublishMessage(rs);
 
 				publishers.add(publisher);
 			}
 		}
 
 		return publishers;
+	}
+
+	/**
+	 * @param resultSet
+	 * @return PublisherMessage
+	 * @throws SQLException
+	 */
+	private PublisherMessage getPublishMessage(ResultSet resultSet) throws SQLException {
+		String messageId = resultSet.getString("message_id");
+		String topicName = resultSet.getString("topic_name");
+		String message = resultSet.getString("message");
+		String globalTxnId = resultSet.getString("global_txn_id");
+		Timestamp time = resultSet.getTimestamp("published_timestamp");
+
+		String formattedTime = DateUtility.getFormattedTime(time);
+
+		PublisherMessage publisher = new PublisherMessage(message, topicName, messageId, formattedTime);
+		publisher.setGlobalTransactionId(globalTxnId);
+		return publisher;
 	}
 
 }

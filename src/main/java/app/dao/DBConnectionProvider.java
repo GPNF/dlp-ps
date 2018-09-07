@@ -32,6 +32,14 @@ public class DBConnectionProvider {
 		setConnection(jdbcUrl);
 	}
 
+	/**
+	 * The DriverManager class will attempt to load the driver class. Attempts to
+	 * establish a connection to the given database URL. The DriverManager attempts
+	 * to select an appropriate driver from the set of registered JDBC drivers.
+	 * 
+	 * @param jdbcUrl
+	 * @throws SQLException
+	 */
 	private void setConnection(String jdbcUrl) throws SQLException {
 		String user = ExternalProperties.getDbConfig("app.gc.cloudsql.jdbc.username");
 		String passwd = ExternalProperties.getDbConfig("app.gc.cloudsql.jdbc.password");
@@ -50,6 +58,9 @@ public class DBConnectionProvider {
 		}
 	}
 
+	/** Form CloudSQL JDBC URL using the parameters - Database name & Cloud SQL Instance details
+	 * @return
+	 */
 	private String formJdbcConnectionUrl() {
 
 		String databaseName = ExternalProperties.getDbConfig("app.gc.cloudsql.db");

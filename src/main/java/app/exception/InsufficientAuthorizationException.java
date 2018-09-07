@@ -1,6 +1,10 @@
 package app.exception;
 
 /**
+ * InsufficientAuthorizationException is subclass of Exception, a form of
+ * Throwable that indicates conditions that a reasonable application might want
+ * to catch.
+ * 
  * @author AdarshSinghal
  *
  */

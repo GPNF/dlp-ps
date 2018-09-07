@@ -15,6 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.api.services.pubsub.model.PubsubMessage;
 
+/**
+ * @author amolp CRUD operation on Logging table
+ */
+
 public class UpdateNotifierPubsubDao {
 
 	private static final String YYYY_MM_DD_HH_MM_SS_A_Z = "yyyy-MM-dd hh:mm:ss a z";
@@ -26,9 +30,17 @@ public class UpdateNotifierPubsubDao {
 		this.connection = connProvider.getConnection();
 	}
 
+	/**
+	 * this inserts and logs messages pulled from 2nd pubsub layer
+	 * 
+	 * @param userMessage
+	 * @throws SQLException
+	 */
 	public void insertPushedDetails(PubsubMessage userMessage) throws SQLException {
-		// String query = "insert into notifier_pushed (message_id, message_data,
-		// published_timestamp, global_txn_id, topic_name) VALUES (?, ?, ?, ?, ?)";
+		// String query = "insert into notifier_pushed (message_id,
+		// message_data,
+		// published_timestamp, global_txn_id, topic_name) VALUES (?, ?, ?, ?,
+		// ?)";
 
 		String query = "INSERT INTO  activity_logging (message_id, message_data, subscription_name, published_timestamp, glo_tran_id, topic_name) VALUES (?, ?, ?, ?, ?, ?)";
 

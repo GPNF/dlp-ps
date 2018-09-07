@@ -27,6 +27,23 @@ import com.google.api.services.pubsub.model.PubsubMessage;
 import app.util.ConfigParams;
 import app.util.PropertyParserAndConfigAdapter;
 
+/**
+ * 
+ * @author Aniruddha Sinha
+ * @Description This is a utility class which is intended to feed the data to
+ *              the logging database whenever packets come from NotifyService in
+ *              the first Pub/Sub layer.
+ * @param ConfigParams object - The aim of this object is to contain the data
+ *                     provided by the propertyParserAndConfigAdapter object and
+ *                     create a database connection out of it, which will later
+ *                     be used for feeding data into message status cache db
+ * @PropertyParserAndConfigAdapter object - The aim of this object is to pick
+ *                                 data from the property file and create a
+ *                                 configuration parameters object out of it.
+ * 
+ * 
+ *
+ */
 class LogTableOperations {
 	private ConfigParams params;
 	private PropertyParserAndConfigAdapter adapter;
@@ -57,7 +74,6 @@ class LogTableOperations {
 			} catch (ParseException e) {
 				logger.info(e.getMessage());
 			}
-			
 
 			Timestamp publishTime = new Timestamp(date.getTime());
 			try {
@@ -77,6 +93,21 @@ class LogTableOperations {
 		}
 	}
 }
+
+/**
+ * 
+ * @author Aniruddha Sinha
+ * @Description: This service is intended to be a push endpoint service for
+ *               Google Cloud Pub/Sub. This service will act as an interface
+ *               between Logging Database and the subscriber that will push to
+ *               the url assigned to this service. The logging database will
+ *               contain all the relevant information such as : -messageId
+ *               -messageData -globalTransactionID -publishTime
+ * 
+ * @Note: Any sensitive data in message_data will be kept in a redacted state as
+ *        the same flows through the Google Data Loss Prevention service
+ *
+ */
 
 @WebServlet(name = "LoggingService", urlPatterns = { "/logging" })
 public class LoggingService extends HttpServlet {
