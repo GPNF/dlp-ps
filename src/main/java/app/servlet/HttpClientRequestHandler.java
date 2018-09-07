@@ -21,24 +21,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * @author AmolPol, AdarshSinghal
- *
+ * @author AmolPol, AdarshSinghal This Class acts as http client for calling
+ *         different servlet endpoints
  */
 public class HttpClientRequestHandler {
 
 	public HttpResponse sendGetReturnResponse(String url) throws ClientProtocolException, IOException {
 
 		HttpClient client = HttpClientBuilder.create().build();
-		
+
 		HttpGet request = new HttpGet(url);
 		HttpResponse response = client.execute(request);
 		return response;
-	}
-	
-	public static void main(String[] args) throws ClientProtocolException, IOException {
-/*		HttpClientRequestHandler handler = new HttpClientRequestHandler();
-		String res = handler.sendGetReturnContent("http://possible-haven-212003.appspot.com/api/topic/list");
-		System.out.println(res);*/
 	}
 
 	/**
