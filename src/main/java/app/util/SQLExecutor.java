@@ -10,14 +10,14 @@ import java.util.List;
 import app.dao.DBConnectionProvider;
 
 /**
- * This class is created for convenience but can lead to serious rework or data loss if misused.
+ * This class is created for convenience but can lead to rework or data loss if misused.
  * <br>
  * <span style='color:red'>USE WITH CAUTION</span> &emsp; Executes DDL/DML commands.
  *  Following are supported operations:-
  * <ul>
- * <li>executeUpdate(String sql)</li>
- * <li>truncateTables() - Publisher, Subscriber, Logging, Message Status</li>
- * <li>truncateTables(String... tables)</li> </ul <br>
+ * <li>Execute Update (DDL/DML). Input your query.</li>
+ * <li>Truncate Tables</li>
+ * <li>SHOW TABLES and SHOW CREATE TABLE</li> </ul <br>
  * 
  * @author AdarshSinghal
  *
@@ -34,7 +34,10 @@ public class SQLExecutor {
 		SQLExecutor sqlExecutor = new SQLExecutor();
 		// sqlExecutor.truncateTables();
 		// sqlExecutor.showCreateTable("msgdb.activity_logging");
-
+		//showTables();
+		//showCreateTableForAll();
+		
+		
 		sqlExecutor.showCreateTableForAll();
 
 	}
