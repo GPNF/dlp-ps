@@ -1,9 +1,18 @@
+/* 
+ * Used for generating random user information. 
+ * This can be used to test DLP response with different data sets.
+ * 
+ * The random user is generated on triple click on text-area
+ * 
+ * */
+
 $(document).ready(function(){
 	var counter=0;
 	$('#random-user-message').click(function(){
 		startCounting();
 	});
 	
+	//If counter reaches 3, populateText into text-area
 	var startCounting = function(){
 		counter++;
 		if(counter===3){

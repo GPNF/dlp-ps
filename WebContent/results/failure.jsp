@@ -1,3 +1,10 @@
+<!--
+  - Author(s): AdarshSinghal
+  - Date: 09/07/2018
+  - Description: This page is displayed if failed to publish on topic.
+-->
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>

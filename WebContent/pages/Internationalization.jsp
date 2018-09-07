@@ -1,3 +1,11 @@
+<!--
+  - Author(s): AdarshSinghal
+  - Date: 09/07/2018
+  - Description: Initially created with the intention to test localization. 
+  -     This will be removed later or can be used to demonstrate 
+  -     locale specific details for different languages.
+-->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>

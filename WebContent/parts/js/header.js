@@ -1,3 +1,13 @@
+/*
+ * This JS file is responsible for highlighting the active link 
+ * in header on page load. It also add/remove active-link class 
+ * when other link is clicked. Also, defines manual configuration 
+ * in case the link URL is different from initial file name, the 
+ * scenario when xyz.jsp makes request to servlet, returns back to 
+ * same page but URL changes to /wxyz.  
+ * 
+ * */
+
 $(document).ready(function() {
   var pathname = window.location.pathname;
 
