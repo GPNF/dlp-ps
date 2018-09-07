@@ -36,6 +36,8 @@ public class UserPreferenceDao {
 	/**
 	 * @param userId
 	 * @return UserDetailsSO
+	 * 
+	 *         fetches the user preferences of users
 	 */
 	public UserDetailsSO getUserPreferenceDetails(String userId) {
 		UserDetailsSO userSo = null;
@@ -66,6 +68,13 @@ public class UserPreferenceDao {
 		return userSo;
 	}
 
+	/**
+	 * updates the user preferences of users
+	 * 
+	 * @param preference
+	 * @return
+	 * @throws SQLException
+	 */
 	public int updateUserPreference(UpdateUserPreferenceModel preference) throws SQLException {
 
 		String type = "";
