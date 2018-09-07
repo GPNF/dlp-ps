@@ -32,8 +32,8 @@ import app.util.ExternalProperties;
  */
 public class NotifyService {
 
-	// TODO Remove dependencies from here. Use HTTPClient API to hit POST URL which
-	// is already implemented by updateDelConfirmation() of NotifyUtility
+	// TODO Remove dependencies from here. Use HTTPClient API to hit POST URL. Check similar implementation for reference at
+	// updateDelConfirmation() of NotifyUtility
 	private DLPService dlpService;
 	private AuthorizationService authService;
 
@@ -46,8 +46,7 @@ public class NotifyService {
 	 * Publish PubsubMessage on provided list of topics.
 	 * 
 	 * @param topics
-	 * @param gbTxnId
-	 * @param message
+	 * @param pubsubMessage 
 	 * @return list of message ids
 	 */
 	public List<String> publishMessage(List<String> topics, PubsubMessage pubsubMessage) {
@@ -112,8 +111,10 @@ public class NotifyService {
 	}
 
 	/**
-	 * Since PubsubMessage is an Immutable & we need to use deIdentified String
-	 * (from DLP), we have to handle it here. <br>
+	 * This class is responsible for creating new PubSubMessage 
+	 * with deidentified string as messsage data. PubsubMessage is immutable,
+	 *  hence, we're handling it here. Creating new Pubsub message will 
+	 *  change messageId<br>
 	 * 
 	 * @param sourceMessage
 	 * @param deidentifiedStr
