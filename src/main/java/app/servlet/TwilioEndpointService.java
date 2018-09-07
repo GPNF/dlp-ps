@@ -3,7 +3,6 @@ package app.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,29 +14,17 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.pubsub.model.PubsubMessage;
 
 import app.dao.UpdateNotifierPubsubDao;
-import app.util.NotifyUtility;
+import app.service.thirdparty.TwilioSmsNotifier;
 
 /**
- * @author Amol
- *
+ * @author Amol this servlet responsible for listening messages pushed on twilio
+ *         topic and invoke twilio notifier
  */
 @WebServlet(name = "TwilioEndpointService", urlPatterns = { "/twilioService" })
 public class TwilioEndpointService extends HttpServlet {
 
 	private static final long serialVersionUID = 360024119674491022L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		response.setContentType("text/plain");
-		response.setCharacterEncoding("UTF-8");
-
-		response.getWriter().print("Hello Do Get method called of twilioService !\r\n");
-		// doGet(request, response);
-	}
-	
-	
-	
 	@Override
 	public final void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
 
@@ -45,20 +32,29 @@ public class TwilioEndpointService extends HttpServlet {
 		JsonParser parser = JacksonFactory.getDefaultInstance().createJsonParser(inputStream);
 		parser.skipToKey("message");
 		PubsubMessage message = parser.parseAndClose(PubsubMessage.class);
-		
 
 		persistInDb(message);
-		
-		NotifyUtility uitility=new NotifyUtility();
-		uitility.notifyUsersBySMS(message);
+
+		invokeNotifier(message);
 
 	}
+
+	/**
+	 * @param message
+	 * @throws IOException
+	 */
+	private void invokeNotifier(PubsubMessage message) throws IOException {
+		TwilioSmsNotifier notifier = new TwilioSmsNotifier();
+		int maxRetryCount=3;
+		notifier.notifyUserBySMS(message,maxRetryCount);
+	}
+
 	/**
 	 * @param message
 	 */
 	private void persistInDb(PubsubMessage message) {
 		try {
-			UpdateNotifierPubsubDao dao =new UpdateNotifierPubsubDao();
+			UpdateNotifierPubsubDao dao = new UpdateNotifierPubsubDao();
 			dao.insertPushedDetails(message);
 		} catch (SQLException e) {
 			e.printStackTrace();

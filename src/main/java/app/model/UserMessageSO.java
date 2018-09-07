@@ -1,5 +1,9 @@
 package app.model;
-
+/**
+ * 
+ * @author amolp
+ *
+ */
 public class UserMessageSO {
 	private String userId;
 	private String emailId;

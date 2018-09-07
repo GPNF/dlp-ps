@@ -1,5 +1,10 @@
 package app.model;
 
+/**
+ * 
+ * @author amolp
+ *
+ */
 public class UserGroupModel {
 	private String groupId;
 	private String userId;
