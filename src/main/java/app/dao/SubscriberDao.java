@@ -6,16 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import app.model.SubscriberMessage;
+import app.util.DateUtility;
 
 /**
  * CRUD operation on subscriber table
@@ -24,8 +19,6 @@ import app.model.SubscriberMessage;
  *
  */
 public class SubscriberDao {
-	private static final String YYYY_MM_DD_HH_MM_SS_A_Z = "yyyy-MM-dd hh:mm:ss a z";
-	private static final Logger LOGGER = LoggerFactory.getLogger(SubscriberDao.class);
 
 	private Connection connection;
 
@@ -33,7 +26,7 @@ public class SubscriberDao {
 		DBConnectionProvider connProvider = new DBConnectionProvider();
 		this.connection = connProvider.getConnection();
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable {
 		if (connection != null)
@@ -66,20 +59,8 @@ public class SubscriberDao {
 				+ " published_timestamp, pull_timestamp, ack_id, global_txn_id) " + "VALUES (?,?,?,?,?,?,?)";
 		PreparedStatement ps = connection.prepareStatement(sql);
 
-		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
-
-		Date publishDate = new Date();
-		Date pullDate = new Date();
-
-		try {
-			publishDate = formatter.parse(subscriberMessage.getPublishTime());
-			pullDate = formatter.parse(subscriberMessage.getPullTime());
-		} catch (ParseException e) {
-			LOGGER.error(e.getMessage());
-		}
-
-		Timestamp publishTimestamp = new Timestamp(publishDate.getTime());
-		Timestamp pullTimestamp = new Timestamp(pullDate.getTime());
+		Timestamp publishTimestamp = DateUtility.getTimestamp(subscriberMessage.getPublishTime());
+		Timestamp pullTimestamp = DateUtility.getTimestamp(subscriberMessage.getPullTime());
 
 		ps.setString(1, subscriberMessage.getMessageId());
 		ps.setString(2, subscriberMessage.getMessage());
@@ -118,8 +99,8 @@ public class SubscriberDao {
 		String messageId = rs.getString("message_id");
 		String message = rs.getString("message");
 		String subscriberId = rs.getString("subscription_name");
-		String publishTime = getFormattedTimestamp(rs, "published_timestamp");
-		String pullTime = getFormattedTimestamp(rs, "pull_timestamp");
+		String publishTime = DateUtility.getFormattedTime(rs.getTimestamp("published_timestamp"));
+		String pullTime = DateUtility.getFormattedTime(rs.getTimestamp("pull_timestamp"));
 		String ackId = rs.getString("ack_id");
 		String globalTxnId = rs.getString("global_txn_id");
 
@@ -129,15 +110,6 @@ public class SubscriberDao {
 		subscriberMessage.setSubscriptionId(subscriberId);
 		subscriberMessage.setPullTime(pullTime);
 		return subscriberMessage;
-	}
-
-	private String getFormattedTimestamp(ResultSet rs, String columnName) throws SQLException {
-		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A_Z);
-		Timestamp timestamp = rs.getTimestamp(columnName);
-		Date date = new Date(timestamp.getTime());
-		formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
-		String formattedTime = formatter.format(date);
-		return formattedTime;
 	}
 
 }

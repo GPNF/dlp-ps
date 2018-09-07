@@ -1,3 +1,8 @@
+/*
+ * Handles refresh icon show/hide on button.
+ * 
+ * */
+
 $(document).ready(function() {
 
 	$('#pull-form').submit(function(e) {

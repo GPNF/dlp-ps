@@ -15,11 +15,50 @@ import com.google.pubsub.v1.ReceivedMessage;
 
 import app.constants.Constants;
 
+/**
+ * This class acts as <b>Sync Pull</b> Client. There are two types of Pull in PubSub -
+ * Sync &amp; Async
+ * 
+ * <br><br>
+ * Sync Pull supports following customization:-
+ * <br>
+ * <b>Maximum Messages</b> - The Pub/Sub system may return fewer than the number
+ * specified. This represents the Client's capability of handling messages.<br>
+ * <b>Return Immediately</b> field when set to true, the system will respond
+ * immediately even if it there are no messages available to return in the
+ * `Pull` response. Otherwise, the system may wait (for a bounded amount of
+ * time) until at least one message is available, rather than returning no
+ * messages.
+ * 
+ * @author AdarshSinghal
+ *
+ */
 public class SyncPullAction {
 
 	private final String projectId = Constants.PROJECT_ID;
 	private final String subscriptionId = Constants.SUBSCRIPTION_ID;
 
+	/**
+	 * Pull the messages from PubSub. Accepts two params - Max Message, Return
+	 * Immediately <br>
+	 * <br>
+	 * <b>Maximum Messages</b> - The Pub/Sub system may return fewer than the
+	 * number specified. This represents the Client's capability of handling
+	 * messages.<br>
+	 * <br>
+	 * If <b>Return Immediately</b> field set to true, the system will respond
+	 * immediately even if it there are no messages available to return in the
+	 * `Pull` response. Otherwise, the system may wait (for a bounded amount of
+	 * time) until at least one message is available, rather than returning no
+	 * messages.
+	 * 
+	 * 
+	 * @param numOfMessages
+	 * @param returnImmediately
+	 * @return List of ReceivedMessage
+	 * @throws IOException
+	 * 
+	 */
 	public List<ReceivedMessage> getReceivedMessages(int numOfMessages, boolean returnImmediately) throws IOException {
 		SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder().build();
 		SubscriberStub subscriber = GrpcSubscriberStub.create(subscriberStubSettings);
@@ -40,7 +79,6 @@ public class SyncPullAction {
 			// operation
 			subscriber.acknowledgeCallable().call(acknowledgeRequest);
 		}
-		System.out.println("No. of received messages: " + pullResponse.getReceivedMessagesList().size());
 		subscriber.shutdown();
 		return pullResponse.getReceivedMessagesList();
 	}

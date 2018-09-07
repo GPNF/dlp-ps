@@ -17,7 +17,7 @@ import app.model.SubscriberMessage;
  * <li>Publishing on provider specific topics</li>
  * </ul>
  * 
- * @author amolpol
+ * @author AmolPol, AdarshSinghal
  *
  */
 public class NotificationService {
@@ -42,6 +42,8 @@ public class NotificationService {
 	}
 
 	/**
+	 * Uses User Service to send messages to the users.
+	 * 
 	 * @param messageList
 	 * @throws ServletException
 	 * @throws IOException

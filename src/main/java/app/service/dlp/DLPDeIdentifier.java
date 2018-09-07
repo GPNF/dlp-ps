@@ -31,6 +31,12 @@ public class DLPDeIdentifier {
 	private static final String ALL_BASIC = "ALL_BASIC";
 
 	/**
+	 * Used for Deidentification. <br>
+	 * <br>
+	 * <b>DeidentifyConfig</b> represents Configuration description of the
+	 * scanning process. ContentItem is a container structure for the content to
+	 * inspect.
+	 * 
 	 * @param inputMessage
 	 * @param infoTypes
 	 * @return deidentifiedMessage
@@ -59,6 +65,13 @@ public class DLPDeIdentifier {
 
 	}
 
+	/**
+	 * The configuration that controls how the data will change.<br>
+	 * <b>CharacterMaskConfig</b> allows you to take a input like 123 and modify
+	 * it to a string like **3.
+	 *
+	 * @return deidentifyConfig
+	 */
 	private DeidentifyConfig getDeidentifyConfig() {
 		String maskingCharacter = "x";
 		int numberToMask = 0;
@@ -66,16 +79,19 @@ public class DLPDeIdentifier {
 		CharacterMaskConfig characterMaskConfig = CharacterMaskConfig.newBuilder().setMaskingCharacter(maskingCharacter)
 				.setNumberToMask(numberToMask).build();
 
-		// Create the deidentification transformation configuration
+		// A rule for transforming a value.
 		PrimitiveTransformation primitiveTransformation = PrimitiveTransformation.newBuilder()
 				.setCharacterMaskConfig(characterMaskConfig).build();
 
+		// A transformation to apply to text that is identified as a specific
+		// info_type
 		InfoTypeTransformation infoTypeTransformationObject = InfoTypeTransformation.newBuilder()
 				.setPrimitiveTransformation(primitiveTransformation).build();
 
 		InfoTypeTransformations infoTypeTransformationArray = InfoTypeTransformations.newBuilder()
 				.addTransformations(infoTypeTransformationObject).build();
 
+		//The configuration that controls how the data will change.
 		DeidentifyConfig deidentifyConfig = DeidentifyConfig.newBuilder()
 				.setInfoTypeTransformations(infoTypeTransformationArray).build();
 		return deidentifyConfig;

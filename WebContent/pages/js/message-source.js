@@ -1,3 +1,7 @@
+/*
+ * Handles refresh icon show/hide on button.
+ * */
+
 $(document).ready(function(){
 
   console.log('js loaded');

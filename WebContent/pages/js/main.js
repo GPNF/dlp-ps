@@ -1,3 +1,11 @@
+/*
+ * Makes GET request to /api/topic/list. The returned response is set 
+ * back to JSP.
+ * 
+ * Also, handles refresh icon show/hide on button.
+ * 
+ * */
+
 $(document).ready(function(){
 
 	// Load topics into select list

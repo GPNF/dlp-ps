@@ -1,3 +1,11 @@
+/*
+ * Hits the GET URL. The JSON response is used for populating 
+ * data into table on JSP page.
+ * 
+ * Also, handles the refresh icon show/hide
+ * 
+ * */
+
 $(document).ready(
     function() {
       console.log('js loaded');

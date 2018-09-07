@@ -15,7 +15,18 @@ import app.dao.MessageStatusDAO;
 import app.model.MessageStatus;
 
 /**
- * @author Aniruddha
+ * @author Aniruddha Sinha
+ * 
+ * @Description: The UpdateMessageCacheUponAcknowledgement is intended to update
+ *               the delivery report column of the message status cache database
+ *               with either of the flags which are mentioned below
+ * 
+ *               1. Delivered -> If the message has been successfully delivered
+ *               2. In-progress -> In-progress was the already assigned value
+ *               when the message status cache was initialized by the
+ *               NotifyToMessageStatusServlet. Its just like, the delivery
+ *               report flag needs to be changed by this service whenever the
+ *               message has been sent successfully
  *
  */
 @WebServlet(name = "UpdateMessageCacheUponAcknowledgement", urlPatterns = { "/queryMessageStat" })

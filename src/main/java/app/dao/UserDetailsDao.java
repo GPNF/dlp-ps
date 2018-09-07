@@ -31,6 +31,10 @@ public class UserDetailsDao {
 	}
 
 	/**
+	 * 
+	 * This method is called when destination group is not provided so returns
+	 * entire user details irrespective of group
+	 * 
 	 * @return List of UserDetailsSO
 	 * @throws SQLException
 	 */
@@ -71,6 +75,14 @@ public class UserDetailsDao {
 		return userList;
 	}
 
+	/**
+	 * | this method is called when destination group id is provided by source
+	 * to get user details of selected group
+	 * 
+	 * @param groupId
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<UserDetailsSO> getAllUserDetails(String groupId) throws SQLException {
 		List<UserDetailsSO> userList;
 

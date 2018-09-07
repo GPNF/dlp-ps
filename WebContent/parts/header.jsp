@@ -1,3 +1,8 @@
+<!--
+  - Author(s): AdarshSinghal
+  - Date: 09/07/2018
+  - Description: Header for all pages.
+-->
 
 <%
 	java.util.Locale requestLocale = request.getLocale();

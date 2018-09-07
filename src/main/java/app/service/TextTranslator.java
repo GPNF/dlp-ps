@@ -8,7 +8,13 @@ import com.google.cloud.translate.Translation;
 
 /**
  * This class uses Google Translate API to provide the translations into target
- * language.
+ * language. <br>
+ * <br>
+ * Uses <b>com.google.cloud.translate</b> for Translation which holds
+ * information about a translation. Objects of this class contain the translated
+ * text and the source language's code. The source language's code can be
+ * optionally specified by the user or automatically detected by the Google
+ * Translation service.
  * 
  * @author AdarshSinghal
  *

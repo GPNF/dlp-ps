@@ -17,7 +17,12 @@ import app.service.messagestatus.NotifyToMessageStatusService;
 
 /**
  * @author Aniruddha
- *
+ * @Desciption The Notify to Message status service is intended to be used as a
+ *             push endpoint service from Google Pub/Sub. The service acts as an
+ *             interface between pubsub and "message_status_cache_db". The
+ *             servlet after receiving the data feeds the data into the
+ *             respective columns of message_status_cache_db.
+ * @urlPattern /notifyService
  */
 @WebServlet(name = "NotifyToMessageStatusService", urlPatterns = { "/notifyServicetoStatDb", "/notifyService" })
 public class NotifyToMessageStatusServlet extends HttpServlet {

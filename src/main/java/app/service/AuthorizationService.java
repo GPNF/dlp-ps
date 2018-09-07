@@ -38,6 +38,13 @@ public class AuthorizationService {
 		checkSourceToGroupAuthorization(srcMessage);
 	}
 
+	/**
+	 * The application should be accessible by Internal Users only. Terminate if
+	 * External User.
+	 * 
+	 * @param srcMessage
+	 * @throws ExternalUserNotAllowedException
+	 */
 	private void checkForExternalUser(SourceMessage srcMessage) throws ExternalUserNotAllowedException {
 		if (srcMessage.getSourceauthLevel() == 0) {
 			LOGGER.warning("External User tried to send message.");
@@ -46,6 +53,15 @@ public class AuthorizationService {
 			
 	}
 
+	/**
+	 * Source Authorization Level must be equal or greater than required
+	 * authorization level for targeting a group for messaging.
+	 * 
+	 * @param srcMessage
+	 * @throws SQLException
+	 * @throws NoSuchGroupException
+	 * @throws InsufficientAuthorizationException
+	 */
 	private void checkSourceToGroupAuthorization(SourceMessage srcMessage)
 			throws SQLException, NoSuchGroupException, InsufficientAuthorizationException {
 		UserGroupDetailsDAO userGroupDetailsDAO = new UserGroupDetailsDAO();
