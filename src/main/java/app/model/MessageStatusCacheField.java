@@ -1,5 +1,12 @@
 package app.model;
 
+/**
+ * 
+ * @author Aniruddha Sinha
+ * @Description :This table contains the fields which are in message status
+ *              cache database
+ *
+ */
 public class MessageStatusCacheField {
 	private String globalTransactionId;
 	private String deliveryReport;

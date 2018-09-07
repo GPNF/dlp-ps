@@ -4,11 +4,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
-
+/**
+ * 
+ * @author Aniruddha Sinha
+ * @Description This class acts as a de-facto adapter class where properties get
+ *              loaded and the values against different property keys are being
+ *              fed to their respective model classes such as <<ConfigParams>>
+ *              class, which is used to create Database Connection Object
+ * 
+ * @params
+ * @param propertyObject
+ * @param classLoaderObject
+ * @param inputStreamObject
+ * @param ConfigParamsObject
+ *
+ */
 public class PropertyParserAndConfigAdapter {
-//	private Properties propertiesObject;
-//	private String propertyFilePath;
-//	private ConfigParams params;
+
 
 	private Properties propertiesObject;
 	private ClassLoader classLoaderObject;
@@ -28,10 +40,7 @@ public class PropertyParserAndConfigAdapter {
 	 * @return ConfigParams object
 	 */
 	public ConfigParams readPropertiesAndSetParameters() {
-		// Properties propertiesObject = new Properties();
-		// ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		// InputStream stream = loader.getResourceAsStream("myProp.properties");
-		// prop.load(stream);
+		
 
 		try {
 			this.propertiesObject.load(this.inStreamObject);
