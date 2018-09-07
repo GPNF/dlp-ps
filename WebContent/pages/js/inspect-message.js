@@ -1,3 +1,11 @@
+/*
+ * Makes a POST request to /inspect. The servlet does processing & 
+ * return response. The response is then set to JSP page.
+ * 
+ * Also, responsible for handling reload icon show & hide
+ * 
+ * */
+
 $(document).ready(function() {
   
   $('#inspect-btn').click(function() {
