@@ -35,7 +35,7 @@ public class DLPInspector {
 	private static final String VERY_LIKELY = "VERY_LIKELY";
 	private static final String ALL_BASIC = "ALL_BASIC";
 
-	/**
+	/** Perform DLP Inspection on input text
 	 * @param inputMessage
 	 * @return List&lt;InspectResult&gt;
 	 * @throws IOException
@@ -100,7 +100,7 @@ public class DLPInspector {
 	 * <br>
 	 * DO NOT MODIFY THIS METHOD FOR OTHER CONFIGURATIONS.
 	 * 
-	 * @return
+	 * @return InspectConfig
 	 */
 	private InspectConfig getInspectConfig() {
 		InfoType infotype = InfoType.newBuilder().setName(ALL_BASIC).build();
