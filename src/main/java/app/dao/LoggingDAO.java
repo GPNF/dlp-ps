@@ -11,6 +11,14 @@ import java.util.List;
 
 import app.model.LoggingModel;
 
+/**
+ * 
+ * @author Aniruddha Sinha
+ * @Description: This Data Access Object will be used by the Logging Table in
+ *               the UI. This will simply fetch details from activity_logging
+ *               and show the data in the UI
+ *
+ */
 public class LoggingDAO {
 
 	private Connection connection;

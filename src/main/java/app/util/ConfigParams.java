@@ -4,6 +4,31 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * @author Aniruddha Sinha
+ * @Description: The Config Params serves as a container for the database
+ *               connection properties. The class has been designed as such that
+ *               all the options are optional, such that the user using this API
+ *               can skip one or more parameters which he/she may not require
+ * 
+ *               The ConfigParams, after receiving all the parameters, creates
+ *               java.sql.Connection object at run time which can be used
+ *               wherever required
+ * 
+ *               <Fluent-style-api>
+ * @params
+ * @param CloudSQL Instance Connection Name,
+ * @param connection string,
+ * @param jdbc connection url,
+ * @param database   name,
+ * @param connection object (used in the build method),
+ * @param user name
+ * @param password
+ * @param table name
+ * @param topicName
+ * @param subscription name
+ * 
+ */
 public class ConfigParams {
 	private String instanceConnectionName;
 	private String connectionString;

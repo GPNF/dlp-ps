@@ -11,6 +11,17 @@ import app.util.PropertyParserAndConfigAdapter;
 /**
  * @author Aniruddha
  *
+ * @Description: This is a 
+ ** @params
+ * @param ConfigParams object - The aim of this object is to contain the data
+ *                     provided by the propertyParserAndConfigAdapter object and
+ *                     create a database connection out of it, which will later
+ *                     be used for feeding data into message status cache db
+ * @PropertyParserAndConfigAdapter object - The aim of this object is to pick
+ *                                 data from the property file and create a
+ *                                 configuration parameters object out of it.
+ *
+ *
  */
 public class NotifyToMessageStatusService {
 
@@ -27,6 +38,7 @@ public class NotifyToMessageStatusService {
 	 * @param globalTxnId
 	 * @throws IOException
 	 * @throws SQLException
+	 * this function feeds-in the data to message status cache db
 	 */
 	public void insertIntoTable(String globalTxnId) throws IOException, SQLException {
 		Connection conn = this.params.getConn();

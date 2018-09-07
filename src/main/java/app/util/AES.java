@@ -11,14 +11,25 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * @author Aniruddha
- *
+ * @author Aniruddha Sinha
+ * @Description
+ *              <p>
+ *              The class AES is utility class whose main aim is to encrypt and
+ *              decrypt various Strings which are confidential and are present
+ *              in the property file
+ *              </p>
+ * 
+ *              Here, the sensitive data in the property file (such as
+ *              passwords, API keys etc) will be encrypted and stored. During
+ *              execution, the encrypted values will be drcrypted and will be
+ *              used wherever necessary
+ * 
  */
 public class AES {
 
 	/**
-	 * @param stringToEncrypt
-	 * @return encryptedString
+	 * @param string to decrypt (strToDecrypt)
+	 * @return Decrypted String (decryptedString)
 	 */
 	public static String encrypt(String stringToEncrypt) {
 		String encryptedString = "";

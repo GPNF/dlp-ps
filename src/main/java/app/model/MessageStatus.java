@@ -1,7 +1,9 @@
 package app.model;
 
 /**
- * @author AmolPol, Aniruddha
+ * @author AmolPol
+ * @Description; to be used by the User Service
+ * contains the information regarding the message content
  *
  */
 public class MessageStatus {
