@@ -14,6 +14,9 @@ import app.model.MessageStatusCacheField;
 
 /**
  * @author Aniruddha
+ *@Description: This Data Access Object will be used by the Logging Table in
+ *               the UI. This will simply fetch details from message_status_cache_db
+ *               and show the data in the UI
  *
  */
 public class MessageStatusDAO {
