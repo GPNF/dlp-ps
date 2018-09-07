@@ -2,8 +2,6 @@ package app.service;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
@@ -13,6 +11,7 @@ import com.google.pubsub.v1.PubsubMessage.Builder;
 import app.dao.PublisherDao;
 import app.model.PublisherMessage;
 import app.model.UserMessageSO;
+import app.util.DateUtility;
 
 /**
  * 
@@ -23,8 +22,6 @@ import app.model.UserMessageSO;
  *
  */
 public class ProviderMsgPublisher {
-
-	private static final String YYYY_MM_DD_HH_MM_SS_A = "yyyy-MM-dd hh:mm:ss a";
 
 	/**
 	 * this method receives messages and publish them on topics and logs details
@@ -58,9 +55,9 @@ public class ProviderMsgPublisher {
 		PublisherMessage publisherMessage = new PublisherMessage(publishMessage.getMessage(),
 				publishMessage.getTopicName());
 		publisherMessage.setGlobalTransactionId(publishMessage.getGlobalTransactionId());
-		SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
-		String publishTime = formatter.format(new Date());
-		publisherMessage.setPublishTime(publishTime);
+
+		publisherMessage.setPublishTime(DateUtility.getCurrentTimestamp());
+		
 		if (messageId != null && !messageId.isEmpty()) {
 			publisherMessage.setMessageId(messageId);
 		}
@@ -69,10 +66,16 @@ public class ProviderMsgPublisher {
 
 	}
 
-	private void persistInDB(PublisherMessage publisherMessage) throws SQLException, ParseException {
+	private void persistInDB(PublisherMessage publisherMessage){
 
-		PublisherDao publisherDao = new PublisherDao();
-		publisherDao.insertPublishMessage(publisherMessage);
+		PublisherDao publisherDao;
+		try {
+			publisherDao = new PublisherDao();
+			publisherDao.insertPublishMessage(publisherMessage);
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace();
+		}
+		
 
 	}
 

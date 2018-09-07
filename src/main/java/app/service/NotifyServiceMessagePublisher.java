@@ -2,15 +2,14 @@ package app.service;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.google.pubsub.v1.PubsubMessage;
 
 import app.dao.PublisherDao;
 import app.model.PublisherMessage;
+import app.util.DateUtility;
 import app.util.ListUtils;
 
 /**
@@ -20,8 +19,6 @@ import app.util.ListUtils;
  *
  */
 public class NotifyServiceMessagePublisher {
-
-	private static final String YYYY_MM_DD_HH_MM_SS_A = "yyyy-MM-dd hh:mm:ss a";
 
 	/**
 	 * @param topics
@@ -49,9 +46,7 @@ public class NotifyServiceMessagePublisher {
 			PublisherMessage publishedMessage = new PublisherMessage(stringUtf8, topic);
 			publishedMessage.setGlobalTransactionId(globalTxnId);
 			
-			SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_A);
-			String publishTime = formatter.format(new Date());
-			publishedMessage.setPublishTime(publishTime);
+			publishedMessage.setPublishTime(DateUtility.getCurrentTimestamp());
 			if (messageId != null && !messageId.isEmpty()) {
 				publishedMessage.setMessageId(messageId);
 				messageIds.add(messageId);
@@ -78,14 +73,17 @@ public class NotifyServiceMessagePublisher {
 
 	/** Insert into Publisher table
 	 * @param publisherMessage
+	 * @throws ParseException 
+	 * @throws SQLException 
 	 */
-	private void persistInDB(PublisherMessage publisherMessage) {
-		try {
-			PublisherDao publisherDao = new PublisherDao();
-			publisherDao.insertPublishMessage(publisherMessage);
-		} catch (SQLException | ParseException e) {
-			e.printStackTrace();
-		}
+	private void persistInDB(PublisherMessage publisherMessage){
+			PublisherDao publisherDao;
+			try {
+				publisherDao = new PublisherDao();
+				publisherDao.insertPublishMessage(publisherMessage);
+			} catch (SQLException | ParseException e1) {
+				e1.printStackTrace();
+			}
 	}
 
 }

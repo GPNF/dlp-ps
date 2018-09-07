@@ -81,7 +81,7 @@ public class DateUtility {
 	 * 
 	 * @return SimpleDateFormat
 	 */
-	private static SimpleDateFormat getDefaultFormatter() {
+	public static SimpleDateFormat getDefaultFormatter() {
 		SimpleDateFormat formatter = new SimpleDateFormat(Constants.APPLICATION_DATE_FORMAT);
 		formatter.setTimeZone(TimeZone.getTimeZone(Constants.APPLICATION_TIMEZONE));
 		return formatter;
