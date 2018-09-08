@@ -57,11 +57,19 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>com.google.cloud.tools</groupId>
-        <artifactId>appengine-maven-plugin</artifactId>
-        <version>${appengine.maven.plugin.version}</version>
-      </plugin>
+       <plugin>
+         <groupId>com.google.cloud.tools</groupId>
+         <artifactId>appengine-maven-plugin</artifactId>
+         <version>1.3.2</version>
+       </plugin>
+       <plugin>
+         <groupId>org.eclipse.jetty</groupId>
+         <artifactId>jetty-maven-plugin</artifactId>
+         <version>9.3.7.v20160115</version>
+         <configuration>
+            <webAppSourceDirectory>${project.build.directory}/${project.build.finalName}</webAppSourceDirectory>
+          </configuration>
+       </plugin>
     </plugins>
   </build>
   <dependencies>

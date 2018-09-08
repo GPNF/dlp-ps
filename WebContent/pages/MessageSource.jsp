@@ -21,6 +21,15 @@
 </head>
 <body>
   <%@ include file="/parts/header.jsp"%>
+  <span style="font-size:12px; color:silver" class="pull-right text-center mr-2 mt-2">
+  
+  Version: 1.2
+  <br>
+  <br>Last Deployment <br> 
+  
+  08-Sep-18 <br> 04:00 PM IST
+  
+  </span>
   <div class="container">
 
     <div class="row mt-5">
@@ -81,12 +90,13 @@
       <div class="col-md-3"></div>
 
     </div>
+    
 
   </div>
 
 
   <script type="text/javascript" src="/js/random-user.js"></script>
   <script type="text/javascript" src="/pages/js/message-source.js"></script>
-
+<!-- Google Source Repository URL - https://source.developers.google.com/p/possible-haven-212003/r/GNF -->
 </body>
 </html>
