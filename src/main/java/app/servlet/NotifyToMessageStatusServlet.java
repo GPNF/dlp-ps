@@ -39,8 +39,10 @@ public class NotifyToMessageStatusServlet extends HttpServlet {
 		NotifyToMessageStatusService statusService = new NotifyToMessageStatusService();
 		try {
 			statusService.insertIntoTable(message.getAttributes().get("globalTransactionId"));
+			resp.setStatus(HttpServletResponse.SC_OK);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			resp.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
 		}
 
 	}
