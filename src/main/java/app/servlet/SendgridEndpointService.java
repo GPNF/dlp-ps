@@ -27,7 +27,7 @@ public class SendgridEndpointService extends HttpServlet {
 
 	@Override
 	public final void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
-
+		resp.setStatus(HttpServletResponse.SC_OK);
 		ServletInputStream inputStream = req.getInputStream();
 		JsonParser parser = JacksonFactory.getDefaultInstance().createJsonParser(inputStream);
 		parser.skipToKey("message");
@@ -35,6 +35,7 @@ public class SendgridEndpointService extends HttpServlet {
 
 		persistInDb(message);
 		invokeNotifier(message);
+		
 	}
 
 	/**

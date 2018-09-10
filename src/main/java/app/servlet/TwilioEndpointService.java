@@ -27,7 +27,7 @@ public class TwilioEndpointService extends HttpServlet {
 
 	@Override
 	public final void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
-
+		resp.setStatus(HttpServletResponse.SC_OK);
 		ServletInputStream inputStream = req.getInputStream();
 		JsonParser parser = JacksonFactory.getDefaultInstance().createJsonParser(inputStream);
 		parser.skipToKey("message");
