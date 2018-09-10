@@ -120,6 +120,7 @@ public class LoggingService extends HttpServlet {
 		parser.skipToKey("message");
 		PubsubMessage message = parser.parseAndClose(PubsubMessage.class);
 		new LogTableOperations("logging_configuration.properties").makeAnEntryToLog(message);
+		response.setStatus(HttpServletResponse.SC_OK);
 	}
 
 }

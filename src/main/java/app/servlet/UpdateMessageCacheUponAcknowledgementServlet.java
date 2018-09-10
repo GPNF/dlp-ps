@@ -41,10 +41,11 @@ public class UpdateMessageCacheUponAcknowledgementServlet extends HttpServlet {
 		MessageStatus messageStatus = gson.fromJson(req.getReader(), MessageStatus.class);
 		try {
 			new MessageStatusDAO().insertIntoTable(messageStatus);
+			resp.setStatus(HttpServletResponse.SC_OK);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			resp.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
 		}
-
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
