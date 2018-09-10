@@ -44,18 +44,12 @@ public class NotifyUtility {
 				setSmsMessageDetails(req, smsPrefered, topicList, userDet);
 
 			} else {
-				UserMessageSO messagePref = new UserMessageSO();
-				messagePref.setMessage(req.getMessageData());
-				messagePref.setUserId(userDet.getUserId());
-				messagePref.setGlobalTransactionId(req.getMessageId());
+
 				if (userDet.getEmailFlag().equalsIgnoreCase(YES)) {
-					messagePref.setTopicName(topicList[0]);
-					messagePref.setEmailId(userDet.getEmailId());
-					emailPrefered.add(messagePref);
+					setEmailMsgDetails(req, emailPrefered, topicList, userDet);
+
 				} else if (userDet.getSmsFlag().equalsIgnoreCase(YES)) {
-					messagePref.setTopicName(topicList[1]);
-					messagePref.setMobileNumber(userDet.getMobileNumber());
-					smsPrefered.add(messagePref);
+					setSmsMessageDetails(req, smsPrefered, topicList, userDet);
 				}
 
 			}
