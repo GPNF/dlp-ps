@@ -11,6 +11,7 @@ import app.exception.ExternalUserNotAllowedException;
 import app.exception.InsufficientAuthorizationException;
 import app.exception.NoSuchGroupException;
 import app.exception.PANDataFoundSecurityViolationException;
+import app.logging.CloudLogger;
 import app.model.InspectResult;
 import app.model.SourceMessage;
 import app.service.dlp.DLPService;
@@ -32,7 +33,10 @@ import app.util.ExternalProperties;
  */
 public class NotifyService {
 
-	// TODO Remove dependencies from here. Use HTTPClient API to hit POST URL. Check similar implementation for reference at
+	private CloudLogger LOGGER = CloudLogger.getLogger();
+
+	// TODO Remove dependencies from here. Use HTTPClient API to hit POST URL. Check
+	// similar implementation for reference at
 	// updateDelConfirmation() of NotifyUtility
 	private DLPService dlpService;
 	private AuthorizationService authService;
@@ -46,11 +50,12 @@ public class NotifyService {
 	 * Publish PubsubMessage on provided list of topics.
 	 * 
 	 * @param topics
-	 * @param pubsubMessage 
+	 * @param pubsubMessage
 	 * @return list of message ids
 	 */
 	public List<String> publishMessage(List<String> topics, PubsubMessage pubsubMessage) {
-
+		LOGGER.info("Inside Notify Service. Publishing messages on these topics -> " + topics
+				+ ". com.google.pubsub.v1.PubsubMessage:\n" + pubsubMessage);
 		NotifyServiceMessagePublisher publisher = new NotifyServiceMessagePublisher();
 		List<String> messageIds = publisher.publishMessage(topics, pubsubMessage);
 		return messageIds;
@@ -64,7 +69,11 @@ public class NotifyService {
 	 * @throws IOException
 	 */
 	public List<InspectResult> getInspectionResult(String inputMessage) throws IOException {
-		return dlpService.getInspectionResult(inputMessage);
+		LOGGER.info("Inside Notify Serice. Passing message to DLP Service for inspection.");
+		List<InspectResult> inspectionResult = dlpService.getInspectionResult(inputMessage);
+		LOGGER.info("Inside Notify Serice. Received inspection result from DLP Service. \nInfotypes matched: "
+				+ inspectionResult.size());
+		return inspectionResult;
 	}
 
 	/**
@@ -75,7 +84,12 @@ public class NotifyService {
 	 * @throws IOException
 	 */
 	public String getDeidentifiedString(String inputMsg) throws IOException {
-		return dlpService.getDeidentifiedString(inputMsg);
+		LOGGER.info("Inside Notify Service. Passing message to DLP Service for deidentification. " + "\nMessage: "
+				+ inputMsg);
+		String deidentifiedString = dlpService.getDeidentifiedString(inputMsg);
+		LOGGER.info("Inside Notify Service. Received deidentified message from DLP Service \nMessage - "
+				+ deidentifiedString);
+		return deidentifiedString;
 	}
 
 	/**
@@ -92,29 +106,37 @@ public class NotifyService {
 			throws SQLException, ExternalUserNotAllowedException, NoSuchGroupException,
 			InsufficientAuthorizationException, IOException, PANDataFoundSecurityViolationException {
 		String message = sourceMessage.getMessage();
-
+		LOGGER.info("Inside Notify Service. Inside Notify Service. "
+				+ "Passing source message to Authorization Service. \n" + sourceMessage);
 		// Application level Source authorization against Target Group
 		authService.checkSourceAuthorization(sourceMessage);
 
+		LOGGER.info("Inside Notify Serice. " + "Passing message to DLP Service for inspection. \nMessage: " + message);
 		// Inspection & termination on violation
 		dlpService.checkForSensitiveData(message);
 
+		LOGGER.info(
+				"Inside Notify Service. Passing message to DLP Service for deidentification. \nMessage: " + message);
 		// DeIdentification - Redact/Mask PIIs.
-		String deidentifiedStr = dlpService.getDeidentifiedString(sourceMessage.getMessage());
+		String deidentifiedStr = dlpService.getDeidentifiedString(message);
 
+		LOGGER.info("Inside Notify Service. Adding source message attributes into com.google.pubsub.v1.PubsubMessage."
+				+ "\nThree attributes added - [GlobalTxnId, SourceAuthLevel, GroupId]\n" + sourceMessage);
 		PubsubMessage pubsubMessage = SourceToPubSubMessageConverter.convert(sourceMessage, deidentifiedStr);
 
 		String topicNames = ExternalProperties.getAppConfig("app.gc.pubsub.topic.layer1");
+
+		LOGGER.info("Publishing message on " + topicNames + ". Message to publish:\n");
+
 		NotifyServiceMessagePublisher publisher = new NotifyServiceMessagePublisher();
 		List<String> messageIds = publisher.publishMessage(topicNames, pubsubMessage);
 		return messageIds;
 	}
 
 	/**
-	 * This class is responsible for creating new PubSubMessage 
-	 * with deidentified string as messsage data. PubsubMessage is immutable,
-	 *  hence, we're handling it here. Creating new Pubsub message will 
-	 *  change messageId<br>
+	 * This class is responsible for creating new PubSubMessage with deidentified
+	 * string as messsage data. PubsubMessage is immutable, hence, we're handling it
+	 * here. Creating new Pubsub message will change messageId<br>
 	 * 
 	 * @param sourceMessage
 	 * @param deidentifiedStr

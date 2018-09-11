@@ -21,7 +21,7 @@ import app.model.SubscriberMessage;
  *
  */
 public class NotificationService {
-
+	
 	private UserService userService;
 
 	public NotificationService() {
@@ -49,6 +49,7 @@ public class NotificationService {
 	 * @throws IOException
 	 */
 	public void sendMessagesToUser(List<SubscriberMessage> messageList) throws ServletException, IOException {
+		
 		userService.sendMessagesToUser(messageList);
 	}
 

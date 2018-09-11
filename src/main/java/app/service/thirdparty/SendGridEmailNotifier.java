@@ -12,6 +12,7 @@ import app.servlet.HttpClientRequestHandler;
 import app.util.ExternalProperties;
 
 public class SendGridEmailNotifier {
+	
 	static List<PubsubMessage> emailOutstandingQueue = new ArrayList<>();
 
 	/**

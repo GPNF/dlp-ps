@@ -1,11 +1,15 @@
 package app.service;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
 
 import app.dao.UserDetailsDao;
+import app.dao.UserGroupDetailsDAO;
+import app.exception.NoSuchGroupException;
+import app.logging.CloudLogger;
 import app.model.MessageStatus;
 import app.model.SubscriberMessage;
 import app.model.UserDetailsSO;
@@ -20,11 +24,13 @@ import app.util.NotifyUtility;
  */
 public class UserService {
 
+	private CloudLogger LOGGER = CloudLogger.getLogger();
+
 	/**
-	 * this method being called after pulling messages from notify subscription
-	 * of pubsub layer receives pulled messages from notify pull pubsub layer
-	 * calls decoupled UserServlet endpoint to check user and there group
-	 * details to whom we have to send message
+	 * this method being called after pulling messages from notify subscription of
+	 * pubsub layer receives pulled messages from notify pull pubsub layer calls
+	 * decoupled UserServlet endpoint to check user and there group details to whom
+	 * we have to send message
 	 * 
 	 * @param messageList
 	 * @throws ServletException
@@ -45,9 +51,9 @@ public class UserService {
 	}
 
 	/**
-	 * this method listens request on user servlet endpoint receives actual
-	 * messages after pulling from subscriptions prepares the userlist based on
-	 * group from dao and calls notify uitility to handle and publish on pubsub
+	 * this method listens request on user servlet endpoint receives actual messages
+	 * after pulling from subscriptions prepares the userlist based on group from
+	 * dao and calls notify uitility to handle and publish on pubsub
 	 * 
 	 * @param message
 	 * @throws Exception
@@ -55,7 +61,7 @@ public class UserService {
 	 * 
 	 */
 	public void checkAllUserPreference(MessageStatus req) throws Exception {
-
+		LOGGER.info("Checking user preferences.");
 		List<UserDetailsSO> allUsers = null;
 		UserDetailsDao userDetailsDao = new UserDetailsDao();
 		if (null != req.getDestGroupId() && req.getDestGroupId() != "")
@@ -68,9 +74,17 @@ public class UserService {
 		if (null != allUsers && allUsers.size() > 0)
 			utility.prepareMessagesWithPreferences(allUsers, req);
 		else {
-			throw new Exception("Notification Preferences not set by any user");
+			String message = "Notification Preferences not set by any user";
+			LOGGER.info(message);
+			throw new Exception(message);
 		}
 
+	}
+
+	public int getGroupAuthLevel(int groupId) throws SQLException, NoSuchGroupException {
+		UserGroupDetailsDAO userGroupDetailsDAO = new UserGroupDetailsDAO();
+		int grpAuthLvl = userGroupDetailsDAO.getAuthLevel(groupId);
+		return grpAuthLvl;
 	}
 
 }

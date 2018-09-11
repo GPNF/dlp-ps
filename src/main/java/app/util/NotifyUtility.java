@@ -3,6 +3,7 @@ package app.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.logging.CloudLogger;
 import app.model.MessageStatus;
 import app.model.UserDetailsSO;
 import app.model.UserMessageSO;
@@ -15,6 +16,9 @@ import app.service.ProviderMsgPublisher;
  *         notifiers
  */
 public class NotifyUtility {
+	
+	private CloudLogger LOGGER = CloudLogger.getLogger();
+	
 	private static final String YES = "Yes";
 
 	/**
@@ -28,7 +32,8 @@ public class NotifyUtility {
 	 * @return boolean
 	 */
 	public void prepareMessagesWithPreferences(List<UserDetailsSO> receiverUserList, MessageStatus req) {
-
+		LOGGER.info("Preparing messages with preferences.");
+		
 		List<UserMessageSO> emailPrefered = new ArrayList<>();
 		List<UserMessageSO> smsPrefered = new ArrayList<>();
 		// TODO Calling pubsub API to get list of topics from 2nd layer of pubsub
@@ -54,6 +59,9 @@ public class NotifyUtility {
 
 			}
 		}
+		
+		LOGGER.info("Publishing on Notifier specific topics. Topics -> "+topics);
+		
 		// message with user preferences will be published on respective topic
 		publishOnSpecifcTopic(emailPrefered);
 		publishOnSpecifcTopic(smsPrefered);
@@ -105,7 +113,7 @@ public class NotifyUtility {
 				try {
 					publisher.publishMessage(publishMessage);
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOGGER.error(e.getMessage());
 				}
 			});
 	}
