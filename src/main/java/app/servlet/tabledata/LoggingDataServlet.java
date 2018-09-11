@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import app.dao.LoggingDAO;
+import app.logging.CloudLogger;
 import app.model.LoggingModel;
 
 /**
@@ -25,8 +25,8 @@ import app.model.LoggingModel;
 public class LoggingDataServlet extends TableDataParentServlet<LoggingModel> {
 
 	private static final long serialVersionUID = 8696484787182103032L;
-	private static final Logger LOGGER = Logger.getLogger(LoggingDataServlet.class.getName());
-
+	private CloudLogger LOGGER = CloudLogger.getLogger();
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -48,7 +48,7 @@ public class LoggingDataServlet extends TableDataParentServlet<LoggingModel> {
 			dao = new LoggingDAO();
 			logDetails = dao.getAllFieldDetails();
 		} catch (SQLException | UnsupportedEncodingException e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 		return logDetails;
 	}

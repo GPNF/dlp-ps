@@ -5,18 +5,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import app.exception.PANDataFoundSecurityViolationException;
+import app.logging.CloudLogger;
 import app.model.InspectResult;
 
 /**
  * Responsible for DLP Inspection, Risk analysis & Deidentification <br>
  * <br>
- * Service class should be 'As Simple As Possible'. 
- * If you're modifying this class, add operation &amp; delegate logics to other class
+ * Service class should be 'As Simple As Possible'. If you're modifying this
+ * class, add operation &amp; delegate logics to other class
  * 
  * @author AdarshSinghal
  *
  */
 public class DLPService {
+
+	private CloudLogger LOGGER = CloudLogger.getLogger();
 
 	/**
 	 * @param inputMessage
@@ -24,6 +27,7 @@ public class DLPService {
 	 * @throws IOException
 	 */
 	public List<InspectResult> getInspectionResult(String inputMessage) throws IOException {
+		LOGGER.info("Inside DLP Service. Performing DLP Inspection for message - " + inputMessage);
 		DLPInspector dlpInspector = new DLPInspector();
 		return dlpInspector.getInspectionResult(inputMessage);
 	}
@@ -34,7 +38,7 @@ public class DLPService {
 	 * @throws IOException
 	 */
 	public String getDeidentifiedString(String inputMessage) throws IOException {
-
+		LOGGER.info("Inside DLP Service. Performing DLP Deidentification for message - " + inputMessage);
 		DLPDeIdentifier dlpDeidentifier = new DLPDeIdentifier();
 		return dlpDeidentifier.getDeidentifiedString(inputMessage);
 	}
@@ -49,8 +53,14 @@ public class DLPService {
 		boolean sensitiveDataPresent = inspectionResults.stream().anyMatch(result -> hasSensitiveData(result));
 
 		if (sensitiveDataPresent) {
+			LOGGER.warning(
+					"Inside DLP Service. Throwing PANDataFoundSecurityViolationException. Reason:- PAN data present. "
+							+ "Redacted Message:- " + getDeidentifiedString(inputMessage));
 			throw new PANDataFoundSecurityViolationException();
 		}
+
+		LOGGER.info("Inside DLP Service. PAN data not present. PII found: " + inspectionResults.size() + " \nMessage: "
+				+ getDeidentifiedString(inputMessage));
 
 	}
 
