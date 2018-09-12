@@ -15,6 +15,7 @@ import app.exception.ExternalUserNotAllowedException;
 import app.exception.InsufficientAuthorizationException;
 import app.exception.NoSuchGroupException;
 import app.exception.PANDataFoundSecurityViolationException;
+import app.logging.CloudLogger;
 import app.model.SourceMessage;
 import app.service.NotifyService;
 
@@ -26,6 +27,8 @@ import app.service.NotifyService;
 @WebServlet(name = "NotifyServlet", urlPatterns = { "/notify" })
 public class NotifyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final CloudLogger LOGGER = CloudLogger.getLogger();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -41,6 +44,8 @@ public class NotifyServlet extends HttpServlet {
 		List<String> messageIds = null;
 		NotifyService notifyService = new NotifyService();
 		String gbTxnId = "g" + new Date().getTime() + "r" + (int) (Math.random() * 100);
+		
+		LOGGER.info("Inside NotifyServlet. Added Global Txn Id to Source Message. \nSource Message is \n"+srcMessage);
 		srcMessage.setGlobalTxnId(gbTxnId);
 		boolean isExceptionOccurred = false;
 		try {
