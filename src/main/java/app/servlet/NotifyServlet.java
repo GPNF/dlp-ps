@@ -44,9 +44,9 @@ public class NotifyServlet extends HttpServlet {
 		List<String> messageIds = null;
 		NotifyService notifyService = new NotifyService();
 		String gbTxnId = "g" + new Date().getTime() + "r" + (int) (Math.random() * 100);
-		
-		LOGGER.info("Inside NotifyServlet. Added Global Txn Id to Source Message. \nSource Message is \n"+srcMessage);
 		srcMessage.setGlobalTxnId(gbTxnId);
+		LOGGER.info("Inside NotifyServlet. Added Global Txn Id to Source Message. \nGlobal Txn Id is \n"+srcMessage.getGlobalTxnId());
+		
 		boolean isExceptionOccurred = false;
 		try {
 			messageIds = notifyService.notify(srcMessage);

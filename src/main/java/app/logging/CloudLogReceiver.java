@@ -7,6 +7,8 @@ import com.google.cloud.logging.Logging.EntryListOption;
 import com.google.cloud.logging.LoggingOptions;
 
 /**
+ * This class is responsible for fetching logs from Stackdriver.
+ * 
  * @author AdarshSinghal
  *
  */
@@ -17,7 +19,7 @@ public class CloudLogReceiver {
 		// Instantiates a client
 		LoggingOptions options = LoggingOptions.getDefaultInstance();
 
-		String logName = "AppLogger";
+		String logName = "GNFAppLogger";
 
 		try (Logging logging = options.getService()) {
 

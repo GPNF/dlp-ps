@@ -10,6 +10,8 @@ import com.google.cloud.logging.Payload.StringPayload;
 import com.google.cloud.logging.Severity;
 
 /**
+ * This class is responsible for writing logs into Stackdriver.
+ * 
  * @author AdarshSinghal
  *
  */
@@ -21,13 +23,16 @@ public class CloudLogger {
 		return LOGGER;
 	}
 
+	private CloudLogger() {
+	}
+
 	/**
 	 * @param message
 	 */
 	public void info(String message) {
 		log(message, Severity.INFO);
 	}
-	
+
 	/**
 	 * @param message
 	 */
@@ -48,7 +53,7 @@ public class CloudLogger {
 	 */
 	public void log(String message, Severity severity) {
 		String monitoredResourceType = MonitoredResourceType.GAE_APP.toString();
-		String logName = "GAEAppLogger";
+		String logName = "GNFAppLogger";
 
 		log(message, severity, monitoredResourceType, logName);
 	}
@@ -60,17 +65,17 @@ public class CloudLogger {
 	 * @param logName
 	 */
 	public void log(String message, Severity severity, String monitoredResourceType, String logName) {
-		try(Logging logging = LoggingOptions.getDefaultInstance().getService();) {
+		try (Logging logging = LoggingOptions.getDefaultInstance().getService();) {
 			MonitoredResource monitoredResource = MonitoredResource.newBuilder(monitoredResourceType).build();
 			LogEntry entry = LogEntry.newBuilder(StringPayload.of(message)).setSeverity(severity).setLogName(logName)
 					.setResource(monitoredResource).build();
 
 			logging.write(Collections.singleton(entry));
+			logging.flush();
 		} catch (Exception e) {
-			//Do nothing
-		}	
-		
-		
+			// Do nothing
+		}
+
 	}
 
 }

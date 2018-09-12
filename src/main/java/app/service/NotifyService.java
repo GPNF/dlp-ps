@@ -106,12 +106,12 @@ public class NotifyService {
 			throws SQLException, ExternalUserNotAllowedException, NoSuchGroupException,
 			InsufficientAuthorizationException, IOException, PANDataFoundSecurityViolationException {
 		String message = sourceMessage.getMessage();
-		LOGGER.info("Inside Notify Service. "
-				+ "Passing source message to Authorization Service. \n" + sourceMessage);
+		LOGGER.info("Inside Notify Service. " + "Passing source message to Authorization Service. \n" + sourceMessage);
 		// Application level Source authorization against Target Group
 		authService.checkSourceAuthorization(sourceMessage);
 
-		LOGGER.info("Inside Notify Serice. Source authorize" + "Passing message to DLP Service for inspection. \nMessage: " + message);
+		LOGGER.info("Inside Notify Service. Source authorize"
+				+ "Passing message to DLP Service for inspection. \nMessage: " + message);
 		// Inspection & termination on violation
 		dlpService.checkForSensitiveData(message);
 
@@ -126,7 +126,8 @@ public class NotifyService {
 
 		String topicNames = ExternalProperties.getAppConfig("app.gc.pubsub.topic.layer1");
 
-		LOGGER.info("Publishing message on " + topicNames + ". Message to publish:\n");
+		LOGGER.info("Inside Notify Service. Need to publish message on " + topicNames
+				+ "Delegating responsibility to NotifyServiceMessagePublisher.");
 
 		NotifyServiceMessagePublisher publisher = new NotifyServiceMessagePublisher();
 		List<String> messageIds = publisher.publishMessage(topicNames, pubsubMessage);
