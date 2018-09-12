@@ -38,9 +38,11 @@ public class DLPService {
 	 * @throws IOException
 	 */
 	public String getDeidentifiedString(String inputMessage) throws IOException {
-		LOGGER.info("Inside DLP Service. Performing DLP Deidentification for message - " + inputMessage);
+		LOGGER.info("Inside DLP Service. Performing DLP Deidentification for message.");
 		DLPDeIdentifier dlpDeidentifier = new DLPDeIdentifier();
-		return dlpDeidentifier.getDeidentifiedString(inputMessage);
+		String deidentifiedString = dlpDeidentifier.getDeidentifiedString(inputMessage);
+		LOGGER.info("Inside DLP Service. Deidentified message: \n"+deidentifiedString);
+		return deidentifiedString;
 	}
 
 	/**
@@ -49,6 +51,7 @@ public class DLPService {
 	 * @throws PANDataFoundSecurityViolationException
 	 */
 	public void checkForSensitiveData(String inputMessage) throws IOException, PANDataFoundSecurityViolationException {
+		LOGGER.info("Inside DLP Service. Checking for sensitive data.");
 		List<InspectResult> inspectionResults = getInspectionResult(inputMessage);
 		boolean sensitiveDataPresent = inspectionResults.stream().anyMatch(result -> hasSensitiveData(result));
 
@@ -59,8 +62,7 @@ public class DLPService {
 			throw new PANDataFoundSecurityViolationException();
 		}
 
-		LOGGER.info("Inside DLP Service. PAN data not present. PII found: " + inspectionResults.size() + " \nMessage: "
-				+ getDeidentifiedString(inputMessage));
+		LOGGER.info("Inside DLP Service. Sensitive data not present. PIIs found: \n" + inspectionResults);
 
 	}
 

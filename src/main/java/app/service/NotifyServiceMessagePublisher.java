@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.pubsub.v1.PubsubMessage;
 
 import app.dao.PublisherDao;
+import app.logging.CloudLogger;
 import app.model.PublisherMessage;
 import app.util.DateUtility;
 import app.util.ListUtils;
@@ -19,6 +20,8 @@ import app.util.ListUtils;
  *
  */
 public class NotifyServiceMessagePublisher {
+
+	private CloudLogger LOGGER = CloudLogger.getLogger();
 
 	/**
 	 * @param topics
@@ -34,6 +37,7 @@ public class NotifyServiceMessagePublisher {
 			String messageId = "";
 
 			try {
+				LOGGER.info("Inside NotifyServiceMessagePublisher. Publishing message on topic: " + topic);
 				GenericMessagePublisher publisher = new GenericMessagePublisher();
 				messageId = publisher.publishMessage(topic, pubsubMessage);
 
@@ -45,10 +49,12 @@ public class NotifyServiceMessagePublisher {
 			String globalTxnId = pubsubMessage.getAttributesOrThrow("globalTransactionId");
 			PublisherMessage publishedMessage = new PublisherMessage(stringUtf8, topic);
 			publishedMessage.setGlobalTransactionId(globalTxnId);
-			
+
 			publishedMessage.setPublishTime(DateUtility.getCurrentTimestamp());
 			if (messageId != null && !messageId.isEmpty()) {
 				publishedMessage.setMessageId(messageId);
+				LOGGER.info("Inside NotifyServiceMessagePublisher. " + "Successfuly published message on topic: "
+						+ topic + ", Message: \n" + publishedMessage);
 				messageIds.add(messageId);
 			}
 
@@ -71,19 +77,21 @@ public class NotifyServiceMessagePublisher {
 
 	}
 
-	/** Insert into Publisher table
+	/**
+	 * Insert into Publisher table
+	 * 
 	 * @param publisherMessage
-	 * @throws ParseException 
-	 * @throws SQLException 
+	 * @throws ParseException
+	 * @throws SQLException
 	 */
-	private void persistInDB(PublisherMessage publisherMessage){
-			PublisherDao publisherDao;
-			try {
-				publisherDao = new PublisherDao();
-				publisherDao.insertPublishMessage(publisherMessage);
-			} catch (SQLException | ParseException e1) {
-				e1.printStackTrace();
-			}
+	private void persistInDB(PublisherMessage publisherMessage) {
+		PublisherDao publisherDao;
+		try {
+			publisherDao = new PublisherDao();
+			publisherDao.insertPublishMessage(publisherMessage);
+		} catch (SQLException | ParseException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 }

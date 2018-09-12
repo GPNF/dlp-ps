@@ -3,10 +3,8 @@ package app.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 import app.model.DeliveryStatus;
-import app.util.DateUtility;
 
 public class EmailNotifeirStatusLogDAO {
 
