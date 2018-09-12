@@ -24,7 +24,7 @@ import app.util.NotifyUtility;
  */
 public class UserService {
 
-	private CloudLogger LOGGER = CloudLogger.getLogger();
+	private static final CloudLogger LOGGER = CloudLogger.getLogger();
 
 	/**
 	 * this method being called after pulling messages from notify subscription of

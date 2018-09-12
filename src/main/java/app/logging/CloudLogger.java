@@ -17,10 +17,6 @@ public class CloudLogger {
 
 	private static final CloudLogger LOGGER = new CloudLogger();
 
-	private CloudLogger() {
-
-	}
-
 	public static CloudLogger getLogger() {
 		return LOGGER;
 	}
@@ -64,13 +60,17 @@ public class CloudLogger {
 	 * @param logName
 	 */
 	public void log(String message, Severity severity, String monitoredResourceType, String logName) {
-		Logging logging = LoggingOptions.getDefaultInstance().getService();
-		MonitoredResource monitoredResource = MonitoredResource.newBuilder(monitoredResourceType).build();
-		LogEntry entry = LogEntry.newBuilder(StringPayload.of(message)).setSeverity(severity).setLogName(logName)
-				.setResource(monitoredResource).build();
+		try(Logging logging = LoggingOptions.getDefaultInstance().getService();) {
+			MonitoredResource monitoredResource = MonitoredResource.newBuilder(monitoredResourceType).build();
+			LogEntry entry = LogEntry.newBuilder(StringPayload.of(message)).setSeverity(severity).setLogName(logName)
+					.setResource(monitoredResource).build();
 
-		logging.write(Collections.singleton(entry));
-		logging.flush();
+			logging.write(Collections.singleton(entry));
+		} catch (Exception e) {
+			//Do nothing
+		}	
+		
+		
 	}
 
 }

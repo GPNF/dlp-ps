@@ -34,8 +34,12 @@ public class AuthorizationService {
 	 */
 	public void checkSourceAuthorization(SourceMessage srcMessage) throws SQLException, ExternalUserNotAllowedException,
 			NoSuchGroupException, InsufficientAuthorizationException {
+		LOGGER.info("Inside Authorization Service. Checking for External user.");
 		checkForExternalUser(srcMessage);
+		LOGGER.info("Inside Authorization Service. Internal User verified. \n"
+				+ "Checking if source has sufficient authorization to post on group. Source Message \n" + srcMessage);
 		checkSourceToGroupAuthorization(srcMessage);
+		LOGGER.info("Inside Authorization Service. Source has sufficient authorization.");
 	}
 
 	/**
